@@ -170,7 +170,7 @@ foreach ($results as $result) {
             <tr>
                 <th scope="row">Firmen-Website</th>
                 <td>
-                    <input type="url" name="company_url" value="<?php echo esc_attr($branding['company_url'] ?? 'https://kleinehelden-verleih.de'); ?>" class="regular-text" required>
+                    <input type="url" name="company_url" value="<?php echo esc_attr($branding['company_url'] ?? 'https://h2concepts.de'); ?>" class="regular-text" required>
                     <p class="description">URL Ihrer Firmen-Website</p>
                 </td>
             </tr>

@@ -1,12 +1,12 @@
 <?php
  /**
-  * Plugin Name: Federwiegen Verleih
-  * Plugin URI: https://kleinehelden-verleih.de
-  * Description: Ein Plugin für den Verleih von Federwiegen mit konfigurierbaren Produkten und Stripe-Integration
-  * Version: 1.5.2
-  * Author: Kleine Helden
+  * Plugin Name: Rent Plugin
+  * Plugin URI: https://h2concepts.de
+  * Description: Ein Plugin für den Verleih von Waren mit konfigurierbaren Produkten und Stripe-Integration
+  * Version: 2.0.0
+  * Author: H2 Concepts
   * License: GPL v2 or later
-  * Text Domain: federwiegen-verleih
+  * Text Domain: h2-concepts
   */
  
 if (!defined('ABSPATH')) {
