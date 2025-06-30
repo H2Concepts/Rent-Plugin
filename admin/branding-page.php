@@ -145,14 +145,14 @@ foreach ($results as $result) {
             <tr>
                 <th scope="row">Plugin-Name</th>
                 <td>
-                    <input type="text" name="plugin_name" value="<?php echo esc_attr($branding['plugin_name'] ?? 'Federwiegen Verleih'); ?>" class="regular-text" required>
+                    <input type="text" name="plugin_name" value="<?php echo esc_attr($branding['plugin_name'] ?? 'H2 Concepts Rent Plugin'); ?>" class="regular-text" required>
                     <p class="description">Name des Plugins im Admin-Menü</p>
                 </td>
             </tr>
             <tr>
                 <th scope="row">Plugin-Beschreibung</th>
                 <td>
-                    <textarea name="plugin_description" rows="3" class="large-text"><?php echo esc_textarea($branding['plugin_description'] ?? 'Ein Plugin für den Verleih von Federwiegen mit konfigurierbaren Produkten und Stripe-Integration'); ?></textarea>
+                    <textarea name="plugin_description" rows="3" class="large-text"><?php echo esc_textarea($branding['plugin_description'] ?? 'Ein Plugin für den Verleih von Waren mit konfigurierbaren Produkten und Stripe-Integration'); ?></textarea>
                     <p class="description">Beschreibung des Plugins</p>
                 </td>
             </tr>
@@ -163,7 +163,7 @@ foreach ($results as $result) {
             <tr>
                 <th scope="row">Firmenname</th>
                 <td>
-                    <input type="text" name="company_name" value="<?php echo esc_attr($branding['company_name'] ?? 'Kleine Helden'); ?>" class="regular-text" required>
+                    <input type="text" name="company_name" value="<?php echo esc_attr($branding['company_name'] ?? 'H2 Concepts'); ?>" class="regular-text" required>
                     <p class="description">Name Ihres Unternehmens</p>
                 </td>
             </tr>
@@ -195,7 +195,7 @@ foreach ($results as $result) {
             <tr>
                 <th scope="row">Footer-Text</th>
                 <td>
-                    <input type="text" name="footer_text" value="<?php echo esc_attr($branding['footer_text'] ?? 'Powered by Federwiegen Verleih Plugin'); ?>" class="regular-text">
+                    <input type="text" name="footer_text" value="<?php echo esc_attr($branding['footer_text'] ?? 'Powered by H2 Concepts'); ?>" class="regular-text">
                     <p class="description">Text im Admin-Footer (z.B. "Powered by Ihr Firmenname")</p>
                 </td>
             </tr>
@@ -215,8 +215,8 @@ foreach ($results as $result) {
                             🏷️
                         </div>
                         <div>
-                            <strong><?php echo esc_html($branding['plugin_name'] ?? 'Federwiegen Verleih'); ?></strong><br>
-                            <small style="color: #666;"><?php echo esc_html($branding['company_name'] ?? 'Kleine Helden'); ?></small>
+                            <strong><?php echo esc_html($branding['plugin_name'] ?? 'H2 Concepts Rent Plugin'); ?></strong><br>
+                            <small style="color: #666;"><?php echo esc_html($branding['company_name'] ?? 'H2 Concepts'); ?></small>
                         </div>
                     </div>
                     <button style="background: <?php echo esc_attr($branding['admin_color_primary'] ?? '#5f7f5f'); ?>; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;" onmouseover="this.style.background='<?php echo esc_attr($branding['admin_color_secondary'] ?? '#4a674a'); ?>'" onmouseout="this.style.background='<?php echo esc_attr($branding['admin_color_primary'] ?? '#5f7f5f'); ?>'">

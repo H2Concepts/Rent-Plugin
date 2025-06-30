@@ -61,7 +61,7 @@
                     </div>
                     
                     <div class="federwiegen-category-shipping">
-                        <strong><?php echo number_format($category->shipping_cost ?? 9.99, 2, ',', '.'); ?>€</strong>
+                        <strong><?php echo number_format($category->shipping_cost ?? 0, 2, ',', '.'); ?>€</strong>
                         <small>Versand</small>
                     </div>
                 </div>

@@ -70,7 +70,7 @@
                 </div>
                 <div class="federwiegen-form-group">
                     <label>Versandkosten (€)</label>
-                    <input type="number" name="shipping_cost" value="9.99" step="0.01" min="0">
+                    <input type="number" name="shipping_cost" step="0.01" min="0">
                 </div>
             </div>
             
@@ -98,7 +98,7 @@
             <h4>🌟 Features-Sektion</h4>
             <div class="federwiegen-form-group">
                 <label>Features-Überschrift</label>
-                <input type="text" name="features_title" value="Warum unsere Federwiegen?" placeholder="z.B. Warum unsere Federwiegen?">
+                <input type="text" name="features_title" placeholder="z.B. Warum unser Produkt?">
             </div>
             
             <?php for ($i = 1; $i <= 3; $i++): ?>
@@ -131,7 +131,7 @@
             <div class="federwiegen-form-row">
                 <div class="federwiegen-form-group">
                     <label>Button-Text</label>
-                    <input type="text" name="button_text" value="Jetzt Mieten" placeholder="z.B. Jetzt Mieten">
+                    <input type="text" name="button_text" placeholder="z.B. Jetzt Mieten">
                 </div>
                 <div class="federwiegen-form-group">
                     <label>Button-Icon</label>
@@ -144,16 +144,12 @@
             
             <div class="federwiegen-form-group">
                 <label>Mietdauer-Tooltip</label>
-                <textarea name="duration_tooltip" rows="3" placeholder="Text der bei 'Wählen Sie Ihre Mietdauer' angezeigt wird">Nach der Mindestmietdauer kannst Du dein Abo jederzeit kündigen oder auf ein anderes Produkt wechseln.</textarea>
+                <textarea name="duration_tooltip" rows="3" placeholder="Text der bei 'Wählen Sie Ihre Mietdauer' angezeigt wird"></textarea>
             </div>
             
             <div class="federwiegen-form-group">
                 <label>Zustand-Tooltip</label>
-                <textarea name="condition_tooltip" rows="4" placeholder="Text der bei 'Zustand' angezeigt wird">Neu: Neue, originalverpackte Produkte.
-
-Aufbereitet: Bereits benutzte Produkte, die von uns gereinigt, desinfiziert, repariert und in Top-Zustand gebracht wurden.
-
-Weitere Informationen findest du im Helpcenter.</textarea>
+                <textarea name="condition_tooltip" rows="4" placeholder="Text der bei 'Zustand' angezeigt wird"></textarea>
             </div>
         </div>
         
@@ -163,7 +159,7 @@ Weitere Informationen findest du im Helpcenter.</textarea>
             <div class="federwiegen-form-row">
                 <div class="federwiegen-form-group">
                     <label>Sortierung</label>
-                    <input type="number" name="sort_order" value="0" min="0">
+                    <input type="number" name="sort_order" min="0">
                 </div>
                 <div class="federwiegen-form-group">
                     <label class="federwiegen-checkbox-label">

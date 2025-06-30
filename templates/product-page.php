@@ -22,34 +22,34 @@ $durations = $wpdb->get_results($wpdb->prepare(
 
 // Get category settings
 $default_image = isset($category) ? $category->default_image : '';
-$product_title = isset($category) ? $category->product_title : 'Premium Federwiegen';
-$product_description = isset($category) ? $category->product_description : 'Unsere Federwiegen bieten Ihrem Baby die natürliche Wiegebewegung, die es aus dem Mutterleib kennt. Dies fördert einen ruhigen Schlaf und gibt Ihnen als Eltern wertvolle Erholung.';
+$product_title = isset($category) ? $category->product_title : '';
+$product_description = isset($category) ? $category->product_description : '';
 
 // Features
-$features_title = isset($category) ? ($category->features_title ?? 'Warum unsere Federwiegen?') : 'Warum unsere Federwiegen?';
+$features_title = isset($category) ? ($category->features_title ?? '') : '';
 $feature_1_icon = isset($category) ? $category->feature_1_icon : '';
-$feature_1_title = isset($category) ? $category->feature_1_title : 'Sicherheit First';
-$feature_1_description = isset($category) ? $category->feature_1_description : 'Alle unsere Produkte sind nach höchsten Sicherheitsstandards geprüft und zertifiziert.';
+$feature_1_title = isset($category) ? $category->feature_1_title : '';
+$feature_1_description = isset($category) ? $category->feature_1_description : '';
 $feature_2_icon = isset($category) ? $category->feature_2_icon : '';
-$feature_2_title = isset($category) ? $category->feature_2_title : 'Liebevolle Pflege';
-$feature_2_description = isset($category) ? $category->feature_2_description : 'Jede Federwiege wird nach der Rückgabe professionell gereinigt und desinfiziert.';
+$feature_2_title = isset($category) ? $category->feature_2_title : '';
+$feature_2_description = isset($category) ? $category->feature_2_description : '';
 $feature_3_icon = isset($category) ? $category->feature_3_icon : '';
-$feature_3_title = isset($category) ? $category->feature_3_title : 'Modern & Smart';
-$feature_3_description = isset($category) ? $category->feature_3_description : 'Optional mit App-Steuerung für maximalen Komfort im Alltag.';
+$feature_3_title = isset($category) ? $category->feature_3_title : '';
+$feature_3_description = isset($category) ? $category->feature_3_description : '';
 
 // Button
-$button_text = isset($category) ? $category->button_text : 'Jetzt Mieten';
+$button_text = isset($category) ? $category->button_text : '';
 $button_icon = isset($category) ? $category->button_icon : '';
 
 // Shipping
-$shipping_cost = isset($category) ? ($category->shipping_cost ?? 9.99) : 9.99;
+$shipping_cost = isset($category) ? ($category->shipping_cost ?? 0) : 0;
 
 // Layout
 $layout_style = isset($category) ? ($category->layout_style ?? 'default') : 'default';
 
 // Tooltips
-$duration_tooltip = isset($category) ? ($category->duration_tooltip ?? 'Nach der Mindestmietdauer kannst Du dein Abo jederzeit kündigen oder auf ein anderes Produkt wechseln.') : 'Nach der Mindestmietdauer kannst Du dein Abo jederzeit kündigen oder auf ein anderes Produkt wechseln.';
-$condition_tooltip = isset($category) ? ($category->condition_tooltip ?? "Neu: Neue, originalverpackte Produkte.\n\nAufbereitet: Bereits benutzte Produkte, die von uns gereinigt, desinfiziert, repariert und in Top-Zustand gebracht wurden.\n\nWeitere Informationen findest du im Helpcenter.") : "Neu: Neue, originalverpackte Produkte.\n\nAufbereitet: Bereits benutzte Produkte, die von uns gereinigt, desinfiziert, repariert und in Top-Zustand gebracht wurden.\n\nWeitere Informationen findest du im Helpcenter.";
+$duration_tooltip = isset($category) ? ($category->duration_tooltip ?? '') : '';
+$condition_tooltip = isset($category) ? ($category->condition_tooltip ?? '') : '';
 
 // Get initial conditions and colors (will be updated via AJAX when variant is selected)
 $initial_conditions = $wpdb->get_results($wpdb->prepare(

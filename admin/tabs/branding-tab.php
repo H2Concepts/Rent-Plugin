@@ -103,13 +103,13 @@ if (isset($_POST['submit_branding'])) {
                 <div class="federwiegen-form-grid">
                     <div class="federwiegen-form-group">
                         <label>Plugin-Name *</label>
-                        <input type="text" name="plugin_name" value="<?php echo esc_attr($branding['plugin_name'] ?? 'Federwiegen Verleih'); ?>" required>
+                        <input type="text" name="plugin_name" value="<?php echo esc_attr($branding['plugin_name'] ?? 'H2 Concepts Rent Plugin'); ?>" required>
                         <small>Name des Plugins im Admin-Menü</small>
                     </div>
                     
                     <div class="federwiegen-form-group full-width">
                         <label>Plugin-Beschreibung</label>
-                        <textarea name="plugin_description" rows="3"><?php echo esc_textarea($branding['plugin_description'] ?? 'Ein Plugin für den Verleih von Federwiegen mit konfigurierbaren Produkten und Stripe-Integration'); ?></textarea>
+                        <textarea name="plugin_description" rows="3"><?php echo esc_textarea($branding['plugin_description'] ?? 'Ein Plugin für den Verleih von Waren mit konfigurierbaren Produkten und Stripe-Integration'); ?></textarea>
                         <small>Beschreibung des Plugins</small>
                     </div>
                 </div>
@@ -121,13 +121,13 @@ if (isset($_POST['submit_branding'])) {
                 <div class="federwiegen-form-grid">
                     <div class="federwiegen-form-group">
                         <label>Firmenname *</label>
-                        <input type="text" name="company_name" value="<?php echo esc_attr($branding['company_name'] ?? 'Kleine Helden'); ?>" required>
+                        <input type="text" name="company_name" value="<?php echo esc_attr($branding['company_name'] ?? 'H2 Concepts'); ?>" required>
                         <small>Name Ihres Unternehmens</small>
                     </div>
                     
                     <div class="federwiegen-form-group">
                         <label>Firmen-Website *</label>
-                        <input type="url" name="company_url" value="<?php echo esc_attr($branding['company_url'] ?? 'https://kleinehelden-verleih.de'); ?>" required>
+                        <input type="url" name="company_url" value="<?php echo esc_attr($branding['company_url'] ?? 'https://h2concepts.de'); ?>" required>
                         <small>URL Ihrer Firmen-Website</small>
                     </div>
                 </div>
@@ -151,7 +151,7 @@ if (isset($_POST['submit_branding'])) {
                     
                     <div class="federwiegen-form-group full-width">
                         <label>Footer-Text</label>
-                        <input type="text" name="footer_text" value="<?php echo esc_attr($branding['footer_text'] ?? 'Powered by Federwiegen Verleih Plugin'); ?>">
+                        <input type="text" name="footer_text" value="<?php echo esc_attr($branding['footer_text'] ?? 'Powered by H2 Concepts'); ?>">
                         <small>Text im Admin-Footer (z.B. "Powered by Ihr Firmenname")</small>
                     </div>
                 </div>
@@ -175,8 +175,8 @@ if (isset($_POST['submit_branding'])) {
                             🏷️
                         </div>
                         <div class="federwiegen-demo-content">
-                            <strong><?php echo esc_html($branding['plugin_name'] ?? 'Federwiegen Verleih'); ?></strong><br>
-                            <small><?php echo esc_html($branding['company_name'] ?? 'Kleine Helden'); ?></small>
+                            <strong><?php echo esc_html($branding['plugin_name'] ?? 'H2 Concepts Rent Plugin'); ?></strong><br>
+                            <small><?php echo esc_html($branding['company_name'] ?? 'H2 Concepts'); ?></small>
                         </div>
                     </div>
                     <button class="federwiegen-demo-button" style="background: <?php echo esc_attr($branding['admin_color_primary'] ?? '#5f7f5f'); ?>; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;" onmouseover="this.style.background='<?php echo esc_attr($branding['admin_color_secondary'] ?? '#4a674a'); ?>'" onmouseout="this.style.background='<?php echo esc_attr($branding['admin_color_primary'] ?? '#5f7f5f'); ?>'">

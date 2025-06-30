@@ -30,7 +30,7 @@ foreach ($branding_results as $result) {
             🏠
         </div>
         <div class="federwiegen-admin-title-compact">
-            <h1><?php echo esc_html($branding['plugin_name'] ?? 'Federwiegen Verleih'); ?></h1>
+            <h1><?php echo esc_html($branding['plugin_name'] ?? 'H2 Concepts Rent Plugin'); ?></h1>
             <p>Dashboard & Übersicht</p>
         </div>
     </div>

@@ -447,6 +447,9 @@ jQuery(document).ready(function($) {
 
     function initMobileStickyPrice() {
         if (window.innerWidth <= 768) {
+            // Determine button label from main button
+            const mainLabel = $('#federwiegen-rent-button span').text().trim() || 'Jetzt Mieten';
+
             // Create mobile sticky price bar
             const stickyHtml = `
                 <div class="federwiegen-mobile-sticky-price" id="mobile-sticky-price">
@@ -456,7 +459,7 @@ jQuery(document).ready(function($) {
                             <div class="federwiegen-mobile-price-value" id="mobile-price-value">0,00€</div>
                         </div>
                         <button class="federwiegen-mobile-button" disabled>
-                            Jetzt Mieten
+                            ${mainLabel}
                         </button>
                     </div>
                 </div>

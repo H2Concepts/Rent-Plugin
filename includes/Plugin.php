@@ -59,7 +59,7 @@ class Plugin {
         $this->create_tables();
 
         $load_sample = defined('FEDERWIEGEN_LOAD_DEFAULT_DATA') ?
-            FEDERWIEGEN_LOAD_DEFAULT_DATA : true;
+            FEDERWIEGEN_LOAD_DEFAULT_DATA : false;
         $load_sample = apply_filters('federwiegen_load_default_data', $load_sample);
 
         if ($load_sample) {
@@ -153,7 +153,7 @@ class Plugin {
                 product_title varchar(255) DEFAULT '',
                 product_description text DEFAULT '',
                 default_image text DEFAULT '',
-                features_title varchar(255) DEFAULT 'Warum unsere Federwiegen?',
+                features_title varchar(255) DEFAULT '',
                 feature_1_icon text DEFAULT '',
                 feature_1_title varchar(255) DEFAULT '',
                 feature_1_description text DEFAULT '',
@@ -165,7 +165,7 @@ class Plugin {
                 feature_3_description text DEFAULT '',
                 button_text varchar(255) DEFAULT '',
                 button_icon text DEFAULT '',
-                shipping_cost decimal(10,2) DEFAULT 9.99,
+                shipping_cost decimal(10,2) DEFAULT 0,
                 layout_style varchar(50) DEFAULT 'default',
                 duration_tooltip text DEFAULT '',
                 condition_tooltip text DEFAULT '',
@@ -181,7 +181,7 @@ class Plugin {
             $new_columns = array(
                 'meta_title' => 'VARCHAR(255)',
                 'meta_description' => 'TEXT',
-                'features_title' => 'VARCHAR(255) DEFAULT "Warum unsere Federwiegen?"',
+                'features_title' => 'VARCHAR(255) DEFAULT ""',
                 'feature_1_icon' => 'TEXT',
                 'feature_1_title' => 'VARCHAR(255)',
                 'feature_1_description' => 'TEXT',
@@ -193,7 +193,7 @@ class Plugin {
                 'feature_3_description' => 'TEXT',
                 'button_text' => 'VARCHAR(255)',
                 'button_icon' => 'TEXT',
-                'shipping_cost' => 'DECIMAL(10,2) DEFAULT 9.99',
+                'shipping_cost' => 'DECIMAL(10,2) DEFAULT 0',
                 'layout_style' => 'VARCHAR(50) DEFAULT "default"',
                 'duration_tooltip' => 'TEXT',
                 'condition_tooltip' => 'TEXT'
@@ -269,14 +269,14 @@ class Plugin {
             
             // Insert default branding settings
             $default_branding = array(
-                'plugin_name' => 'Federwiegen Verleih',
-                'plugin_description' => 'Ein Plugin für den Verleih von Federwiegen mit konfigurierbaren Produkten und Stripe-Integration',
-                'company_name' => 'Kleine Helden',
-                'company_url' => 'https://kleinehelden-verleih.de',
+                'plugin_name' => 'H2 Concepts Rent Plugin',
+                'plugin_description' => 'Ein Plugin für den Verleih von Waren mit konfigurierbaren Produkten und Stripe-Integration',
+                'company_name' => 'H2 Concepts',
+                'company_url' => 'https://h2concepts.de',
                 'admin_logo' => '',
                 'admin_color_primary' => '#5f7f5f',
                 'admin_color_secondary' => '#4a674a',
-                'footer_text' => 'Powered by Federwiegen Verleih Plugin'
+                'footer_text' => 'Powered by H2 Concepts'
             );
             
             foreach ($default_branding as $key => $value) {
@@ -418,7 +418,7 @@ class Plugin {
             product_title varchar(255) DEFAULT '',
             product_description text DEFAULT '',
             default_image text DEFAULT '',
-            features_title varchar(255) DEFAULT 'Warum unsere Federwiegen?',
+            features_title varchar(255) DEFAULT '',
             feature_1_icon text DEFAULT '',
             feature_1_title varchar(255) DEFAULT '',
             feature_1_description text DEFAULT '',
@@ -430,7 +430,7 @@ class Plugin {
             feature_3_description text DEFAULT '',
             button_text varchar(255) DEFAULT '',
             button_icon text DEFAULT '',
-            shipping_cost decimal(10,2) DEFAULT 9.99,
+            shipping_cost decimal(10,2) DEFAULT 0,
             layout_style varchar(50) DEFAULT 'default',
             duration_tooltip text DEFAULT '',
             condition_tooltip text DEFAULT '',
@@ -617,31 +617,31 @@ class Plugin {
             $wpdb->insert(
                 $wpdb->prefix . 'federwiegen_categories',
                 array(
-                    'name' => 'Standard Federwiegen',
+                     'name' => 'Standard Federwiegen',
                     'shortcode' => 'federwiegen_product',
-                    'page_title' => 'Federwiegen Verleih',
-                    'page_description' => 'Mieten Sie unsere hochwertigen Federwiegen für einen entspannten Alltag mit Ihrem Baby.',
-                    'meta_title' => 'Federwiegen mieten - Entspannter Schlaf für Ihr Baby',
-                    'meta_description' => 'Hochwertige Federwiegen mieten ✓ Sichere Babywiegen ✓ Flexible Mietdauer ✓ Professionelle Reinigung ✓ Jetzt online buchen!',
-                    'product_title' => 'Premium Federwiegen',
-                    'product_description' => 'Unsere Federwiegen bieten Ihrem Baby die natürliche Wiegebewegung, die es aus dem Mutterleib kennt. Dies fördert einen ruhigen Schlaf und gibt Ihnen als Eltern wertvolle Erholung.',
+                    'page_title' => '',
+                    'page_description' => '',
+                    'meta_title' => '',
+                    'meta_description' => '',
+                    'product_title' => '',
+                    'product_description' => '',
                     'default_image' => '',
-                    'features_title' => 'Warum unsere Federwiegen?',
+                    'features_title' => '',
                     'feature_1_icon' => '',
-                    'feature_1_title' => 'Sicherheit First',
-                    'feature_1_description' => 'Alle unsere Produkte sind nach höchsten Sicherheitsstandards geprüft und zertifiziert.',
+                    'feature_1_title' => '',
+                    'feature_1_description' => '',
                     'feature_2_icon' => '',
-                    'feature_2_title' => 'Liebevolle Pflege',
-                    'feature_2_description' => 'Jede Federwiege wird nach der Rückgabe professionell gereinigt und desinfiziert.',
+                    'feature_2_title' => '',
+                    'feature_2_description' => '',
                     'feature_3_icon' => '',
-                    'feature_3_title' => 'Modern & Smart',
-                    'feature_3_description' => 'Optional mit App-Steuerung für maximalen Komfort im Alltag.',
-                    'button_text' => 'Jetzt Mieten',
+                    'feature_3_title' => '',
+                    'feature_3_description' => '',
+                    'button_text' => '',
                     'button_icon' => '',
-                    'shipping_cost' => 9.99,
+                    'shipping_cost' => 0,
                     'layout_style' => 'default',
-                    'duration_tooltip' => 'Nach der Mindestmietdauer kannst Du dein Abo jederzeit kündigen oder auf ein anderes Produkt wechseln.',
-                    'condition_tooltip' => "Neu: Neue, originalverpackte Produkte.\n\nAufbereitet: Bereits benutzte Produkte, die von uns gereinigt, desinfiziert, repariert und in Top-Zustand gebracht wurden.\n\nWeitere Informationen findest du im Helpcenter.",
+                    'duration_tooltip' => '',
+                    'condition_tooltip' => '',
                     'sort_order' => 0
                 )
             );
@@ -651,14 +651,14 @@ class Plugin {
         $existing_branding = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_branding");
         if ($existing_branding == 0) {
             $default_branding = array(
-                'plugin_name' => 'Federwiegen Verleih',
-                'plugin_description' => 'Ein Plugin für den Verleih von Federwiegen mit konfigurierbaren Produkten und Stripe-Integration',
-                'company_name' => 'Kleine Helden',
-                'company_url' => 'https://kleinehelden-verleih.de',
+                'plugin_name' => '',
+                'plugin_description' => '',
+                'company_name' => '',
+                'company_url' => '',
                 'admin_logo' => '',
                 'admin_color_primary' => '#5f7f5f',
                 'admin_color_secondary' => '#4a674a',
-                'footer_text' => 'Powered by Federwiegen Verleih Plugin'
+                'footer_text' => ''
             );
             
             foreach ($default_branding as $key => $value) {
@@ -754,7 +754,7 @@ class Plugin {
         $menu_title = $branding['plugin_name'] ?? 'Federwiegen';
         
         add_menu_page(
-            $branding['plugin_name'] ?? 'Federwiegen Verleih',
+            $branding['plugin_name'] ?? 'Rent Plugin',
             $menu_title,
             'manage_options',
             'federwiegen-verleih',
@@ -1156,9 +1156,9 @@ class Plugin {
         $branding = $this->get_branding_settings();
         
         if (isset($_GET['page']) && strpos($_GET['page'], 'federwiegen') !== false) {
-            $footer_text = $branding['footer_text'] ?? 'Powered by Federwiegen Verleih Plugin';
+            $footer_text = $branding['footer_text'] ?? 'Powered by H2 Concepts';
             $company_url = $branding['company_url'] ?? '#';
-            $company_name = $branding['company_name'] ?? 'Kleine Helden';
+            $company_name = $branding['company_name'] ?? 'H2 Concepts';
             
             return '<span id="footer-thankyou">' . $footer_text . ' | <a href="' . esc_url($company_url) . '" target="_blank">' . esc_html($company_name) . '</a></span>';
         }
@@ -1251,7 +1251,7 @@ class Plugin {
             
             $discount = floatval($duration->discount);
             $final_price = $base_price * (1 - $discount);
-            $shipping_cost = $category ? floatval($category->shipping_cost) : 9.99;
+            $shipping_cost = $category ? floatval($category->shipping_cost) : 0;
             
             wp_send_json_success(array(
                 'base_price' => $base_price,

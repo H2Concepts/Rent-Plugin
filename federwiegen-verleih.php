@@ -23,7 +23,7 @@ define('FEDERWIEGEN_PLUGIN_FILE', __FILE__);
 
 // Control whether default demo data is inserted on activation
 if (!defined('FEDERWIEGEN_LOAD_DEFAULT_DATA')) {
-    define('FEDERWIEGEN_LOAD_DEFAULT_DATA', true);
+    define('FEDERWIEGEN_LOAD_DEFAULT_DATA', false);
 }
 
 require_once FEDERWIEGEN_PLUGIN_DIR . 'includes/Autoloader.php';

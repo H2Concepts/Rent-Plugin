@@ -72,7 +72,7 @@
                 </div>
                 <div class="federwiegen-form-group">
                     <label>Versandkosten (€)</label>
-                    <input type="number" name="shipping_cost" value="<?php echo $edit_item->shipping_cost ?? 9.99; ?>" step="0.01" min="0">
+                    <input type="number" name="shipping_cost" value="<?php echo esc_attr($edit_item->shipping_cost); ?>" step="0.01" min="0">
                 </div>
             </div>
             
@@ -106,7 +106,7 @@
             <h4>🌟 Features-Sektion</h4>
             <div class="federwiegen-form-group">
                 <label>Features-Überschrift</label>
-                <input type="text" name="features_title" value="<?php echo esc_attr($edit_item->features_title ?? 'Warum unsere Federwiegen?'); ?>">
+                <input type="text" name="features_title" value="<?php echo esc_attr($edit_item->features_title); ?>">
             </div>
             
             <?php for ($i = 1; $i <= 3; $i++): ?>
@@ -132,11 +132,7 @@
                 </div>
                 <div class="federwiegen-form-group">
                     <label>Beschreibung</label>
-                    <textarea name="feature_<?php echo $i; ?>_description" rows="2"><?php echo esc_textarea($edit_item->{'feature_' . $i . '_description'}); ?></textarea>
-                </div>
-            </div>
-            <?php endfor; ?>
-        </div>
+@@ -140,56 +140,56 @@
         
         <!-- Button & Tooltips -->
         <div class="federwiegen-form-section">
@@ -162,12 +158,12 @@
             
             <div class="federwiegen-form-group">
                 <label>Mietdauer-Tooltip</label>
-                <textarea name="duration_tooltip" rows="3"><?php echo esc_textarea($edit_item->duration_tooltip ?? 'Nach der Mindestmietdauer kannst Du dein Abo jederzeit kündigen oder auf ein anderes Produkt wechseln.'); ?></textarea>
+                <textarea name="duration_tooltip" rows="3"><?php echo esc_textarea($edit_item->duration_tooltip); ?></textarea>
             </div>
             
             <div class="federwiegen-form-group">
                 <label>Zustand-Tooltip</label>
-                <textarea name="condition_tooltip" rows="4"><?php echo esc_textarea($edit_item->condition_tooltip ?? "Neu: Neue, originalverpackte Produkte.\n\nAufbereitet: Bereits benutzte Produkte, die von uns gereinigt, desinfiziert, repariert und in Top-Zustand gebracht wurden.\n\nWeitere Informationen findest du im Helpcenter."); ?></textarea>
+                <textarea name="condition_tooltip" rows="4"><?php echo esc_textarea($edit_item->condition_tooltip); ?></textarea>
             </div>
         </div>
         
