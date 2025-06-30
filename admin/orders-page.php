@@ -152,7 +152,7 @@ if (!defined('ABSPATH')) {
                             <div style="line-height: 1.4;">
                                 <strong><?php echo esc_html($order->category_name); ?></strong><br>
                                 <span style="color: #666;">📦 <?php echo esc_html($order->variant_name); ?></span><br>
-                                <span style="color: #666;">🎁 <?php echo esc_html($order->extra_name); ?></span><br>
+                                <span style="color: #666;">🎁 <?php echo esc_html($order->extra_names); ?></span><br>
                                 <span style="color: #666;">⏰ <?php echo esc_html($order->duration_name); ?></span><br>
                                 
                                 <?php if ($order->condition_name): ?>
@@ -312,7 +312,7 @@ function showOrderDetails(orderId) {
         <h4>🛍️ Produktauswahl</h4>
         <ul>
             <li><strong>Ausführung:</strong> ${order.variant_name}</li>
-            <li><strong>Extra:</strong> ${order.extra_name}</li>
+            <li><strong>Extra:</strong> ${order.extra_names}</li>
             <li><strong>Mietdauer:</strong> ${order.duration_name}</li>
     `;
     
