@@ -19,6 +19,7 @@ $links_table = $wpdb->prefix . 'federwiegen_variant_options';
 
 // Handle form submissions
 if (isset($_POST['submit'])) {
+    \FederwiegenVerleih\Admin::verify_admin_action();
     $variant_id = intval($_POST['variant_id']);
     $option_type = sanitize_text_field($_POST['option_type']);
     $option_id = intval($_POST['option_id']);
@@ -65,7 +66,7 @@ if (isset($_POST['submit'])) {
 }
 
 // Handle delete
-if (isset($_GET['delete'])) {
+if (isset($_GET['delete']) && isset($_GET['fw_nonce']) && wp_verify_nonce($_GET['fw_nonce'], 'federwiegen_admin_action')) {
     $result = $wpdb->delete($wpdb->prefix . 'federwiegen_variant_options', array('id' => intval($_GET['delete'])), array('%d'));
     if ($result !== false) {
         echo '<div class="notice notice-success"><p>✅ Zuordnung gelöscht!</p></div>';
@@ -186,6 +187,7 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                     
                     <div class="federwiegen-form-card">
                         <form method="post" action="">
+                            <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
                             <div class="federwiegen-form-grid">
                                 <div class="federwiegen-form-group">
                                     <label>Ausführung *</label>
@@ -243,6 +245,7 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                     
                     <div class="federwiegen-form-card">
                         <form method="post" action="">
+                            <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
                             <input type="hidden" name="id" value="<?php echo $edit_item->id; ?>">
                             
                             <div class="federwiegen-form-grid">
