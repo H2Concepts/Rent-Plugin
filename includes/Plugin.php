@@ -21,7 +21,7 @@ class Plugin {
     public function init() {
         add_action('admin_menu', [$this->admin, 'add_admin_menu']);
         add_shortcode('federwiegen_product', [$this, 'product_shortcode']);
-        add_action('wp_enqueue_scripts', [$this, 'enqueue_frontend_assets']);
+        add_action('wp_enqueue_scripts', [$this->admin, 'enqueue_frontend_assets']);
         add_action('admin_enqueue_scripts', [$this->admin, 'enqueue_admin_assets']);
 
         add_action('wp_ajax_get_product_price', [$this->ajax, 'ajax_get_product_price']);
