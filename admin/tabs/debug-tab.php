@@ -13,7 +13,7 @@ if (isset($_POST['force_update'])) {
         if ($result !== false) {
             echo '<div class="notice notice-success"><p>✅ image_url Spalte erfolgreich hinzugefügt!</p></div>';
         } else {
-            echo '<div class="notice notice-error"><p>❌ Fehler beim Hinzufügen der image_url Spalte: ' . $wpdb->last_error . '</p></div>';
+            echo '<div class="notice notice-error"><p>❌ Fehler beim Hinzufügen der image_url Spalte: ' . esc_html($wpdb->last_error) . '</p></div>';
         }
     } else {
         echo '<div class="notice notice-info"><p>ℹ️ image_url Spalte existiert bereits.</p></div>';
