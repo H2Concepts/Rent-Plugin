@@ -34,10 +34,10 @@ $where_clause = implode(' AND ', $where_conditions);
 
 // Get orders with all details
 $orders = $wpdb->get_results($wpdb->prepare(
-    "SELECT o.*, 
+    "SELECT o.*,
             c.name as category_name,
             v.name as variant_name,
-            e.name as extra_name,
+            GROUP_CONCAT(e.name SEPARATOR ', ') AS extra_names,
             d.name as duration_name,
             cond.name as condition_name,
             pc.name as product_color_name,
@@ -45,12 +45,13 @@ $orders = $wpdb->get_results($wpdb->prepare(
      FROM {$wpdb->prefix}federwiegen_orders o
      LEFT JOIN {$wpdb->prefix}federwiegen_categories c ON o.category_id = c.id
      LEFT JOIN {$wpdb->prefix}federwiegen_variants v ON o.variant_id = v.id
-     LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON o.extra_id = e.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON FIND_IN_SET(e.id, o.extra_ids)
      LEFT JOIN {$wpdb->prefix}federwiegen_durations d ON o.duration_id = d.id
      LEFT JOIN {$wpdb->prefix}federwiegen_conditions cond ON o.condition_id = cond.id
      LEFT JOIN {$wpdb->prefix}federwiegen_colors pc ON o.product_color_id = pc.id
      LEFT JOIN {$wpdb->prefix}federwiegen_colors fc ON o.frame_color_id = fc.id
      WHERE $where_clause
+     GROUP BY o.id
      ORDER BY o.created_at DESC",
     ...$where_values
 ));
@@ -165,7 +166,7 @@ $avg_order_value = $total_orders > 0 ? $total_revenue / $total_orders : 0;
                             <div style="line-height: 1.4;">
                                 <strong><?php echo esc_html($order->category_name); ?></strong><br>
                                 <span style="color: #666;">📦 <?php echo esc_html($order->variant_name); ?></span><br>
-                                <span style="color: #666;">🎁 <?php echo esc_html($order->extra_name); ?></span><br>
+                                <span style="color: #666;">🎁 <?php echo esc_html($order->extra_names); ?></span><br>
                                 <span style="color: #666;">⏰ <?php echo esc_html($order->duration_name); ?></span><br>
                                 
                                 <?php if ($order->condition_name): ?>
