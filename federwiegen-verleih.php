@@ -21,6 +21,11 @@ define('FEDERWIEGEN_PLUGIN_PATH', FEDERWIEGEN_PLUGIN_DIR);
 define('FEDERWIEGEN_VERSION', FEDERWIEGEN_PLUGIN_VERSION);
 define('FEDERWIEGEN_PLUGIN_FILE', __FILE__);
 
+// Control whether default demo data is inserted on activation
+if (!defined('FEDERWIEGEN_LOAD_DEFAULT_DATA')) {
+    define('FEDERWIEGEN_LOAD_DEFAULT_DATA', true);
+}
+
 require_once FEDERWIEGEN_PLUGIN_DIR . 'includes/Autoloader.php';
 FederwiegenVerleih\Autoloader::register();
 
