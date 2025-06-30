@@ -96,6 +96,7 @@ if (isset($_POST['submit_branding'])) {
     </div>
     
     <form method="post" action="" class="federwiegen-branding-form">
+        <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
         <div class="federwiegen-form-sections">
             <!-- Plugin Information -->
             <div class="federwiegen-form-section">
