@@ -43,7 +43,7 @@ jQuery(document).ready(function($) {
         // Track interaction
         trackInteraction(type.replace('-', '_') + '_select', {
             variant_id: type === 'variant' ? id : selectedVariant,
-            extra_id: selectedExtras.join(','),
+            extra_ids: selectedExtras.join(','),
             duration_id: type === 'duration' ? id : selectedDuration,
             condition_id: type === 'condition' ? id : selectedCondition,
             product_color_id: type === 'product-color' ? id : selectedProductColor,
@@ -83,7 +83,7 @@ jQuery(document).ready(function($) {
             // Track conversion
             trackInteraction('rent_button_click', {
                 variant_id: selectedVariant,
-                extra_id: selectedExtras.join(','),
+                extra_ids: selectedExtras.join(','),
                 duration_id: selectedDuration,
                 condition_id: selectedCondition,
                 product_color_id: selectedProductColor,
@@ -358,7 +358,7 @@ jQuery(document).ready(function($) {
             // Track interaction
             trackInteraction(type.replace('-', '_') + '_select', {
                 variant_id: selectedVariant,
-                extra_id: selectedExtras.join(','),
+                extra_ids: selectedExtras.join(','),
                 duration_id: selectedDuration,
                 condition_id: selectedCondition,
                 product_color_id: selectedProductColor,
@@ -568,7 +568,7 @@ jQuery(document).ready(function($) {
                 category_id: currentCategoryId,
                 event_type: eventType,
                 variant_id: data.variant_id || null,
-                extra_id: data.extra_id || null,
+                extra_ids: data.extra_ids || null,
                 duration_id: data.duration_id || null,
                 condition_id: data.condition_id || null,
                 product_color_id: data.product_color_id || null,
