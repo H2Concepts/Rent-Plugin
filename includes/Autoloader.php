@@ -1,16 +1,16 @@
 <?php
-declare(strict_types=1);
+
 
 namespace FederwiegenVerleih;
 
 class Autoloader
 {
-    public static function register(): void
+    public static function register()
     {
         spl_autoload_register([__CLASS__, 'load']);
     }
 
-    public static function load(string $class): void
+    public static function load(string $class)
     {
         if (strpos($class, __NAMESPACE__ . '\\') !== 0) {
             return;
