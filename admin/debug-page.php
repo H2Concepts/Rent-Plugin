@@ -23,44 +23,15 @@ if (isset($_POST['force_update'])) {
         echo '<div class="notice notice-info"><p>ℹ️ image_url Spalte existiert bereits.</p></div>';
     }
     
-    // Create settings table if it doesn't exist
-    $table_settings = $wpdb->prefix . 'federwiegen_settings';
-    $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_settings'");
-    
-    if (!$table_exists) {
-        $charset_collate = $wpdb->get_charset_collate();
-        $sql = "CREATE TABLE $table_settings (
-            id mediumint(9) NOT NULL AUTO_INCREMENT,
-            setting_key varchar(255) NOT NULL,
-            setting_value longtext,
-            PRIMARY KEY (id),
-            UNIQUE KEY setting_key (setting_key)
-        ) $charset_collate;";
-        
-        require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
-        echo '<div class="notice notice-success"><p>✅ Settings Tabelle erfolgreich erstellt!</p></div>';
-    } else {
-        echo '<div class="notice notice-info"><p>ℹ️ Settings Tabelle existiert bereits.</p></div>';
-    }
 }
 
 // Get table structure
 $table_variants = $wpdb->prefix . 'federwiegen_variants';
-$table_settings = $wpdb->prefix . 'federwiegen_settings';
 
 $variants_columns = $wpdb->get_results("SHOW COLUMNS FROM $table_variants");
-$settings_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_settings'");
-
-if ($settings_exists) {
-    $settings_columns = $wpdb->get_results("SHOW COLUMNS FROM $table_settings");
-} else {
-    $settings_columns = array();
-}
 
 // Get sample data
 $sample_variant = $wpdb->get_row("SELECT * FROM $table_variants LIMIT 1");
-$sample_settings = $wpdb->get_results("SELECT * FROM $table_settings LIMIT 5");
 ?>
 
 <div class="wrap">
@@ -109,56 +80,7 @@ $sample_settings = $wpdb->get_results("SELECT * FROM $table_settings LIMIT 5");
 <?php print_r($sample_variant); ?>
     </pre>
     <?php endif; ?>
-    
-    <h3>Settings Tabelle (<?php echo $table_settings; ?>)</h3>
-    <?php if ($settings_exists): ?>
-    <table class="wp-list-table widefat fixed striped">
-        <thead>
-            <tr>
-                <th>Spaltenname</th>
-                <th>Typ</th>
-                <th>Null</th>
-                <th>Standard</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($settings_columns as $column): ?>
-            <tr>
-                <td><strong><?php echo $column->Field; ?></strong></td>
-                <td><?php echo $column->Type; ?></td>
-                <td><?php echo $column->Null; ?></td>
-                <td><?php echo $column->Default; ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    
-    <?php if (!empty($sample_settings)): ?>
-    <h4>Beispiel-Einstellungen:</h4>
-    <table class="wp-list-table widefat fixed striped">
-        <thead>
-            <tr>
-                <th>Schlüssel</th>
-                <th>Wert</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($sample_settings as $setting): ?>
-            <tr>
-                <td><strong><?php echo esc_html($setting->setting_key); ?></strong></td>
-                <td><?php echo esc_html(substr($setting->setting_value, 0, 100)) . (strlen($setting->setting_value) > 100 ? '...' : ''); ?></td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    <?php endif; ?>
-    
-    <?php else: ?>
-    <div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 15px; border-radius: 4px;">
-        <strong>❌ Settings Tabelle existiert nicht!</strong>
-        <p>Klicken Sie auf "Datenbank reparieren" um sie zu erstellen.</p>
-    </div>
-    <?php endif; ?>
+
     
     <h2>🔍 Systeminfo</h2>
     <ul>
