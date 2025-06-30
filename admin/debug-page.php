@@ -7,6 +7,7 @@ global $wpdb;
 
 // Force database update if requested
 if (isset($_POST['force_update'])) {
+    \FederwiegenVerleih\Admin::verify_admin_action();
     $table_variants = $wpdb->prefix . 'federwiegen_variants';
     
     // Check if image_url column exists
@@ -43,6 +44,7 @@ $sample_variant = $wpdb->get_row("SELECT * FROM $table_variants LIMIT 1");
     </div>
     
     <form method="post" action="">
+        <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
         <p>
             <button type="submit" name="force_update" class="button button-primary" onclick="return confirm('Sind Sie sicher? Dies führt Datenbankänderungen durch.')">
                 🔄 Datenbank reparieren
