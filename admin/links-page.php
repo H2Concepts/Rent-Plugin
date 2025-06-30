@@ -199,14 +199,13 @@ $links = $wpdb->get_results($wpdb->prepare("
         <?php
         switch ($active_tab) {
             case 'add':
-                if (empty($variants) || empty($extras) || empty($durations)):
+                if (empty($variants) || empty($durations)):
                 ?>
                 <div class="federwiegen-tab-section">
                     <h3>⚠️ Kategorie noch nicht vollständig konfiguriert</h3>
                     <p>Bevor Sie Stripe Links erstellen können, müssen Sie für diese Kategorie folgende Daten hinterlegen:</p>
                     <ul>
                         <?php if (empty($variants)): ?><li>❌ <a href="<?php echo admin_url('admin.php?page=federwiegen-variants&category=' . $selected_category); ?>">Ausführungen hinzufügen</a></li><?php endif; ?>
-                        <?php if (empty($extras)): ?><li>❌ <a href="<?php echo admin_url('admin.php?page=federwiegen-extras&category=' . $selected_category); ?>">Extras hinzufügen</a></li><?php endif; ?>
                         <?php if (empty($durations)): ?><li>❌ <a href="<?php echo admin_url('admin.php?page=federwiegen-durations&category=' . $selected_category); ?>">Mietdauern hinzufügen</a></li><?php endif; ?>
                     </ul>
                 </div>
@@ -234,9 +233,9 @@ $links = $wpdb->get_results($wpdb->prepare("
                                 </div>
                                 
                                 <div class="federwiegen-form-group">
-                                    <label>Extra *</label>
-                                    <select name="extra_id" required>
-                                        <option value="">Bitte wählen...</option>
+                                    <label>Extra</label>
+                                    <select name="extra_id">
+                                        <option value="">Kein Extra</option>
                                         <?php foreach ($extras as $extra): ?>
                                         <option value="<?php echo $extra->id; ?>">
                                             <?php echo esc_html($extra->name); ?>
@@ -348,9 +347,9 @@ $links = $wpdb->get_results($wpdb->prepare("
                                 </div>
                                 
                                 <div class="federwiegen-form-group">
-                                    <label>Extra *</label>
-                                    <select name="extra_id" required>
-                                        <option value="">Bitte wählen...</option>
+                                    <label>Extra</label>
+                                    <select name="extra_id">
+                                        <option value="">Kein Extra</option>
                                         <?php foreach ($extras as $extra): ?>
                                         <option value="<?php echo $extra->id; ?>" <?php selected($edit_item->extra_id, $extra->id); ?>>
                                             <?php echo esc_html($extra->name); ?>
@@ -475,7 +474,7 @@ $links = $wpdb->get_results($wpdb->prepare("
                                     <?php foreach ($links as $link): ?>
                                     <tr>
                                         <td><?php echo esc_html($link->variant_name); ?></td>
-                                        <td><?php echo esc_html($link->extra_name); ?></td>
+                                        <td><?php echo $link->extra_name ? esc_html($link->extra_name) : '<em>Kein Extra</em>'; ?></td>
                                         <td><?php echo esc_html($link->duration_name); ?></td>
                                         <td><?php echo $link->condition_name ? esc_html($link->condition_name) : '<em>Alle</em>'; ?></td>
                                         <td><?php echo $link->product_color_name ? esc_html($link->product_color_name) : '<em>Alle</em>'; ?></td>
