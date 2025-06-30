@@ -170,6 +170,7 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                     
                     <div class="federwiegen-form-card">
                         <form method="post" action="">
+                            <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
                             <div class="federwiegen-form-grid">
                                 <div class="federwiegen-form-group">
                                     <label>Farbtyp *</label>
@@ -230,6 +231,7 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                     
                     <div class="federwiegen-form-card">
                         <form method="post" action="">
+                            <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
                             <input type="hidden" name="id" value="<?php echo $edit_item->id; ?>">
                             
                             <div class="federwiegen-form-grid">
@@ -323,7 +325,7 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                 
                                 <div class="federwiegen-item-actions">
                                     <a href="<?php echo admin_url('admin.php?page=federwiegen-colors&category=' . $selected_category . '&tab=edit&edit=' . $color->id); ?>" class="button button-small">Bearbeiten</a>
-                                    <a href="<?php echo admin_url('admin.php?page=federwiegen-colors&category=' . $selected_category . '&tab=list&delete=' . $color->id); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">Löschen</a>
+                                    <a href="<?php echo admin_url('admin.php?page=federwiegen-colors&category=' . $selected_category . '&tab=list&delete=' . $color->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">Löschen</a>
                                 </div>
                             </div>
                             <?php endforeach; ?>
@@ -362,7 +364,7 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                 
                                 <div class="federwiegen-item-actions">
                                     <a href="<?php echo admin_url('admin.php?page=federwiegen-colors&category=' . $selected_category . '&tab=edit&edit=' . $color->id); ?>" class="button button-small">Bearbeiten</a>
-                                    <a href="<?php echo admin_url('admin.php?page=federwiegen-colors&category=' . $selected_category . '&tab=list&delete=' . $color->id); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">Löschen</a>
+                                    <a href="<?php echo admin_url('admin.php?page=federwiegen-colors&category=' . $selected_category . '&tab=list&delete=' . $color->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">Löschen</a>
                                 </div>
                             </div>
                             <?php endforeach; ?>
