@@ -9,6 +9,7 @@
     </div>
     
     <form method="post" action="" class="federwiegen-compact-form">
+        <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
         <input type="hidden" name="id" value="<?php echo esc_attr($edit_item->id); ?>">
         <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">
         
@@ -71,8 +72,8 @@
             <a href="<?php echo admin_url('admin.php?page=federwiegen-extras&category=' . $selected_category . '&tab=list'); ?>" class="button button-large">
                 ❌ Abbrechen
             </a>
-            <a href="<?php echo admin_url('admin.php?page=federwiegen-extras&category=' . $selected_category . '&delete=' . $edit_item->id); ?>" 
-               class="button button-large federwiegen-delete-button" 
+            <a href="<?php echo admin_url('admin.php?page=federwiegen-extras&category=' . $selected_category . '&delete=' . $edit_item->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>"
+               class="button button-large federwiegen-delete-button"
                onclick="return confirm('Sind Sie sicher, dass Sie dieses Extra löschen möchten?\n\n\"<?php echo esc_js($edit_item->name); ?>\" wird unwiderruflich gelöscht!')"
                style="margin-left: auto;">
                 🗑️ Löschen
