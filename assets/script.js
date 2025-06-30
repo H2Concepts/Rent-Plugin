@@ -270,14 +270,19 @@ jQuery(document).ready(function($) {
                     
                     // Update product colors
                     updateOptionsDisplay('#product-color-section', '.federwiegen-options.product-colors', data.product_colors, 'product-color');
-                    
+
                     // Update frame colors
                     updateOptionsDisplay('#frame-color-section', '.federwiegen-options.frame-colors', data.frame_colors, 'frame-color');
-                    
+
+                    // Update extras
+                    updateOptionsDisplay('#extras-section', '.federwiegen-options.extras', data.extras, 'extra');
+
                     // Reset selections for variant-specific options
                     selectedCondition = null;
                     selectedProductColor = null;
                     selectedFrameColor = null;
+                    selectedExtras = [];
+                    updateExtraImage(null);
                     
                     updatePriceAndButton();
                 }
@@ -303,7 +308,7 @@ jQuery(document).ready(function($) {
             let optionHtml = '';
             
             if (optionType === 'condition') {
-                const badgeHtml = option.price_modifier != 0 ? 
+                const badgeHtml = option.price_modifier != 0 ?
                     `<span class="federwiegen-condition-badge">${option.price_modifier > 0 ? '+' : ''}${Math.round(option.price_modifier * 100)}%</span>` : '';
                 
                 optionHtml = `
@@ -330,6 +335,17 @@ jQuery(document).ready(function($) {
                         <div class="federwiegen-option-check">✓</div>
                     </div>
                 `;
+            } else if (optionType === 'extra') {
+                const priceHtml = option.price > 0 ? `+${parseFloat(option.price).toFixed(2).replace('.', ',')}€/Monat` : '';
+                optionHtml = `
+                    <div class="federwiegen-option" data-type="extra" data-id="${option.id}" data-extra-image="${option.image_url || ''}">
+                        <div class="federwiegen-option-content">
+                            <span class="federwiegen-extra-name">${option.name}</span>
+                            ${priceHtml ? `<div class="federwiegen-extra-price">${priceHtml}</div>` : ''}
+                        </div>
+                        <div class="federwiegen-option-check">✓</div>
+                    </div>
+                `;
             }
             
             container.append(optionHtml);
@@ -339,20 +355,27 @@ jQuery(document).ready(function($) {
         container.find('.federwiegen-option').on('click', function() {
             const type = $(this).data('type');
             const id = $(this).data('id');
-            
-            // Remove selection from same type
-            $(`.federwiegen-option[data-type="${type}"]`).removeClass('selected');
-            
-            // Add selection to clicked option
-            $(this).addClass('selected');
-            
-            // Update selection variables
-            if (type === 'condition') {
-                selectedCondition = id;
-            } else if (type === 'product-color') {
-                selectedProductColor = id;
-            } else if (type === 'frame-color') {
-                selectedFrameColor = id;
+
+            if (type === 'extra') {
+                $(this).toggleClass('selected');
+                const index = selectedExtras.indexOf(id);
+                if (index > -1) {
+                    selectedExtras.splice(index, 1);
+                } else {
+                    selectedExtras.push(id);
+                }
+                updateExtraImage($(this));
+            } else {
+                $(`.federwiegen-option[data-type="${type}"]`).removeClass('selected');
+                $(this).addClass('selected');
+
+                if (type === 'condition') {
+                    selectedCondition = id;
+                } else if (type === 'product-color') {
+                    selectedProductColor = id;
+                } else if (type === 'frame-color') {
+                    selectedFrameColor = id;
+                }
             }
             
             // Track interaction
