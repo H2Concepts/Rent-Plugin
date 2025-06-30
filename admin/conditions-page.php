@@ -17,6 +17,7 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'list';
 
 // Handle form submissions
 if (isset($_POST['submit'])) {
+    \FederwiegenVerleih\Admin::verify_admin_action();
     $category_id = intval($_POST['category_id']);
     $name = sanitize_text_field($_POST['name']);
     $description = sanitize_textarea_field($_POST['description']);
@@ -73,7 +74,7 @@ if (isset($_POST['submit'])) {
 }
 
 // Handle delete
-if (isset($_GET['delete'])) {
+if (isset($_GET['delete']) && isset($_GET['fw_nonce']) && wp_verify_nonce($_GET['fw_nonce'], 'federwiegen_admin_action')) {
     $result = $wpdb->delete($table_name, array('id' => intval($_GET['delete'])), array('%d'));
     if ($result !== false) {
         echo '<div class="notice notice-success"><p>✅ Zustand gelöscht!</p></div>';
@@ -168,6 +169,7 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                     
                     <div class="federwiegen-form-card">
                         <form method="post" action="">
+                            <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
                             <div class="federwiegen-form-grid">
                                 <div class="federwiegen-form-group">
                                     <label>Name *</label>
@@ -226,6 +228,7 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                     
                     <div class="federwiegen-form-card">
                         <form method="post" action="">
+                            <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
                             <input type="hidden" name="id" value="<?php echo $edit_item->id; ?>">
                             
                             <div class="federwiegen-form-grid">
@@ -324,7 +327,7 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                                 
                                 <div class="federwiegen-item-actions">
                                     <a href="<?php echo admin_url('admin.php?page=federwiegen-conditions&category=' . $selected_category . '&tab=edit&edit=' . $condition->id); ?>" class="button button-small">Bearbeiten</a>
-                                    <a href="<?php echo admin_url('admin.php?page=federwiegen-conditions&category=' . $selected_category . '&tab=list&delete=' . $condition->id); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">Löschen</a>
+                                    <a href="<?php echo admin_url('admin.php?page=federwiegen-conditions&category=' . $selected_category . '&tab=list&delete=' . $condition->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">Löschen</a>
                                 </div>
                             </div>
                             <?php endforeach; ?>
