@@ -1,4 +1,6 @@
 <?php
+namespace FederwiegenVerleih;
+
 global $wpdb;
 
 // Get category data
