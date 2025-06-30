@@ -89,20 +89,23 @@ $variants = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}fede
 $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE category_id = %d AND active = 1 ORDER BY sort_order, name", $selected_category));
 $product_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' AND active = 1 ORDER BY sort_order, name", $selected_category));
 $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' AND active = 1 ORDER BY sort_order, name", $selected_category));
+$extras = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE category_id = %d AND active = 1 ORDER BY sort_order, name", $selected_category));
 
 // Get all variant options with names (filtered by category)
 $variant_options = $wpdb->get_results($wpdb->prepare("
     SELECT vo.*, v.name as variant_name,
-           CASE 
+           CASE
                WHEN vo.option_type = 'condition' THEN c.name
                WHEN vo.option_type = 'product_color' THEN pc.name
                WHEN vo.option_type = 'frame_color' THEN fc.name
+               WHEN vo.option_type = 'extra' THEN e.name
            END as option_name
     FROM {$wpdb->prefix}federwiegen_variant_options vo
     LEFT JOIN {$wpdb->prefix}federwiegen_variants v ON vo.variant_id = v.id
     LEFT JOIN {$wpdb->prefix}federwiegen_conditions c ON vo.option_type = 'condition' AND vo.option_id = c.id
     LEFT JOIN {$wpdb->prefix}federwiegen_colors pc ON vo.option_type = 'product_color' AND vo.option_id = pc.id
     LEFT JOIN {$wpdb->prefix}federwiegen_colors fc ON vo.option_type = 'frame_color' AND vo.option_id = fc.id
+    LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON vo.option_type = 'extra' AND vo.option_id = e.id
     WHERE v.category_id = %d
     ORDER BY v.name, vo.option_type, option_name
 ", $selected_category));
@@ -114,7 +117,7 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
         <div class="federwiegen-admin-logo-compact">🔗</div>
         <div class="federwiegen-admin-title-compact">
             <h1>Ausführungs-Optionen</h1>
-            <p>Zustände & Farben verknüpfen</p>
+            <p>Zustände, Farben & Extras verknüpfen</p>
         </div>
     </div>
     
@@ -183,7 +186,7 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                 ?>
                 <div class="federwiegen-tab-section">
                     <h3>🔗 Neue Zuordnung hinzufügen</h3>
-                    <p>Verknüpfen Sie Zustände und Farben mit spezifischen Ausführungen.</p>
+                    <p>Verknüpfen Sie Zustände, Farben und Extras mit spezifischen Ausführungen.</p>
                     
                     <div class="federwiegen-form-card">
                         <form method="post" action="">
@@ -214,6 +217,9 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                                         <?php if (!empty($frame_colors)): ?>
                                         <option value="frame_color">🖼️ Gestellfarbe</option>
                                         <?php endif; ?>
+                                        <?php if (!empty($extras)): ?>
+                                        <option value="extra">➕ Extra</option>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
                                 
@@ -241,7 +247,7 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                 ?>
                 <div class="federwiegen-tab-section">
                     <h3>🔗 Zuordnung bearbeiten</h3>
-                    <p>Bearbeiten Sie die Verknüpfung zwischen Ausführung und Option.</p>
+                    <p>Bearbeiten Sie die Verknüpfung zwischen Ausführung und Option (Zustand/Farbe/Extra).</p>
                     
                     <div class="federwiegen-form-card">
                         <form method="post" action="">
@@ -274,6 +280,9 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                                         <?php if (!empty($frame_colors)): ?>
                                         <option value="frame_color" <?php selected($edit_item->option_type, 'frame_color'); ?>>🖼️ Gestellfarbe</option>
                                         <?php endif; ?>
+                                        <?php if (!empty($extras)): ?>
+                                        <option value="extra" <?php selected($edit_item->option_type, 'extra'); ?>>➕ Extra</option>
+                                        <?php endif; ?>
                                     </select>
                                 </div>
                                 
@@ -303,7 +312,7 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                 ?>
                 <div class="federwiegen-tab-section">
                     <h3>🔗 Ausführungs-Optionen</h3>
-                    <p>Verknüpfen Sie Zustände und Farben mit spezifischen Ausführungen.</p>
+                    <p>Verknüpfen Sie Zustände, Farben und Extras mit spezifischen Ausführungen.</p>
                     
                     <div class="federwiegen-list-card">
                         <h4>Zuordnungen für: <?php echo $current_category ? esc_html($current_category->name) : 'Unbekannte Kategorie'; ?></h4>
@@ -346,6 +355,9 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                                                     case 'frame_color':
                                                         echo '🖼️ ' . esc_html($option->option_name);
                                                         break;
+                                                    case 'extra':
+                                                        echo '➕ ' . esc_html($option->option_name);
+                                                        break;
                                                 }
                                                 ?>
                                             </strong>
@@ -375,6 +387,7 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
 const conditionsData = <?php echo json_encode($conditions); ?>;
 const productColorsData = <?php echo json_encode($product_colors); ?>;
 const frameColorsData = <?php echo json_encode($frame_colors); ?>;
+const extrasData = <?php echo json_encode($extras); ?>;
 const editItem = <?php echo json_encode($edit_item); ?>;
 
 function updateOptionsList() {
@@ -395,6 +408,9 @@ function updateOptionsList() {
             break;
         case 'frame_color':
             optionsData = frameColorsData;
+            break;
+        case 'extra':
+            optionsData = extrasData;
             break;
     }
     
