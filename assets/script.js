@@ -373,7 +373,7 @@ jQuery(document).ready(function($) {
         // Check if all required selections are made
         const requiredSelections = [];
         if ($('.federwiegen-options.variants').length > 0) requiredSelections.push(selectedVariant);
-        if ($('.federwiegen-options.extras').length > 0) requiredSelections.push(selectedExtras.length > 0 ? true : null);
+        if ($('.federwiegen-options.extras').length > 0) requiredSelections.push(true);
         if ($('.federwiegen-options.durations').length > 0) requiredSelections.push(selectedDuration);
         
         // Check for visible optional sections
