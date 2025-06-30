@@ -129,6 +129,12 @@ class Admin {
     }
     
     public function enqueue_frontend_assets() {
+        global $post;
+
+        if (!is_singular() || !has_shortcode($post->post_content ?? '', 'federwiegen_product')) {
+            return;
+        }
+
         wp_enqueue_style('federwiegen-style', FEDERWIEGEN_PLUGIN_URL . 'assets/style.css', array(), FEDERWIEGEN_VERSION);
         wp_enqueue_script('federwiegen-script', FEDERWIEGEN_PLUGIN_URL . 'assets/script.js', array('jquery'), FEDERWIEGEN_VERSION, true);
         
