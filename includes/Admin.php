@@ -183,7 +183,6 @@ class Admin {
         if (!isset($_GET['page']) || strpos($_GET['page'], 'federwiegen') === false) {
             return;
         }
-        
         $branding = $this->get_branding_settings();
         $primary_color = $branding['admin_color_primary'] ?? '#5f7f5f';
         $secondary_color = $branding['admin_color_secondary'] ?? '#4a674a';
@@ -199,6 +198,13 @@ class Admin {
             }
             
             .nav-tab-active {
+                background: ' . esc_attr($primary_color) . ';
+                color: #fff;
+                border-color: ' . esc_attr($secondary_color) . ';
+            }
+        </style>';
+    }
+    
     public function admin_page() {
         include FEDERWIEGEN_PLUGIN_PATH . 'admin/main-page.php';
     }
