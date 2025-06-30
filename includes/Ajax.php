@@ -54,7 +54,7 @@ class Ajax {
             $variant->category_id
         ));
         
-        if ($variant && !empty($extras) && $duration) {
+        if ($variant && $duration) {
             $base_price = floatval($variant->base_price);
             foreach ($extras as $ex) {
                 $base_price += floatval($ex->price);
