@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 // Plugin constants
 const FEDERWIEGEN_PLUGIN_VERSION = '1.5.2';
 const FEDERWIEGEN_PLUGIN_DIR = __DIR__ . '/';
-const FEDERWIEGEN_PLUGIN_URL = plugin_dir_url(__FILE__);
+define('FEDERWIEGEN_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('FEDERWIEGEN_PLUGIN_PATH', FEDERWIEGEN_PLUGIN_DIR);
 define('FEDERWIEGEN_VERSION', FEDERWIEGEN_PLUGIN_VERSION);
 define('FEDERWIEGEN_PLUGIN_FILE', __FILE__);
@@ -24,5 +24,11 @@ define('FEDERWIEGEN_PLUGIN_FILE', __FILE__);
 require_once FEDERWIEGEN_PLUGIN_DIR . 'includes/Autoloader.php';
 FederwiegenVerleih\Autoloader::register();
 
-// Initialize plugin
-new FederwiegenVerleih\Plugin();
+// Register activation and deactivation hooks
+register_activation_hook(__FILE__, ['FederwiegenVerleih\\Plugin', 'activate_plugin']);
+register_deactivation_hook(__FILE__, ['FederwiegenVerleih\\Plugin', 'deactivate_plugin']);
+
+// Initialize the plugin after WordPress has loaded
+add_action('plugins_loaded', function () {
+    new \FederwiegenVerleih\Plugin();
+});
