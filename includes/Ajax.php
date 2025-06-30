@@ -7,7 +7,9 @@ class Ajax {
         check_ajax_referer('federwiegen_nonce', 'nonce');
         
         $variant_id = intval($_POST['variant_id']);
-        $extra_id = intval($_POST['extra_id']);
+        $extra_ids_raw = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
+        $extra_ids = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        $extra_id = !empty($extra_ids) ? $extra_ids[0] : 0;
         $duration_id = intval($_POST['duration_id']);
         $condition_id = isset($_POST['condition_id']) ? intval($_POST['condition_id']) : null;
         $product_color_id = isset($_POST['product_color_id']) ? intval($_POST['product_color_id']) : null;
@@ -20,10 +22,15 @@ class Ajax {
             $variant_id
         ));
         
-        $extra = $wpdb->get_row($wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE id = %d",
-            $extra_id
-        ));
+        $extras = [];
+        if (!empty($extra_ids)) {
+            $placeholders = implode(',', array_fill(0, count($extra_ids), '%d'));
+            $query = $wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE id IN ($placeholders)",
+                ...$extra_ids
+            );
+            $extras = $wpdb->get_results($query);
+        }
         
         $duration = $wpdb->get_row($wpdb->prepare(
             "SELECT * FROM {$wpdb->prefix}federwiegen_durations WHERE id = %d",
@@ -47,8 +54,11 @@ class Ajax {
             $variant->category_id
         ));
         
-        if ($variant && $extra && $duration) {
-            $base_price = floatval($variant->base_price) + floatval($extra->price);
+        if ($variant && !empty($extras) && $duration) {
+            $base_price = floatval($variant->base_price);
+            foreach ($extras as $ex) {
+                $base_price += floatval($ex->price);
+            }
             
             // Apply condition price modifier
             if ($condition && $condition->price_modifier != 0) {
@@ -167,7 +177,9 @@ class Ajax {
     public function ajax_get_extra_image() {
         check_ajax_referer('federwiegen_nonce', 'nonce');
         
-        $extra_id = intval($_POST['extra_id']);
+        $extra_ids_raw = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
+        $extra_ids_array = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        $extra_id = !empty($extra_ids_array) ? $extra_ids_array[0] : 0;
         
         global $wpdb;
         
@@ -272,7 +284,9 @@ class Ajax {
         
         $category_id = intval($_POST['category_id']);
         $variant_id = intval($_POST['variant_id']);
-        $extra_id = intval($_POST['extra_id']);
+        $extra_ids_raw = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
+        $extra_ids_array = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        $extra_id = !empty($extra_ids_array) ? $extra_ids_array[0] : 0;
         $duration_id = intval($_POST['duration_id']);
         $condition_id = isset($_POST['condition_id']) ? intval($_POST['condition_id']) : null;
         $product_color_id = isset($_POST['product_color_id']) ? intval($_POST['product_color_id']) : null;
@@ -289,6 +303,7 @@ class Ajax {
                 'category_id' => $category_id,
                 'variant_id' => $variant_id,
                 'extra_id' => $extra_id,
+                'extra_ids' => $extra_ids_raw,
                 'duration_id' => $duration_id,
                 'condition_id' => $condition_id,
                 'product_color_id' => $product_color_id,
@@ -300,7 +315,7 @@ class Ajax {
                 'user_ip' => $this->get_user_ip(),
                 'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? ''
             ),
-            array('%d', '%d', '%d', '%d', '%d', '%d', '%d', '%f', '%s', '%s', '%s', '%s', '%s')
+            array('%d', '%d', '%d', '%s', '%d', '%d', '%d', '%d', '%f', '%s', '%s', '%s', '%s', '%s')
         );
         
         if ($result) {
@@ -316,7 +331,9 @@ class Ajax {
         $category_id = intval($_POST['category_id']);
         $event_type = sanitize_text_field($_POST['event_type']);
         $variant_id = isset($_POST['variant_id']) ? intval($_POST['variant_id']) : null;
-        $extra_id = isset($_POST['extra_id']) ? intval($_POST['extra_id']) : null;
+        $extra_ids_raw = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
+        $extra_ids_array = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        $extra_id = !empty($extra_ids_array) ? $extra_ids_array[0] : null;
         $duration_id = isset($_POST['duration_id']) ? intval($_POST['duration_id']) : null;
         $condition_id = isset($_POST['condition_id']) ? intval($_POST['condition_id']) : null;
         $product_color_id = isset($_POST['product_color_id']) ? intval($_POST['product_color_id']) : null;
@@ -331,6 +348,7 @@ class Ajax {
                 'event_type' => $event_type,
                 'variant_id' => $variant_id,
                 'extra_id' => $extra_id,
+                'extra_ids' => $extra_ids_raw,
                 'duration_id' => $duration_id,
                 'condition_id' => $condition_id,
                 'product_color_id' => $product_color_id,
@@ -338,7 +356,7 @@ class Ajax {
                 'user_ip' => $this->get_user_ip(),
                 'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? ''
             ),
-            array('%d', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s')
+            array('%d', '%s', '%d', '%d', '%s', '%d', '%d', '%d', '%d', '%s', '%s')
         );
         
         if ($result) {

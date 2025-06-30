@@ -159,7 +159,8 @@ class Database {
             $new_analytics_columns = array(
                 'condition_id' => 'mediumint(9)',
                 'product_color_id' => 'mediumint(9)',
-                'frame_color_id' => 'mediumint(9)'
+                'frame_color_id' => 'mediumint(9)',
+                'extra_ids' => 'text'
             );
             
             foreach ($new_analytics_columns as $column => $type) {
@@ -284,6 +285,7 @@ class Database {
                 category_id mediumint(9) NOT NULL,
                 variant_id mediumint(9) NOT NULL,
                 extra_id mediumint(9) NOT NULL,
+                extra_ids text DEFAULT NULL,
                 duration_id mediumint(9) NOT NULL,
                 condition_id mediumint(9) DEFAULT NULL,
                 product_color_id mediumint(9) DEFAULT NULL,
@@ -299,9 +301,20 @@ class Database {
                 KEY category_id (category_id),
                 KEY created_at (created_at)
             ) $charset_collate;";
-            
+
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
+        } else {
+            $new_order_columns = array(
+                'extra_ids' => 'text'
+            );
+
+            foreach ($new_order_columns as $column => $type) {
+                $column_exists = $wpdb->get_results("SHOW COLUMNS FROM $table_orders LIKE '$column'");
+                if (empty($column_exists)) {
+                    $wpdb->query("ALTER TABLE $table_orders ADD COLUMN $column $type AFTER extra_id");
+                }
+            }
         }
         
         // Update links table with new columns
@@ -413,6 +426,7 @@ class Database {
             category_id mediumint(9) DEFAULT 1,
             variant_id mediumint(9) NOT NULL,
             extra_id mediumint(9) NOT NULL,
+            extra_ids text DEFAULT NULL,
             duration_id mediumint(9) NOT NULL,
             condition_id mediumint(9) DEFAULT NULL,
             product_color_id mediumint(9) DEFAULT NULL,
@@ -430,6 +444,7 @@ class Database {
             event_type varchar(50) NOT NULL,
             variant_id mediumint(9) DEFAULT NULL,
             extra_id mediumint(9) DEFAULT NULL,
+            extra_ids text DEFAULT NULL,
             duration_id mediumint(9) DEFAULT NULL,
             condition_id mediumint(9) DEFAULT NULL,
             product_color_id mediumint(9) DEFAULT NULL,
@@ -499,6 +514,7 @@ class Database {
             category_id mediumint(9) NOT NULL,
             variant_id mediumint(9) NOT NULL,
             extra_id mediumint(9) NOT NULL,
+            extra_ids text DEFAULT NULL,
             duration_id mediumint(9) NOT NULL,
             condition_id mediumint(9) DEFAULT NULL,
             product_color_id mediumint(9) DEFAULT NULL,

@@ -1,4 +1,5 @@
 <?php
+
 global $wpdb;
 
 // Get category data
@@ -188,7 +189,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 <!-- Extras Selection -->
                 <?php if (!empty($extras)): ?>
                 <div class="federwiegen-section">
-                    <h3>Wählen Sie Ihr Extra</h3>
+                    <h3>Wählen Sie Ihre Extras</h3>
                     <div class="federwiegen-options extras layout-<?php echo esc_attr($layout_style); ?>">
                         <?php foreach ($extras as $extra): ?>
                         <div class="federwiegen-option" data-type="extra" data-id="<?php echo esc_attr($extra->id); ?>"
