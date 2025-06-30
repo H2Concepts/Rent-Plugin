@@ -63,8 +63,8 @@
                     <a href="<?php echo admin_url('admin.php?page=federwiegen-extras&category=' . $selected_category . '&tab=edit&edit=' . $extra->id); ?>" class="button button-small">
                         ✏️ Bearbeiten
                     </a>
-                    <a href="<?php echo admin_url('admin.php?page=federwiegen-extras&category=' . $selected_category . '&delete=' . $extra->id); ?>" 
-                       class="button button-small federwiegen-delete-button" 
+                    <a href="<?php echo admin_url('admin.php?page=federwiegen-extras&category=' . $selected_category . '&delete=' . $extra->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>"
+                       class="button button-small federwiegen-delete-button"
                        onclick="return confirm('Sind Sie sicher, dass Sie dieses Extra löschen möchten?\n\n\"<?php echo esc_js($extra->name); ?>\" wird unwiderruflich gelöscht!')">
                         🗑️ Löschen
                     </a>
