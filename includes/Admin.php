@@ -437,16 +437,20 @@ class Admin {
         $where_clause = implode(' AND ', $where_conditions);
 
         $orders = $wpdb->get_results($wpdb->prepare(
-            "SELECT o.*, c.name as category_name, v.name as variant_name, e.name as extra_name, d.name as duration_name, cond.name as condition_name, pc.name as product_color_name, fc.name as frame_color_name
+            "SELECT o.*, c.name as category_name, v.name as variant_name,
+                    GROUP_CONCAT(e.name SEPARATOR ', ') AS extra_names,
+                    d.name as duration_name, cond.name as condition_name,
+                    pc.name as product_color_name, fc.name as frame_color_name
              FROM {$wpdb->prefix}federwiegen_orders o
              LEFT JOIN {$wpdb->prefix}federwiegen_categories c ON o.category_id = c.id
              LEFT JOIN {$wpdb->prefix}federwiegen_variants v ON o.variant_id = v.id
-             LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON o.extra_id = e.id
+             LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON FIND_IN_SET(e.id, o.extra_ids)
              LEFT JOIN {$wpdb->prefix}federwiegen_durations d ON o.duration_id = d.id
              LEFT JOIN {$wpdb->prefix}federwiegen_conditions cond ON o.condition_id = cond.id
              LEFT JOIN {$wpdb->prefix}federwiegen_colors pc ON o.product_color_id = pc.id
              LEFT JOIN {$wpdb->prefix}federwiegen_colors fc ON o.frame_color_id = fc.id
              WHERE $where_clause
+             GROUP BY o.id
              ORDER BY o.created_at DESC",
             ...$where_values
         ));
