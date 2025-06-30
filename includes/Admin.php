@@ -164,6 +164,13 @@ class Admin {
         
         return $settings;
     }
+
+    private function load_template(string $slug, array $vars = []) {
+        if (!empty($vars)) {
+            extract($vars);
+        }
+        include FEDERWIEGEN_PLUGIN_PATH . "admin/{$slug}-page.php";
+    }
     
     public function custom_admin_footer($text) {
         $branding = $this->get_branding_settings();
@@ -220,7 +227,157 @@ class Admin {
     }
     
     public function categories_page() {
-        include FEDERWIEGEN_PLUGIN_PATH . 'admin/categories-page.php';
+        global $wpdb;
+
+        $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'list';
+
+        if (isset($_POST['submit_category'])) {
+            self::verify_admin_action();
+            $name = sanitize_text_field($_POST['name']);
+            $shortcode = sanitize_text_field($_POST['shortcode']);
+            $page_title = sanitize_text_field($_POST['page_title']);
+            $page_description = sanitize_textarea_field($_POST['page_description']);
+            $meta_title = sanitize_text_field($_POST['meta_title']);
+            $meta_description = sanitize_textarea_field($_POST['meta_description']);
+            $product_title = sanitize_text_field($_POST['product_title']);
+            $product_description = sanitize_textarea_field($_POST['product_description']);
+            $default_image = esc_url_raw($_POST['default_image']);
+            $features_title = sanitize_text_field($_POST['features_title']);
+            $feature_1_icon = esc_url_raw($_POST['feature_1_icon']);
+            $feature_1_title = sanitize_text_field($_POST['feature_1_title']);
+            $feature_1_description = sanitize_textarea_field($_POST['feature_1_description']);
+            $feature_2_icon = esc_url_raw($_POST['feature_2_icon']);
+            $feature_2_title = sanitize_text_field($_POST['feature_2_title']);
+            $feature_2_description = sanitize_textarea_field($_POST['feature_2_description']);
+            $feature_3_icon = esc_url_raw($_POST['feature_3_icon']);
+            $feature_3_title = sanitize_text_field($_POST['feature_3_title']);
+            $feature_3_description = sanitize_textarea_field($_POST['feature_3_description']);
+            $button_text = sanitize_text_field($_POST['button_text']);
+            $button_icon = esc_url_raw($_POST['button_icon']);
+            $shipping_cost = floatval($_POST['shipping_cost']);
+            $layout_style = sanitize_text_field($_POST['layout_style']);
+            $duration_tooltip = sanitize_textarea_field($_POST['duration_tooltip']);
+            $condition_tooltip = sanitize_textarea_field($_POST['condition_tooltip']);
+            $active = isset($_POST['active']) ? 1 : 0;
+            $sort_order = intval($_POST['sort_order']);
+
+            $table_name = $wpdb->prefix . 'federwiegen_categories';
+
+            if (isset($_POST['id']) && $_POST['id']) {
+                $result = $wpdb->update(
+                    $table_name,
+                    [
+                        'name' => $name,
+                        'shortcode' => $shortcode,
+                        'page_title' => $page_title,
+                        'page_description' => $page_description,
+                        'meta_title' => $meta_title,
+                        'meta_description' => $meta_description,
+                        'product_title' => $product_title,
+                        'product_description' => $product_description,
+                        'default_image' => $default_image,
+                        'features_title' => $features_title,
+                        'feature_1_icon' => $feature_1_icon,
+                        'feature_1_title' => $feature_1_title,
+                        'feature_1_description' => $feature_1_description,
+                        'feature_2_icon' => $feature_2_icon,
+                        'feature_2_title' => $feature_2_title,
+                        'feature_2_description' => $feature_2_description,
+                        'feature_3_icon' => $feature_3_icon,
+                        'feature_3_title' => $feature_3_title,
+                        'feature_3_description' => $feature_3_description,
+                        'button_text' => $button_text,
+                        'button_icon' => $button_icon,
+                        'shipping_cost' => $shipping_cost,
+                        'layout_style' => $layout_style,
+                        'duration_tooltip' => $duration_tooltip,
+                        'condition_tooltip' => $condition_tooltip,
+                        'active' => $active,
+                        'sort_order' => $sort_order,
+                    ],
+                    ['id' => intval($_POST['id'])],
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d','%d'),
+                    ['%d']
+                );
+
+                if ($result !== false) {
+                    echo '<div class="notice notice-success"><p>✅ Kategorie erfolgreich aktualisiert!</p></div>';
+                } else {
+                    echo '<div class="notice notice-error"><p>❌ Fehler beim Aktualisieren: ' . esc_html($wpdb->last_error) . '</p></div>';
+                }
+            } else {
+                $result = $wpdb->insert(
+                    $table_name,
+                    [
+                        'name' => $name,
+                        'shortcode' => $shortcode,
+                        'page_title' => $page_title,
+                        'page_description' => $page_description,
+                        'meta_title' => $meta_title,
+                        'meta_description' => $meta_description,
+                        'product_title' => $product_title,
+                        'product_description' => $product_description,
+                        'default_image' => $default_image,
+                        'features_title' => $features_title,
+                        'feature_1_icon' => $feature_1_icon,
+                        'feature_1_title' => $feature_1_title,
+                        'feature_1_description' => $feature_1_description,
+                        'feature_2_icon' => $feature_2_icon,
+                        'feature_2_title' => $feature_2_title,
+                        'feature_2_description' => $feature_2_description,
+                        'feature_3_icon' => $feature_3_icon,
+                        'feature_3_title' => $feature_3_title,
+                        'feature_3_description' => $feature_3_description,
+                        'button_text' => $button_text,
+                        'button_icon' => $button_icon,
+                        'shipping_cost' => $shipping_cost,
+                        'layout_style' => $layout_style,
+                        'duration_tooltip' => $duration_tooltip,
+                        'condition_tooltip' => $condition_tooltip,
+                        'active' => $active,
+                        'sort_order' => $sort_order,
+                    ],
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d','%d')
+                );
+
+                if ($result !== false) {
+                    echo '<div class="notice notice-success"><p>✅ Kategorie erfolgreich hinzugefügt!</p></div>';
+                } else {
+                    echo '<div class="notice notice-error"><p>❌ Fehler beim Hinzufügen: ' . esc_html($wpdb->last_error) . '</p></div>';
+                }
+            }
+        }
+
+        if (isset($_GET['delete']) && isset($_GET['fw_nonce']) && wp_verify_nonce($_GET['fw_nonce'], 'federwiegen_admin_action')) {
+            $category_id = intval($_GET['delete']);
+            $table_name = $wpdb->prefix . 'federwiegen_categories';
+            $category_count = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE active = 1");
+            if ($category_count <= 1) {
+                echo '<div class="notice notice-error"><p>❌ Sie können nicht die letzte aktive Kategorie löschen!</p></div>';
+            } else {
+                $result = $wpdb->delete($table_name, ['id' => $category_id], ['%d']);
+                if ($result !== false) {
+                    echo '<div class="notice notice-success"><p>✅ Kategorie gelöscht!</p></div>';
+                } else {
+                    echo '<div class="notice notice-error"><p>❌ Fehler beim Löschen: ' . esc_html($wpdb->last_error) . '</p></div>';
+                }
+            }
+        }
+
+        $edit_item = null;
+        if (isset($_GET['edit'])) {
+            $edit_item = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE id = %d", intval($_GET['edit'])));
+        }
+
+        $categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order, name");
+
+        $branding = [];
+        $branding_results = $wpdb->get_results("SELECT setting_key, setting_value FROM {$wpdb->prefix}federwiegen_branding");
+        foreach ($branding_results as $result) {
+            $branding[$result->setting_key] = $result->setting_value;
+        }
+
+        $this->load_template('categories', compact('active_tab', 'edit_item', 'categories', 'branding'));
     }
     
     public function variants_page() {
@@ -250,9 +407,66 @@ class Admin {
     public function links_page() {
         include FEDERWIEGEN_PLUGIN_PATH . 'admin/links-page.php';
     }
-    
+
     public function orders_page() {
-        include FEDERWIEGEN_PLUGIN_PATH . 'admin/orders-page.php';
+        global $wpdb;
+
+        $categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY sort_order, name");
+        $selected_category = isset($_GET['category']) ? intval($_GET['category']) : 0;
+
+        $date_from = isset($_GET['date_from']) ? sanitize_text_field($_GET['date_from']) : date('Y-m-d', strtotime('-30 days'));
+        $date_to = isset($_GET['date_to']) ? sanitize_text_field($_GET['date_to']) : date('Y-m-d');
+
+        $current_category = null;
+        if ($selected_category > 0) {
+            $current_category = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE id = %d", $selected_category));
+        }
+
+        $where_conditions = ["o.created_at BETWEEN %s AND %s"];
+        $where_values = [$date_from . ' 00:00:00', $date_to . ' 23:59:59'];
+        if ($selected_category > 0) {
+            $where_conditions[] = "o.category_id = %d";
+            $where_values[] = $selected_category;
+        }
+        $where_clause = implode(' AND ', $where_conditions);
+
+        $orders = $wpdb->get_results($wpdb->prepare(
+            "SELECT o.*, c.name as category_name, v.name as variant_name, e.name as extra_name, d.name as duration_name, cond.name as condition_name, pc.name as product_color_name, fc.name as frame_color_name
+             FROM {$wpdb->prefix}federwiegen_orders o
+             LEFT JOIN {$wpdb->prefix}federwiegen_categories c ON o.category_id = c.id
+             LEFT JOIN {$wpdb->prefix}federwiegen_variants v ON o.variant_id = v.id
+             LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON o.extra_id = e.id
+             LEFT JOIN {$wpdb->prefix}federwiegen_durations d ON o.duration_id = d.id
+             LEFT JOIN {$wpdb->prefix}federwiegen_conditions cond ON o.condition_id = cond.id
+             LEFT JOIN {$wpdb->prefix}federwiegen_colors pc ON o.product_color_id = pc.id
+             LEFT JOIN {$wpdb->prefix}federwiegen_colors fc ON o.frame_color_id = fc.id
+             WHERE $where_clause
+             ORDER BY o.created_at DESC",
+            ...$where_values
+        ));
+
+        $total_orders = count($orders);
+        $total_revenue = array_sum(array_column($orders, 'final_price'));
+        $avg_order_value = $total_orders > 0 ? $total_revenue / $total_orders : 0;
+
+        $branding = [];
+        $branding_results = $wpdb->get_results("SELECT setting_key, setting_value FROM {$wpdb->prefix}federwiegen_branding");
+        foreach ($branding_results as $result) {
+            $branding[$result->setting_key] = $result->setting_value;
+        }
+
+        $this->load_template('orders', compact(
+            'categories',
+            'selected_category',
+            'date_from',
+            'date_to',
+            'current_category',
+            'orders',
+            'total_orders',
+            'total_revenue',
+            'avg_order_value',
+            'branding'
+        ));
     }
     
     public function analytics_page() {
