@@ -80,6 +80,7 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
     <!-- Form -->
     <div class="federwiegen-form-card">
         <form method="post" action="">
+            <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
             <?php if ($edit_item): ?>
                 <input type="hidden" name="id" value="<?php echo $edit_item->id; ?>">
                 <h4>Zustand bearbeiten</h4>
