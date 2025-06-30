@@ -84,7 +84,7 @@ if (isset($_POST['submit'])) {
         if ($result !== false) {
             echo '<div class="notice notice-success"><p>✅ Ausführung erfolgreich aktualisiert!</p></div>';
         } else {
-            echo '<div class="notice notice-error"><p>❌ Fehler beim Aktualisieren: ' . $wpdb->last_error . '</p></div>';
+            echo '<div class="notice notice-error"><p>❌ Fehler beim Aktualisieren: ' . esc_html($wpdb->last_error) . '</p></div>';
         }
     } else {
         // Insert
@@ -108,7 +108,7 @@ if (isset($_POST['submit'])) {
         if ($result !== false) {
             echo '<div class="notice notice-success"><p>✅ Ausführung erfolgreich hinzugefügt!</p></div>';
         } else {
-            echo '<div class="notice notice-error"><p>❌ Fehler beim Hinzufügen: ' . $wpdb->last_error . '</p></div>';
+            echo '<div class="notice notice-error"><p>❌ Fehler beim Hinzufügen: ' . esc_html($wpdb->last_error) . '</p></div>';
         }
     }
 }
@@ -119,7 +119,7 @@ if (isset($_GET['delete'])) {
     if ($result !== false) {
         echo '<div class="notice notice-success"><p>✅ Ausführung gelöscht!</p></div>';
     } else {
-        echo '<div class="notice notice-error"><p>❌ Fehler beim Löschen: ' . $wpdb->last_error . '</p></div>';
+        echo '<div class="notice notice-error"><p>❌ Fehler beim Löschen: ' . esc_html($wpdb->last_error) . '</p></div>';
     }
 }
 
