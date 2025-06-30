@@ -141,7 +141,6 @@ if (isset($_POST['submit_category'])) {
 
 // Handle delete
 if (isset($_GET['delete']) && isset($_GET['fw_nonce']) && wp_verify_nonce($_GET['fw_nonce'], 'federwiegen_admin_action')) {
-if (isset($_GET['delete'])) {
     $category_id = intval($_GET['delete']);
     $table_name = $wpdb->prefix . 'federwiegen_categories';
     
