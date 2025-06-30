@@ -78,7 +78,8 @@ $sample_variant = $wpdb->get_row("SELECT * FROM $table_variants LIMIT 1");
             </div>
             <?php endif; ?>
         </div>
-        
+
+        <!-- Settings Table removed: table not used anymore -->
         
         <!-- System Info -->
         <div class="federwiegen-debug-section">
