@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
     });
     
     // Auto-format price inputs
-    $('input[name="base_price"], input[name="price"]').on('blur', function() {
+    $('input[name="base_price"], input[name="price"], input[name="price_from"]').on('blur', function() {
         var value = parseFloat($(this).val());
         if (!isNaN(value)) {
             $(this).val(value.toFixed(2));
