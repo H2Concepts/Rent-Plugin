@@ -33,26 +33,29 @@ $popular_variants = $wpdb->get_results($wpdb->prepare(
 
 // Get popular extras - FIXED QUERY
 $popular_extras = $wpdb->get_results($wpdb->prepare(
-    "SELECT e.name, COUNT(*) as order_count 
+    "SELECT e.name, COUNT(*) as order_count
      FROM {$wpdb->prefix}federwiegen_orders o
-     LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON o.extra_id = e.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON FIND_IN_SET(e.id, o.extra_ids)
      " . $where_clause . "
      AND e.name IS NOT NULL
-     GROUP BY o.extra_id, e.name 
-     ORDER BY order_count DESC 
+     GROUP BY e.id
+     ORDER BY order_count DESC
      LIMIT 5",
     ...$where_values
 ));
 
 // Get recent orders
 $recent_orders = $wpdb->get_results($wpdb->prepare(
-    "SELECT o.*, v.name as variant_name, e.name as extra_name, d.name as duration_name
+    "SELECT o.*, v.name as variant_name,
+            GROUP_CONCAT(e.name SEPARATOR ', ') AS extra_names,
+            d.name as duration_name
      FROM {$wpdb->prefix}federwiegen_orders o
      LEFT JOIN {$wpdb->prefix}federwiegen_variants v ON o.variant_id = v.id
-     LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON o.extra_id = e.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON FIND_IN_SET(e.id, o.extra_ids)
      LEFT JOIN {$wpdb->prefix}federwiegen_durations d ON o.duration_id = d.id
      " . $where_clause . "
-     ORDER BY o.created_at DESC 
+     GROUP BY o.id
+     ORDER BY o.created_at DESC
      LIMIT 10",
     ...$where_values
 ));
@@ -189,7 +192,7 @@ $monthly_revenue = $wpdb->get_results($wpdb->prepare(
                 <div class="federwiegen-order-item">
                     <div class="federwiegen-order-content">
                         <h5>#<?php echo $order->id; ?> - <?php echo esc_html($order->variant_name); ?></h5>
-                        <p><?php echo esc_html($order->extra_name); ?> | <?php echo esc_html($order->duration_name); ?></p>
+                        <p><?php echo esc_html($order->extra_names); ?> | <?php echo esc_html($order->duration_name); ?></p>
                         <small><?php echo date('d.m.Y H:i', strtotime($order->created_at)); ?></small>
                     </div>
                     <div class="federwiegen-order-price">
