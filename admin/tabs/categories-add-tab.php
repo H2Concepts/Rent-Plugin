@@ -9,6 +9,7 @@
     </div>
     
     <form method="post" action="" class="federwiegen-compact-form">
+        <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
         <!-- Grunddaten -->
         <div class="federwiegen-form-section">
             <h4>📝 Grunddaten</h4>
