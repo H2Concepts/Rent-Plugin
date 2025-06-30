@@ -14,7 +14,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Plugin constants
-const FEDERWIEGEN_PLUGIN_VERSION = '1.5.2';
+const FEDERWIEGEN_PLUGIN_VERSION = '2.0.0';
 const FEDERWIEGEN_PLUGIN_DIR = __DIR__ . '/';
 define('FEDERWIEGEN_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('FEDERWIEGEN_PLUGIN_PATH', FEDERWIEGEN_PLUGIN_DIR);
