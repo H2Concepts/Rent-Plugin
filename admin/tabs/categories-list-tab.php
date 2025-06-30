@@ -70,8 +70,8 @@
                     <a href="<?php echo admin_url('admin.php?page=federwiegen-categories&tab=edit&edit=' . $category->id); ?>" class="button button-small">
                         ✏️ Bearbeiten
                     </a>
-                    <a href="<?php echo admin_url('admin.php?page=federwiegen-categories&delete=' . $category->id); ?>" 
-                       class="button button-small federwiegen-delete-button" 
+                    <a href="<?php echo admin_url('admin.php?page=federwiegen-categories&delete=' . $category->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>"
+                       class="button button-small federwiegen-delete-button"
                        onclick="return confirm('Sind Sie sicher, dass Sie diese Kategorie löschen möchten?\n\n\"<?php echo esc_js($category->name); ?>\" und alle zugehörigen Daten werden unwiderruflich gelöscht!')">
                         🗑️ Löschen
                     </a>
