@@ -8,6 +8,7 @@ if (isset($_POST['submit_variant'])) {
     $name = sanitize_text_field($_POST['name']);
     $description = sanitize_textarea_field($_POST['description']);
     $base_price = floatval($_POST['base_price']);
+    $price_from = isset($_POST['price_from']) ? floatval($_POST['price_from']) : 0;
     $available = isset($_POST['available']) ? 1 : 0;
     $availability_note = sanitize_text_field($_POST['availability_note']);
     $active = isset($_POST['active']) ? 1 : 0;
@@ -26,6 +27,7 @@ if (isset($_POST['submit_variant'])) {
             'name' => $name,
             'description' => $description,
             'base_price' => $base_price,
+            'price_from' => $price_from,
             'available' => $available,
             'availability_note' => $availability_note,
             'active' => $active,
@@ -36,7 +38,7 @@ if (isset($_POST['submit_variant'])) {
             $table_name,
             $update_data,
             array('id' => intval($_POST['id'])),
-            array_merge(array('%d', '%s', '%s', '%f', '%d', '%s', '%d', '%d'), array_fill(0, 5, '%s')),
+            array_merge(array('%d', '%s', '%s', '%f', '%f', '%d', '%s', '%d', '%d'), array_fill(0, 5, '%s')),
             array('%d')
         );
         
@@ -50,6 +52,7 @@ if (isset($_POST['submit_variant'])) {
             'name' => $name,
             'description' => $description,
             'base_price' => $base_price,
+            'price_from' => $price_from,
             'available' => $available,
             'availability_note' => $availability_note,
             'active' => $active,
@@ -59,7 +62,7 @@ if (isset($_POST['submit_variant'])) {
         $result = $wpdb->insert(
             $table_name,
             $insert_data,
-            array_merge(array('%d', '%s', '%s', '%f', '%d', '%s', '%d', '%d'), array_fill(0, 5, '%s'))
+            array_merge(array('%d', '%s', '%s', '%f', '%f', '%d', '%s', '%d', '%d'), array_fill(0, 5, '%s'))
         );
         
         if ($result !== false) {
@@ -110,6 +113,10 @@ $variants = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE c
                 <div class="federwiegen-form-group">
                     <label>Grundpreis (€) *</label>
                     <input type="number" name="base_price" value="<?php echo $edit_item ? $edit_item->base_price : ''; ?>" step="0.01" min="0" required>
+                </div>
+                <div class="federwiegen-form-group">
+                    <label>Preis ab (€)</label>
+                    <input type="number" name="price_from" value="<?php echo $edit_item ? $edit_item->price_from : ''; ?>" step="0.01" min="0">
                 </div>
                 
                 <div class="federwiegen-form-group full-width">
