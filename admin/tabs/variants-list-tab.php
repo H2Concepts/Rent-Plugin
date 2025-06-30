@@ -81,9 +81,9 @@
                 <div class="federwiegen-variant-actions">
                     <a href="<?php echo admin_url('admin.php?page=federwiegen-variants&category=' . $selected_category . '&tab=edit&edit=' . $variant->id); ?>" class="button button-small">
                         ✏️ Bearbeiten
-                    </a>
-                    <a href="<?php echo admin_url('admin.php?page=federwiegen-variants&category=' . $selected_category . '&delete=' . $variant->id); ?>" 
-                       class="button button-small federwiegen-delete-button" 
+                   </a>
+                    <a href="<?php echo admin_url('admin.php?page=federwiegen-variants&category=' . $selected_category . '&delete=' . $variant->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>"
+                       class="button button-small federwiegen-delete-button"
                        onclick="return confirm('Sind Sie sicher, dass Sie diese Ausführung löschen möchten?\n\n\"<?php echo esc_js($variant->name); ?>\" wird unwiderruflich gelöscht!')">
                         🗑️ Löschen
                     </a>
