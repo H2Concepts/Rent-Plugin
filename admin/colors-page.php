@@ -17,6 +17,7 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'list';
 
 // Handle form submissions
 if (isset($_POST['submit'])) {
+    \FederwiegenVerleih\Admin::verify_admin_action();
     $category_id = intval($_POST['category_id']);
     $name = sanitize_text_field($_POST['name']);
     $color_code = sanitize_hex_color($_POST['color_code']);
@@ -73,7 +74,7 @@ if (isset($_POST['submit'])) {
 }
 
 // Handle delete
-if (isset($_GET['delete'])) {
+if (isset($_GET['delete']) && isset($_GET['fw_nonce']) && wp_verify_nonce($_GET['fw_nonce'], 'federwiegen_admin_action')) {
     $result = $wpdb->delete($table_name, array('id' => intval($_GET['delete'])), array('%d'));
     if ($result !== false) {
         echo '<div class="notice notice-success"><p>✅ Farbe gelöscht!</p></div>';
