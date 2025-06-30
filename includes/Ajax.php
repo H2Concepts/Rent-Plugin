@@ -213,6 +213,7 @@ class Ajax {
         $conditions = array();
         $product_colors = array();
         $frame_colors = array();
+        $extras = array();
         
         if (!empty($variant_options)) {
             // Get specific options for this variant
@@ -245,6 +246,15 @@ class Ajax {
                             $frame_colors[] = $color;
                         }
                         break;
+                    case 'extra':
+                        $extra = $wpdb->get_row($wpdb->prepare(
+                            "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE id = %d AND active = 1",
+                            $option->option_id
+                        ));
+                        if ($extra) {
+                            $extras[] = $extra;
+                        }
+                        break;
                 }
             }
         } else {
@@ -269,13 +279,19 @@ class Ajax {
                     "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' AND active = 1 AND available = 1 ORDER BY sort_order",
                     $variant->category_id
                 ));
+
+                $extras = $wpdb->get_results($wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE category_id = %d AND active = 1 ORDER BY sort_order",
+                    $variant->category_id
+                ));
             }
         }
-        
+
         wp_send_json_success(array(
             'conditions' => $conditions,
             'product_colors' => $product_colors,
-            'frame_colors' => $frame_colors
+            'frame_colors' => $frame_colors,
+            'extras' => $extras
         ));
     }
     
