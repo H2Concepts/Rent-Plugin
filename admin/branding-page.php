@@ -7,6 +7,7 @@ global $wpdb;
 
 // Handle form submissions
 if (isset($_POST['submit_branding'])) {
+    \FederwiegenVerleih\Admin::verify_admin_action();
     $plugin_name = sanitize_text_field($_POST['plugin_name']);
     $plugin_description = sanitize_textarea_field($_POST['plugin_description']);
     $company_name = sanitize_text_field($_POST['company_name']);
@@ -140,6 +141,7 @@ foreach ($results as $result) {
     </div>
     
     <form method="post" action="">
+        <?php wp_nonce_field('federwiegen_admin_action', 'federwiegen_admin_nonce'); ?>
         <h2>🏢 Plugin-Informationen</h2>
         <table class="form-table">
             <tr>
