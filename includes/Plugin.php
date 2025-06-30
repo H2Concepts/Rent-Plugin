@@ -7,8 +7,6 @@ class Plugin {
     
     public function __construct() {
         add_action('init', array($this, 'init'));
-        register_activation_hook(FEDERWIEGEN_PLUGIN_FILE, array($this, 'activate'));
-        register_deactivation_hook(FEDERWIEGEN_PLUGIN_FILE, array($this, 'deactivate'));
         
         // Add update check
         add_action('plugins_loaded', array($this, 'check_for_updates'));
@@ -59,12 +57,30 @@ class Plugin {
     
     public function activate() {
         $this->create_tables();
-        $this->insert_default_data();
+
+        $load_sample = defined('FEDERWIEGEN_LOAD_DEFAULT_DATA') ?
+            FEDERWIEGEN_LOAD_DEFAULT_DATA : true;
+        $load_sample = apply_filters('federwiegen_load_default_data', $load_sample);
+
+        if ($load_sample) {
+            $this->insert_default_data();
+        }
+
         update_option('federwiegen_version', FEDERWIEGEN_VERSION);
     }
     
     public function deactivate() {
         // Cleanup if needed
+    }
+
+    public static function activate_plugin() {
+        $plugin = new self();
+        $plugin->activate();
+    }
+
+    public static function deactivate_plugin() {
+        $plugin = new self();
+        $plugin->deactivate();
     }
     
     private function update_database() {
