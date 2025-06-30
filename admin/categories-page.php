@@ -10,6 +10,7 @@ $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'list';
 
 // Handle form submissions for categories
 if (isset($_POST['submit_category'])) {
+    \FederwiegenVerleih\Admin::verify_admin_action();
     $name = sanitize_text_field($_POST['name']);
     $shortcode = sanitize_text_field($_POST['shortcode']);
     $page_title = sanitize_text_field($_POST['page_title']);
@@ -139,6 +140,7 @@ if (isset($_POST['submit_category'])) {
 }
 
 // Handle delete
+if (isset($_GET['delete']) && isset($_GET['fw_nonce']) && wp_verify_nonce($_GET['fw_nonce'], 'federwiegen_admin_action')) {
 if (isset($_GET['delete'])) {
     $category_id = intval($_GET['delete']);
     $table_name = $wpdb->prefix . 'federwiegen_categories';
