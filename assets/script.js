@@ -1,6 +1,6 @@
 jQuery(document).ready(function($) {
     let selectedVariant = null;
-    let selectedExtra = null;
+    let selectedExtras = [];
     let selectedDuration = null;
     let selectedCondition = null;
     let selectedProductColor = null;
@@ -32,16 +32,18 @@ jQuery(document).ready(function($) {
             return; // Don't allow selection of unavailable variants
         }
 
-        // Remove selection from same type
-        $(`.federwiegen-option[data-type="${type}"]`).removeClass('selected');
-        
-        // Add selection to clicked option
-        $(this).addClass('selected');
+        // Remove selection from same type (except extras which allow multiple)
+        if (type !== 'extra') {
+            $(`.federwiegen-option[data-type="${type}"]`).removeClass('selected');
+            $(this).addClass('selected');
+        } else {
+            $(this).toggleClass('selected');
+        }
 
         // Track interaction
         trackInteraction(type.replace('-', '_') + '_select', {
             variant_id: type === 'variant' ? id : selectedVariant,
-            extra_id: type === 'extra' ? id : selectedExtra,
+            extra_id: selectedExtras.join(','),
             duration_id: type === 'duration' ? id : selectedDuration,
             condition_id: type === 'condition' ? id : selectedCondition,
             product_color_id: type === 'product-color' ? id : selectedProductColor,
@@ -54,7 +56,12 @@ jQuery(document).ready(function($) {
             updateVariantImages($(this));
             updateVariantOptions(id);
         } else if (type === 'extra') {
-            selectedExtra = id;
+            const index = selectedExtras.indexOf(id);
+            if (index > -1) {
+                selectedExtras.splice(index, 1);
+            } else {
+                selectedExtras.push(id);
+            }
             updateExtraImage($(this));
         } else if (type === 'duration') {
             selectedDuration = id;
@@ -76,7 +83,7 @@ jQuery(document).ready(function($) {
             // Track conversion
             trackInteraction('rent_button_click', {
                 variant_id: selectedVariant,
-                extra_id: selectedExtra,
+                extra_id: selectedExtras.join(','),
                 duration_id: selectedDuration,
                 condition_id: selectedCondition,
                 product_color_id: selectedProductColor,
@@ -218,12 +225,26 @@ jQuery(document).ready(function($) {
     }
 
     function updateExtraImage(extraOption) {
-        const extraImageUrl = extraOption.data('extra-image');
         const extraOverlay = $('#federwiegen-extra-overlay');
         const extraImage = $('#federwiegen-extra-image');
-        
-        if (extraImageUrl && extraImageUrl.trim() !== '') {
-            extraImage.attr('src', extraImageUrl);
+
+        let imageUrl = '';
+        if (extraOption && extraOption.hasClass('selected')) {
+            imageUrl = extraOption.data('extra-image');
+        }
+        if (!imageUrl) {
+            // fallback to first selected extra with image
+            $('.federwiegen-option[data-type="extra"].selected').each(function () {
+                const url = $(this).data('extra-image');
+                if (url && url.trim() !== '') {
+                    imageUrl = url;
+                    return false;
+                }
+            });
+        }
+
+        if (imageUrl && imageUrl.trim() !== '') {
+            extraImage.attr('src', imageUrl);
             extraOverlay.fadeIn(300);
         } else {
             extraOverlay.fadeOut(300);
@@ -337,7 +358,7 @@ jQuery(document).ready(function($) {
             // Track interaction
             trackInteraction(type.replace('-', '_') + '_select', {
                 variant_id: selectedVariant,
-                extra_id: selectedExtra,
+                extra_id: selectedExtras.join(','),
                 duration_id: selectedDuration,
                 condition_id: selectedCondition,
                 product_color_id: selectedProductColor,
@@ -352,7 +373,7 @@ jQuery(document).ready(function($) {
         // Check if all required selections are made
         const requiredSelections = [];
         if ($('.federwiegen-options.variants').length > 0) requiredSelections.push(selectedVariant);
-        if ($('.federwiegen-options.extras').length > 0) requiredSelections.push(selectedExtra);
+        if ($('.federwiegen-options.extras').length > 0) requiredSelections.push(selectedExtras.length > 0 ? true : null);
         if ($('.federwiegen-options.durations').length > 0) requiredSelections.push(selectedDuration);
         
         // Check for visible optional sections
@@ -380,7 +401,7 @@ jQuery(document).ready(function($) {
                 data: {
                     action: 'get_product_price',
                     variant_id: selectedVariant,
-                    extra_id: selectedExtra,
+                    extra_ids: selectedExtras.join(','),
                     duration_id: selectedDuration,
                     condition_id: selectedCondition,
                     product_color_id: selectedProductColor,
@@ -518,7 +539,7 @@ jQuery(document).ready(function($) {
                 action: 'submit_order',
                 category_id: currentCategoryId,
                 variant_id: selectedVariant,
-                extra_id: selectedExtra,
+                extra_ids: selectedExtras.join(','),
                 duration_id: selectedDuration,
                 condition_id: selectedCondition,
                 product_color_id: selectedProductColor,
