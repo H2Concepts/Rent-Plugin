@@ -24,6 +24,7 @@ class Database {
         // Add image columns to variants table if they don't exist
         $table_variants = $wpdb->prefix . 'federwiegen_variants';
         $columns_to_add = array(
+            'price_from' => 'DECIMAL(10,2) DEFAULT 0',
             'image_url_1' => 'TEXT',
             'image_url_2' => 'TEXT',
             'image_url_3' => 'TEXT',
@@ -366,6 +367,7 @@ class Database {
             name varchar(255) NOT NULL,
             description text,
             base_price decimal(10,2) NOT NULL,
+            price_from decimal(10,2) DEFAULT 0,
             image_url_1 text,
             image_url_2 text,
             image_url_3 text,
@@ -608,6 +610,7 @@ class Database {
                         'name' => $variant[0],
                         'description' => $variant[1],
                         'base_price' => $variant[2],
+                        'price_from' => 0,
                         'image_url_1' => '',
                         'image_url_2' => '',
                         'image_url_3' => '',
