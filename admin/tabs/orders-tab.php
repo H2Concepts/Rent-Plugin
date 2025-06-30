@@ -13,7 +13,7 @@ if (isset($_GET['delete_order'])) {
     if ($result !== false) {
         echo '<div class="notice notice-success"><p>✅ Bestellung erfolgreich gelöscht!</p></div>';
     } else {
-        echo '<div class="notice notice-error"><p>❌ Fehler beim Löschen der Bestellung: ' . $wpdb->last_error . '</p></div>';
+        echo '<div class="notice notice-error"><p>❌ Fehler beim Löschen der Bestellung: ' . esc_html($wpdb->last_error) . '</p></div>';
     }
 }
 
