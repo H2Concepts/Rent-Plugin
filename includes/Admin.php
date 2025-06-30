@@ -203,6 +203,16 @@ class Admin {
                 border-color: ' . esc_attr($secondary_color) . ';
             }
         </style>';
+       }
+
+    /**
+     * Verify nonce and user capabilities for admin form submissions.
+     */
+    public static function verify_admin_action($nonce_field = 'federwiegen_admin_nonce') {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('Insufficient permissions.', 'h2-concepts'));
+        }
+        check_admin_referer('federwiegen_admin_action', $nonce_field);
     }
     
     public function admin_page() {
