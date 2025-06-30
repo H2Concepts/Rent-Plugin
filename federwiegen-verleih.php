@@ -1,4 +1,4 @@
- <?php
+<?php
  /**
   * Plugin Name: Federwiegen Verleih
   * Plugin URI: https://kleinehelden-verleih.de
