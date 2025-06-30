@@ -24,6 +24,10 @@
                     <label>Grundpreis (€) *</label>
                     <input type="number" name="base_price" step="0.01" min="0" required placeholder="29.99">
                 </div>
+                <div class="federwiegen-form-group">
+                    <label>Preis ab (€)</label>
+                    <input type="number" name="price_from" step="0.01" min="0" placeholder="">
+                </div>
             </div>
             
             <div class="federwiegen-form-group">
