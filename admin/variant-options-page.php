@@ -234,8 +234,9 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                                 </div>
 
                                 <div class="federwiegen-form-group">
-                                    <label class="federwiegen-checkbox-label">
+                                    <label class="federwiegen-toggle-label">
                                         <input type="checkbox" name="available" value="1" checked>
+                                        <span class="federwiegen-toggle-slider"></span>
                                         <span>Verfügbar</span>
                                     </label>
                                 </div>
@@ -304,8 +305,9 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                                 </div>
 
                                 <div class="federwiegen-form-group">
-                                    <label class="federwiegen-checkbox-label">
+                                    <label class="federwiegen-toggle-label">
                                         <input type="checkbox" name="available" value="1" <?php echo ($edit_item->available ?? 1) ? 'checked' : ''; ?>>
+                                        <span class="federwiegen-toggle-slider"></span>
                                         <span>Verfügbar</span>
                                     </label>
                                 </div>

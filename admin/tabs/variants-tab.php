@@ -122,9 +122,10 @@ $variants = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE c
                 </div>
                 
                 <div class="federwiegen-form-group">
-                    <label>
+                    <label class="federwiegen-toggle-label">
                         <input type="checkbox" name="available" value="1" <?php echo (!$edit_item || $edit_item->available) ? 'checked' : ''; ?>>
-                        Verfügbar
+                        <span class="federwiegen-toggle-slider"></span>
+                        <span>Verfügbar</span>
                     </label>
                 </div>
                 
