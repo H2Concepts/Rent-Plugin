@@ -44,7 +44,6 @@
             
             <div class="federwiegen-category-content">
                 <h4><?php echo esc_html($category->name); ?></h4>
-                <p class="federwiegen-category-description"><?php echo esc_html($category->page_title); ?></p>
                 
                 <div class="federwiegen-category-shortcode">
                     <code>[federwiegen_product category="<?php echo esc_html($category->shortcode); ?>"]</code>
