@@ -719,8 +719,8 @@
 
 .federwiegen-rent-button {
     width: 100%;
-    padding: 1rem 1.5rem;
-    border-radius: 0.75rem;
+    padding: 1.3rem 1.5rem;
+    border-radius: 999px;
     font-weight: 600;
     font-size: 1.125rem;
     transition: all 0.2s ease;
