@@ -443,7 +443,7 @@
     
     .federwiegen-options.layout-default.product-colors,
     .federwiegen-options.layout-default.frame-colors {
-        grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
     }
 }
 
@@ -541,7 +541,7 @@
 .federwiegen-extra-name {
     font-weight: 500;
     color: #2a372a;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-family: "Roca",sans-serif;
 }
 
@@ -562,7 +562,7 @@
 .federwiegen-duration-name {
     font-weight: 500;
     color: #2a372a;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-family: "Roca",sans-serif;
 }
 
@@ -592,7 +592,7 @@
 .federwiegen-condition-name {
     font-weight: 500;
     color: #2a372a;
-    font-size: 0.95rem;
+    font-size: 1rem;
     font-family: "Roca",sans-serif;
 }
 
@@ -629,7 +629,7 @@
 
 .federwiegen-selected-color-name {
     display: block;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     margin-bottom: 0.25rem;
     font-weight: 700;
     color: #2a372a;
@@ -927,7 +927,7 @@
     }
     
     .federwiegen-option h4 {
-        font-size: 0.9rem;
+        font-size: 1.1rem;
     }
     
     .federwiegen-option p {
