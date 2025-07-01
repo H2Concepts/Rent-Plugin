@@ -103,7 +103,9 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 
                 <div class="federwiegen-product-details">
                     <h2><?php echo esc_html($product_title); ?></h2>
-                    <p><?php echo esc_html($product_description); ?></p>
+                    <div class="federwiegen-product-description">
+                        <?php echo wp_kses_post($product_description); ?>
+                    </div>
                     
                     <div class="federwiegen-features">
                         <div class="federwiegen-feature">
