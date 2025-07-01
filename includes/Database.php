@@ -331,6 +331,13 @@ class Database {
                 $wpdb->query("ALTER TABLE $table_links ADD COLUMN $column $type AFTER duration_id");
             }
         }
+
+        // Add availability column to variant options table if it doesn't exist
+        $table_variant_options = $wpdb->prefix . 'federwiegen_variant_options';
+        $availability_column = $wpdb->get_results("SHOW COLUMNS FROM $table_variant_options LIKE 'available'");
+        if (empty($availability_column)) {
+            $wpdb->query("ALTER TABLE $table_variant_options ADD COLUMN available TINYINT(1) DEFAULT 1 AFTER option_id");
+        }
     }
     
     public function create_tables() {
@@ -503,6 +510,7 @@ class Database {
             variant_id mediumint(9) NOT NULL,
             option_type varchar(50) NOT NULL,
             option_id mediumint(9) NOT NULL,
+            available tinyint(1) DEFAULT 1,
             PRIMARY KEY (id),
             UNIQUE KEY variant_option (variant_id, option_type, option_id)
         ) $charset_collate;";
