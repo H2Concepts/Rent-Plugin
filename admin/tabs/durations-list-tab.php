@@ -209,6 +209,11 @@
 }
 
 @media (max-width: 768px) {
+    .federwiegen-list-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
     .federwiegen-durations-grid {
         grid-template-columns: 1fr;
     }
