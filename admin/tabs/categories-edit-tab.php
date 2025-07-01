@@ -171,12 +171,6 @@
                     <label>Sortierung</label>
                     <input type="number" name="sort_order" value="<?php echo $edit_item->sort_order; ?>" min="0">
                 </div>
-                <div class="federwiegen-form-group">
-                    <label class="federwiegen-checkbox-label">
-                        <input type="checkbox" name="active" value="1" <?php echo $edit_item->active ? 'checked' : ''; ?>>
-                        <span>Aktiv</span>
-                    </label>
-                </div>
             </div>
         </div>
         

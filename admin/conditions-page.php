@@ -7,7 +7,7 @@ global $wpdb;
 $table_name = $wpdb->prefix . 'federwiegen_conditions';
 
 // Get all categories for dropdown
-$categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY sort_order, name");
+$categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order, name");
 
 // Get selected category from URL parameter
 $selected_category = isset($_GET['category']) ? intval($_GET['category']) : (isset($categories[0]) ? $categories[0]->id : 1);
@@ -23,7 +23,6 @@ if (isset($_POST['submit'])) {
     $description = sanitize_textarea_field($_POST['description']);
     $price_modifier = floatval($_POST['price_modifier']) / 100; // Convert percentage to decimal
     $available = isset($_POST['available']) ? 1 : 0;
-    $active = isset($_POST['active']) ? 1 : 0;
     $sort_order = intval($_POST['sort_order']);
 
     if (isset($_POST['id']) && $_POST['id']) {
@@ -36,11 +35,10 @@ if (isset($_POST['submit'])) {
                 'description' => $description,
                 'price_modifier' => $price_modifier,
                 'available' => $available,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
             array('id' => intval($_POST['id'])),
-            array('%d', '%s', '%s', '%f', '%d', '%d', '%d'),
+            array('%d', '%s', '%s', '%f', '%d', '%d'),
             array('%d')
         );
         
@@ -59,10 +57,9 @@ if (isset($_POST['submit'])) {
                 'description' => $description,
                 'price_modifier' => $price_modifier,
                 'available' => $available,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
-            array('%d', '%s', '%s', '%f', '%d', '%d', '%d')
+            array('%d', '%s', '%s', '%f', '%d', '%d')
         );
         
         if ($result !== false) {

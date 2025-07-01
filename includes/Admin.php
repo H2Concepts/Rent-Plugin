@@ -262,7 +262,6 @@ class Admin {
             $layout_style = sanitize_text_field($_POST['layout_style']);
             $duration_tooltip = sanitize_textarea_field($_POST['duration_tooltip']);
             $condition_tooltip = sanitize_textarea_field($_POST['condition_tooltip']);
-            $active = isset($_POST['active']) ? 1 : 0;
             $sort_order = intval($_POST['sort_order']);
 
             $table_name = $wpdb->prefix . 'federwiegen_categories';
@@ -294,11 +293,10 @@ class Admin {
                         'layout_style' => $layout_style,
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
-                        'active' => $active,
                         'sort_order' => $sort_order,
                     ],
                     ['id' => intval($_POST['id'])],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d','%d'),
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d'),
                 );
 
                 if ($result !== false) {
@@ -333,10 +331,9 @@ class Admin {
                         'layout_style' => $layout_style,
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
-                        'active' => $active,
                         'sort_order' => $sort_order,
                     ],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d','%d')
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d')
                 );
 
                 if ($result !== false) {
@@ -350,16 +347,11 @@ class Admin {
         if (isset($_GET['delete']) && isset($_GET['fw_nonce']) && wp_verify_nonce($_GET['fw_nonce'], 'federwiegen_admin_action')) {
             $category_id = intval($_GET['delete']);
             $table_name = $wpdb->prefix . 'federwiegen_categories';
-            $category_count = $wpdb->get_var("SELECT COUNT(*) FROM $table_name WHERE active = 1");
-            if ($category_count <= 1) {
-                echo '<div class="notice notice-error"><p>❌ Sie können nicht die letzte aktive Kategorie löschen!</p></div>';
+            $result = $wpdb->delete($table_name, ['id' => $category_id], ['%d']);
+            if ($result !== false) {
+                echo '<div class="notice notice-success"><p>✅ Kategorie gelöscht!</p></div>';
             } else {
-                $result = $wpdb->delete($table_name, ['id' => $category_id], ['%d']);
-                if ($result !== false) {
-                    echo '<div class="notice notice-success"><p>✅ Kategorie gelöscht!</p></div>';
-                } else {
-                    echo '<div class="notice notice-error"><p>❌ Fehler beim Löschen: ' . esc_html($wpdb->last_error) . '</p></div>';
-                }
+                echo '<div class="notice notice-error"><p>❌ Fehler beim Löschen: ' . esc_html($wpdb->last_error) . '</p></div>';
             }
         }
 
@@ -437,7 +429,7 @@ class Admin {
             }
         }
 
-        $categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY sort_order, name");
+        $categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order, name");
         $selected_category = isset($_GET['category']) ? intval($_GET['category']) : 0;
 
         $date_from = isset($_GET['date_from']) ? sanitize_text_field($_GET['date_from']) : date('Y-m-d', strtotime('-30 days'));

@@ -89,12 +89,12 @@ if (isset($_GET['edit_link'])) {
 }
 
 // Get all data for dropdowns (filtered by category)
-$variants = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_variants WHERE category_id = %d AND active = 1 ORDER BY sort_order, name", $selected_category));
-$extras = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE category_id = %d AND active = 1 ORDER BY sort_order, name", $selected_category));
-$durations = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_durations WHERE category_id = %d AND active = 1 ORDER BY sort_order, months_minimum", $selected_category));
-$conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE category_id = %d AND active = 1 ORDER BY sort_order, name", $selected_category));
-$product_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' AND active = 1 ORDER BY sort_order, name", $selected_category));
-$frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' AND active = 1 ORDER BY sort_order, name", $selected_category));
+$variants = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_variants WHERE category_id = %d ORDER BY sort_order, name", $selected_category));
+$extras = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE category_id = %d ORDER BY sort_order, name", $selected_category));
+$durations = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_durations WHERE category_id = %d ORDER BY sort_order, months_minimum", $selected_category));
+$conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE category_id = %d ORDER BY sort_order, name", $selected_category));
+$product_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' ORDER BY sort_order, name", $selected_category));
+$frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' ORDER BY sort_order, name", $selected_category));
 
 // Get all links with names (filtered by category)
 $links = $wpdb->get_results($wpdb->prepare("

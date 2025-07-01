@@ -221,7 +221,7 @@ class Ajax {
                 switch ($option->option_type) {
                     case 'condition':
                         $condition = $wpdb->get_row($wpdb->prepare(
-                            "SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE id = %d AND active = 1",
+                            "SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE id = %d",
                             $option->option_id
                         ));
                         if ($condition) {
@@ -230,7 +230,7 @@ class Ajax {
                         break;
                     case 'product_color':
                         $color = $wpdb->get_row($wpdb->prepare(
-                            "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE id = %d AND active = 1",
+                            "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE id = %d",
                             $option->option_id
                         ));
                         if ($color) {
@@ -239,7 +239,7 @@ class Ajax {
                         break;
                     case 'frame_color':
                         $color = $wpdb->get_row($wpdb->prepare(
-                            "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE id = %d AND active = 1",
+                            "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE id = %d",
                             $option->option_id
                         ));
                         if ($color) {
@@ -248,7 +248,7 @@ class Ajax {
                         break;
                     case 'extra':
                         $extra = $wpdb->get_row($wpdb->prepare(
-                            "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE id = %d AND active = 1",
+                            "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE id = %d",
                             $option->option_id
                         ));
                         if ($extra) {
@@ -266,22 +266,22 @@ class Ajax {
             
             if ($variant) {
                 $conditions = $wpdb->get_results($wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE category_id = %d AND active = 1 ORDER BY sort_order",
+                    "SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE category_id = %d ORDER BY sort_order",
                     $variant->category_id
                 ));
                 
                 $product_colors = $wpdb->get_results($wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' AND active = 1 ORDER BY sort_order",
+                    "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' ORDER BY sort_order",
                     $variant->category_id
                 ));
                 
                 $frame_colors = $wpdb->get_results($wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' AND active = 1 ORDER BY sort_order",
+                    "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' ORDER BY sort_order",
                     $variant->category_id
                 ));
 
                 $extras = $wpdb->get_results($wpdb->prepare(
-                    "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE category_id = %d AND active = 1 ORDER BY sort_order",
+                    "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE category_id = %d ORDER BY sort_order",
                     $variant->category_id
                 ));
             }

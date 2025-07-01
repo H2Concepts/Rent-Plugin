@@ -6,14 +6,14 @@ if (!defined('ABSPATH')) {
 global $wpdb;
 
 // Get categories count
-$categories_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1");
-$variants_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_variants WHERE active = 1");
-$extras_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_extras WHERE active = 1");
-$durations_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_durations WHERE active = 1");
+$categories_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_categories");
+$variants_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_variants");
+$extras_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_extras");
+$durations_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_durations");
 $links_count = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}federwiegen_links");
 
 // Get recent categories
-$recent_categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY id DESC LIMIT 3");
+$recent_categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY id DESC LIMIT 3");
 
 // Get branding settings
 $branding = array();
