@@ -463,6 +463,13 @@
     font-size: 12px;
 }
 
+.federwiegen-status,
+.federwiegen-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
 .federwiegen-item-actions {
     padding: 15px;
     background: #f8f9fa;
