@@ -41,10 +41,9 @@
             <h4>📦 Verfügbarkeit</h4>
             <div class="federwiegen-form-row">
                 <div class="federwiegen-form-group">
-                    <label>Verfügbar</label>
-                    <label class="fw-toggle">
+                    <label class="federwiegen-checkbox-label">
                         <input type="checkbox" name="available" value="1" checked>
-                        <span></span>
+                        <span>Verfügbar</span>
                     </label>
                 </div>
                 <div class="federwiegen-form-group">
@@ -80,7 +79,12 @@
                     <label>Sortierung</label>
                     <input type="number" name="sort_order" value="0" min="0">
                 </div>
-                <input type="hidden" name="active" value="1">
+                <div class="federwiegen-form-group">
+                    <label class="federwiegen-checkbox-label">
+                        <input type="checkbox" name="active" value="1" checked>
+                        <span>Aktiv</span>
+                    </label>
+                </div>
             </div>
         </div>
         
