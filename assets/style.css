@@ -494,6 +494,7 @@
     margin-bottom: 0.25rem;
     font-size: 0.95rem;
     line-height: 1.3;
+    font-family: "Roca",sans-serif;
 }
 
 .federwiegen-option p {
@@ -534,6 +535,7 @@
     font-weight: 500;
     color: #2a372a;
     font-size: 0.95rem;
+    font-family: "Roca",sans-serif;
 }
 
 .federwiegen-extra-price {
@@ -554,6 +556,7 @@
     font-weight: 500;
     color: #2a372a;
     font-size: 0.95rem;
+    font-family: "Roca",sans-serif;
 }
 
 .federwiegen-discount-badge {
@@ -583,6 +586,7 @@
     font-weight: 500;
     color: #2a372a;
     font-size: 0.95rem;
+    font-family: "Roca",sans-serif;
 }
 
 .federwiegen-condition-badge {
@@ -622,6 +626,7 @@
     margin-bottom: 0.25rem;
     font-weight: 700;
     color: #2a372a;
+    font-family: "Roca",sans-serif;
 }
 
 .federwiegen-option.selected .federwiegen-color-preview {
