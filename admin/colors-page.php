@@ -305,9 +305,6 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                         </div>
                                     </div>
                                     <div class="federwiegen-item-meta">
-                                        <span class="federwiegen-status <?php echo $color->available ? 'available' : 'unavailable'; ?>">
-                                            <?php echo $color->available ? '✅ Verfügbar' : '❌ Nicht verfügbar'; ?>
-                                        </span>
                                     </div>
                                 </div>
                                 
@@ -343,11 +340,7 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                             <code style="font-size: 12px;"><?php echo esc_html($color->color_code); ?></code>
                                         </div>
                                     </div>
-                                    <div class="federwiegen-item-meta">
-                                        <span class="federwiegen-status <?php echo $color->available ? 'available' : 'unavailable'; ?>">
-                                            <?php echo $color->available ? '✅ Verfügbar' : '❌ Nicht verfügbar'; ?>
-                                        </span>
-                                    </div>
+                                    <div class="federwiegen-item-meta"></div>
                                 </div>
                                 
                                 <div class="federwiegen-item-actions">
