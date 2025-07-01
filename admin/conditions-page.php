@@ -192,19 +192,8 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                                     <input type="number" name="sort_order" value="0" min="0">
                                 </div>
                                 
-                                <div class="federwiegen-form-group">
-                                    <label>
-                                        <input type="checkbox" name="available" value="1" checked>
-                                        Verfügbar
-                                    </label>
-                                </div>
-                                
-                                <div class="federwiegen-form-group">
-                                    <label>
-                                        <input type="checkbox" name="active" value="1" checked>
-                                        Aktiv
-                                    </label>
-                                </div>
+                                <input type="hidden" name="available" value="1">
+                                <input type="hidden" name="active" value="1">
                             </div>
                             
                             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">
@@ -253,19 +242,8 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                                     <input type="number" name="sort_order" value="<?php echo $edit_item->sort_order; ?>" min="0">
                                 </div>
                                 
-                                <div class="federwiegen-form-group">
-                                    <label>
-                                        <input type="checkbox" name="available" value="1" <?php checked($edit_item->available); ?>>
-                                        Verfügbar
-                                    </label>
-                                </div>
-                                
-                                <div class="federwiegen-form-group">
-                                    <label>
-                                        <input type="checkbox" name="active" value="1" <?php checked($edit_item->active); ?>>
-                                        Aktiv
-                                    </label>
-                                </div>
+                                <input type="hidden" name="available" value="1">
+                                <input type="hidden" name="active" value="1">
                             </div>
                             
                             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">
