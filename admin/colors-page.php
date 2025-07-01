@@ -184,7 +184,10 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                 
                                 <div class="federwiegen-form-group">
                                     <label>Farbcode *</label>
-                                    <input type="color" name="color_code" value="#FFFFFF" required>
+                                    <div class="federwiegen-color-input">
+                                        <input type="color" name="color_code" value="#FFFFFF" required>
+                                        <span class="federwiegen-color-swatch" style="background-color:#FFFFFF;"></span>
+                                    </div>
                                 </div>
                                 
                                 <div class="federwiegen-form-group">
@@ -235,7 +238,10 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                 
                                 <div class="federwiegen-form-group">
                                     <label>Farbcode *</label>
-                                    <input type="color" name="color_code" value="<?php echo esc_attr($edit_item->color_code); ?>" required>
+                                    <div class="federwiegen-color-input">
+                                        <input type="color" name="color_code" value="<?php echo esc_attr($edit_item->color_code); ?>" required>
+                                        <span class="federwiegen-color-swatch" style="background-color: <?php echo esc_attr($edit_item->color_code); ?>;"></span>
+                                    </div>
                                 </div>
                                 
                                 <div class="federwiegen-form-group">

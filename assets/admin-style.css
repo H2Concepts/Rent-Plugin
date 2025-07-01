@@ -509,6 +509,22 @@
     transform: scale(1.05);
 }
 
+.federwiegen-color-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    display: inline-block;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.federwiegen-color-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 /* Form styling improvements */
 .form-table th {
     width: 200px;
