@@ -52,11 +52,7 @@
                         <small>Sortierung: <?php echo $duration->sort_order; ?></small>
                     </div>
                     
-                    <div class="federwiegen-duration-status">
-                        <span class="federwiegen-status-badge <?php echo $duration->active ? 'available' : 'unavailable'; ?>">
-                            <?php echo $duration->active ? '✅ Aktiv' : '❌ Inaktiv'; ?>
-                        </span>
-                    </div>
+
                 </div>
                 
                 <div class="federwiegen-duration-actions">

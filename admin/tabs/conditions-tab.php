@@ -8,8 +8,8 @@ if (isset($_POST['submit_condition'])) {
     $name = sanitize_text_field($_POST['name']);
     $description = sanitize_textarea_field($_POST['description']);
     $price_modifier = floatval($_POST['price_modifier']) / 100; // Convert percentage to decimal
-    $available = isset($_POST['available']) ? 1 : 0;
-    $active = isset($_POST['active']) ? 1 : 0;
+    $available = 1;
+    $active = 1;
     $sort_order = intval($_POST['sort_order']);
 
     if (isset($_POST['id']) && $_POST['id']) {
@@ -22,11 +22,10 @@ if (isset($_POST['submit_condition'])) {
                 'description' => $description,
                 'price_modifier' => $price_modifier,
                 'available' => $available,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
             array('id' => intval($_POST['id'])),
-            array('%d', '%s', '%s', '%f', '%d', '%d', '%d'),
+            array('%d', '%s', '%s', '%f', '%d'),
             array('%d')
         );
         
@@ -43,10 +42,9 @@ if (isset($_POST['submit_condition'])) {
                 'description' => $description,
                 'price_modifier' => $price_modifier,
                 'available' => $available,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
-            array('%d', '%s', '%s', '%f', '%d', '%d', '%d')
+            array('%d', '%s', '%s', '%f', '%d')
         );
         
         if ($result !== false) {
@@ -110,19 +108,7 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                     <input type="number" name="sort_order" value="<?php echo $edit_item ? $edit_item->sort_order : '0'; ?>" min="0">
                 </div>
                 
-                <div class="federwiegen-form-group">
-                    <label>
-                        <input type="checkbox" name="available" value="1" <?php echo (!$edit_item || $edit_item->available) ? 'checked' : ''; ?>>
-                        Verfügbar
-                    </label>
-                </div>
-                
-                <div class="federwiegen-form-group">
-                    <label>
-                        <input type="checkbox" name="active" value="1" <?php echo (!$edit_item || $edit_item->active) ? 'checked' : ''; ?>>
-                        Aktiv
-                    </label>
-                </div>
+
             </div>
             
             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">

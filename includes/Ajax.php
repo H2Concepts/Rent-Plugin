@@ -206,7 +206,7 @@ class Ajax {
         
         // Get variant-specific options
         $variant_options = $wpdb->get_results($wpdb->prepare(
-            "SELECT option_type, option_id FROM {$wpdb->prefix}federwiegen_variant_options WHERE variant_id = %d",
+            "SELECT option_type, option_id FROM {$wpdb->prefix}federwiegen_variant_options WHERE variant_id = %d AND available = 1",
             $variant_id
         ));
         

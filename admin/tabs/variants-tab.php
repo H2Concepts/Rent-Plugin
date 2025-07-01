@@ -11,7 +11,6 @@ if (isset($_POST['submit_variant'])) {
     $price_from = isset($_POST['price_from']) ? floatval($_POST['price_from']) : 0;
     $available = isset($_POST['available']) ? 1 : 0;
     $availability_note = sanitize_text_field($_POST['availability_note']);
-    $active = isset($_POST['active']) ? 1 : 0;
     $sort_order = intval($_POST['sort_order']);
     
     // Handle multiple images
@@ -30,7 +29,6 @@ if (isset($_POST['submit_variant'])) {
             'price_from' => $price_from,
             'available' => $available,
             'availability_note' => $availability_note,
-            'active' => $active,
             'sort_order' => $sort_order
         ), $image_data);
         
@@ -55,7 +53,6 @@ if (isset($_POST['submit_variant'])) {
             'price_from' => $price_from,
             'available' => $available,
             'availability_note' => $availability_note,
-            'active' => $active,
             'sort_order' => $sort_order
         ), $image_data);
         
@@ -141,12 +138,6 @@ $variants = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE c
                     <input type="number" name="sort_order" value="<?php echo $edit_item ? $edit_item->sort_order : '0'; ?>" min="0">
                 </div>
                 
-                <div class="federwiegen-form-group">
-                    <label>
-                        <input type="checkbox" name="active" value="1" <?php echo (!$edit_item || $edit_item->active) ? 'checked' : ''; ?>>
-                        Aktiv
-                    </label>
-                </div>
             </div>
             
             <!-- Images Section -->

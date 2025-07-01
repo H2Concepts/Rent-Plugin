@@ -113,12 +113,7 @@ $durations = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE 
                     <input type="number" name="sort_order" value="<?php echo $edit_item ? $edit_item->sort_order : '0'; ?>" min="0">
                 </div>
                 
-                <div class="federwiegen-form-group">
-                    <label>
-                        <input type="checkbox" name="active" value="1" <?php echo (!$edit_item || $edit_item->active) ? 'checked' : ''; ?>>
-                        Aktiv
-                    </label>
-                </div>
+
             </div>
             
             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">

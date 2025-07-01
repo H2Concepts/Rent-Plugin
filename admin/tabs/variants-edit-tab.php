@@ -42,9 +42,10 @@
             <h4>📦 Verfügbarkeit</h4>
             <div class="federwiegen-form-row">
                 <div class="federwiegen-form-group">
-                    <label class="federwiegen-checkbox-label">
+                    <label>Verfügbar</label>
+                    <label class="fw-toggle">
                         <input type="checkbox" name="available" value="1" <?php echo ($edit_item->available ?? 1) ? 'checked' : ''; ?>>
-                        <span>Verfügbar</span>
+                        <span class="fw-slider"></span>
                     </label>
                 </div>
                 <div class="federwiegen-form-group">
@@ -85,12 +86,6 @@
                 <div class="federwiegen-form-group">
                     <label>Sortierung</label>
                     <input type="number" name="sort_order" value="<?php echo $edit_item->sort_order; ?>" min="0">
-                </div>
-                <div class="federwiegen-form-group">
-                    <label class="federwiegen-checkbox-label">
-                        <input type="checkbox" name="active" value="1" <?php echo $edit_item->active ? 'checked' : ''; ?>>
-                        <span>Aktiv</span>
-                    </label>
                 </div>
             </div>
         </div>

@@ -23,6 +23,7 @@ if (isset($_POST['submit'])) {
     $variant_id = intval($_POST['variant_id']);
     $option_type = sanitize_text_field($_POST['option_type']);
     $option_id = intval($_POST['option_id']);
+    $available = isset($_POST['available']) ? 1 : 0;
 
     $table_name = $wpdb->prefix . 'federwiegen_variant_options';
 
@@ -33,10 +34,11 @@ if (isset($_POST['submit'])) {
             array(
                 'variant_id' => $variant_id,
                 'option_type' => $option_type,
-                'option_id' => $option_id
+                'option_id' => $option_id,
+                'available' => $available
             ),
             array('id' => intval($_POST['id'])),
-            array('%d', '%s', '%d'),
+            array('%d', '%s', '%d', '%d'),
             array('%d')
         );
         
@@ -52,9 +54,10 @@ if (isset($_POST['submit'])) {
             array(
                 'variant_id' => $variant_id,
                 'option_type' => $option_type,
-                'option_id' => $option_id
+                'option_id' => $option_id,
+                'available' => $available
             ),
-            array('%d', '%s', '%d')
+            array('%d', '%s', '%d', '%d')
         );
         
         if ($result !== false) {
@@ -229,6 +232,13 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                                         <option value="">Erst Option-Typ wählen...</option>
                                     </select>
                                 </div>
+                                <div class="federwiegen-form-group">
+                                    <label>Verfügbar</label>
+                                    <label class="fw-toggle">
+                                        <input type="checkbox" name="available" value="1" checked>
+                                        <span class="fw-slider"></span>
+                                    </label>
+                                </div>
                             </div>
                             
                             <div class="federwiegen-form-actions">
@@ -292,6 +302,13 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                                         <option value="">Erst Option-Typ wählen...</option>
                                     </select>
                                 </div>
+                                <div class="federwiegen-form-group">
+                                    <label>Verfügbar</label>
+                                    <label class="fw-toggle">
+                                        <input type="checkbox" name="available" value="1" <?php echo ($edit_item->available ?? 1) ? 'checked' : ''; ?>>
+                                        <span class="fw-slider"></span>
+                                    </label>
+                                </div>
                             </div>
                             
                             <div class="federwiegen-form-actions">
@@ -340,11 +357,11 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                             
                             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 15px;">
                                 <?php foreach ($options as $option): ?>
-                                <div style="background: white; border: 1px solid #ddd; border-radius: 6px; padding: 15px;">
+                                <div style="background: white; border: 1px solid #ddd; border-radius: 6px; padding: 15px; position: relative;">
                                     <div style="display: flex; justify-content: space-between; align-items: center;">
                                         <div>
                                             <strong>
-                                                <?php 
+                                                <?php
                                                 switch ($option->option_type) {
                                                     case 'condition':
                                                         echo '🔄 ' . esc_html($option->option_name);
@@ -367,6 +384,9 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                                             <a href="<?php echo admin_url('admin.php?page=federwiegen-variant-options&category=' . $selected_category . '&tab=list&delete=' . $option->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">🗑️</a>
                                         </div>
                                     </div>
+                                    <span class="federwiegen-status-badge <?php echo $option->available ? 'available' : 'unavailable'; ?>" style="position:absolute;top:10px;right:10px;">
+                                        <?php echo $option->available ? '✅ Verfügbar' : '❌ Nicht verfügbar'; ?>
+                                    </span>
                                 </div>
                                 <?php endforeach; ?>
                             </div>

@@ -8,7 +8,7 @@ if (isset($_POST['submit_extra'])) {
     $name = sanitize_text_field($_POST['name']);
     $price = floatval($_POST['price']);
     $image_url = esc_url_raw($_POST['image_url']);
-    $active = isset($_POST['active']) ? 1 : 0;
+    $active = 1;
     $sort_order = intval($_POST['sort_order']);
 
     if (isset($_POST['id']) && $_POST['id']) {
@@ -20,7 +20,6 @@ if (isset($_POST['submit_extra'])) {
                 'name' => $name,
                 'price' => $price,
                 'image_url' => $image_url,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
             array('id' => intval($_POST['id'])),
@@ -40,10 +39,9 @@ if (isset($_POST['submit_extra'])) {
                 'name' => $name,
                 'price' => $price,
                 'image_url' => $image_url,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
-            array('%d', '%s', '%f', '%s', '%d', '%d')
+            array('%d', '%s', '%f', '%s', '%d')
         );
         
         if ($result !== false) {
@@ -115,12 +113,7 @@ $extras = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE cat
                     <input type="number" name="sort_order" value="<?php echo $edit_item ? $edit_item->sort_order : '0'; ?>" min="0">
                 </div>
                 
-                <div class="federwiegen-form-group">
-                    <label>
-                        <input type="checkbox" name="active" value="1" <?php echo (!$edit_item || $edit_item->active) ? 'checked' : ''; ?>>
-                        Aktiv
-                    </label>
-                </div>
+
             </div>
             
             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">
