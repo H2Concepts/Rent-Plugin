@@ -1,17 +1,91 @@
-# Federwiegen Verleih Plugin
 
-This WordPress plugin enables the rental of baby swings ("Federwiegen").
 
-## Sample Data
 
-By default this plugin **does not** insert any demonstration data when it is
-activated. If you would like to load the example records for a quick start you
-can enable them by defining the following constant **before** activation (e.g.
-in your `wp-config.php`):
+Readme.md für Plugin erstellen
+1. Juli
+H2Concepts/Rent-Plugin
+main
++45
+-17
+
+Archivieren
+
+Weitergeben
+
+PR erstellen
+
+
+1
+Kannst du mir für mein Plugin eine vernünftige Readme.md schreiben
+Kopieren
+Summary
+
+Introduced a comprehensive README describing the plugin’s features such as configuration pages, shortcode usage, Stripe integration, analytics tracking, and SEO enhancements
+
+Provided installation instructions and details on enabling demo data through the FEDERWIEGEN_LOAD_DEFAULT_DATA constant
+
+Explained how to embed products on a page with the [federwiegen_product] shortcode and referenced the directory structure for development
+
+Testing
+
+✅ git status --short
+
+
+Datei (1)
+
+README.md
++45
+-17
+
+
+Diffs
+Protokolle
+README.md
++45
+-17
+
+# H2 Concepts Rent Plugin
+
+This WordPress plugin enables the rental of configurable products with built-in Stripe integration. It was initially developed for renting baby swings ("Federwiegen") but can be adapted to other products.
+
+## Features
+
+- Admin pages to manage product categories, variants, extras, rental durations and more
+- Shortcode `[federwiegen_product]` to embed a product page on the front‑end
+- Calculates prices dynamically and links to your Stripe checkout URLs
+- Tracks user interactions for analytics
+- Generates SEO meta tags, Open Graph tags and schema markup
+
+## Installation
+
+1. Upload the plugin files to the `/wp-content/plugins` directory or install through the WordPress admin panel.
+2. Activate the plugin through the **Plugins** menu in WordPress.
+3. Upon first activation database tables will be created automatically.
+
+### Loading Demo Data
+
+By default no sample data is inserted. To load the example records define the following constant **before** activating the plugin (for example in `wp-config.php`):
 
 ```php
 define('FEDERWIEGEN_LOAD_DEFAULT_DATA', true);
 ```
 
-You may also control this behaviour programmatically using the
-`federwiegen_load_default_data` filter.
+You may also toggle this behaviour with the `federwiegen_load_default_data` filter.
+
+## Usage
+
+1. Configure your categories, variants, extras and durations in the new **Federwiegen** admin menu.
+2. For each combination create the corresponding Stripe link under **Stripe Links**.
+3. Add the shortcode to a page or post:
+
+```php
+[federwiegen_product category="STANDARD"]
+```
+
+Use the `category` attribute to select a specific product category by shortcode.
+
+## Development
+
+The plugin code is organised in the `includes`, `admin`, `templates` and `assets` directories. Activation and deactivation hooks are registered in `federwiegen-verleih.php`. Core functionality lives in `includes/` where an autoloader loads the classes.
+
+
