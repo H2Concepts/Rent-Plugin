@@ -639,6 +639,7 @@
 }
 
 .federwiegen-color-name {
+    display: none;
     font-weight: 500;
     color: #2a372a;
     font-size: 0.95rem;

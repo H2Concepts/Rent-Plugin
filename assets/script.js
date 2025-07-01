@@ -19,6 +19,9 @@ jQuery(document).ready(function($) {
         currentCategoryId = container.data('category-id');
     }
 
+    // Remove old inline color labels if they exist
+    $('.federwiegen-color-name').remove();
+
     // Initialize mobile sticky price bar
     initMobileStickyPrice();
 
@@ -356,7 +359,6 @@ jQuery(document).ready(function($) {
                     <div class="federwiegen-option ${option.available == 0 ? 'unavailable' : ''}" data-type="${optionType}" data-id="${option.id}" data-available="${option.available == 0 ? 'false' : 'true'}" data-color-name="${option.name}">
                         <div class="federwiegen-option-content">
                             <div class="federwiegen-color-display">
-                                <span class="federwiegen-color-name">Farbe: ${option.name}</span>
                                 <div class="federwiegen-color-preview" style="background-color: ${option.color_code};"></div>
                             </div>
                         </div>
@@ -374,10 +376,13 @@ jQuery(document).ready(function($) {
                     </div>
                 `;
             }
-            
+
             container.append(optionHtml);
         });
-        
+
+        // Remove any leftover inline color names
+        container.find('.federwiegen-color-name').remove();
+
         // Re-bind click events for new options
         container.find('.federwiegen-option').on('click', function() {
             const type = $(this).data('type');
