@@ -41,7 +41,10 @@ $feature_3_description = isset($category) ? $category->feature_3_description : '
 // Button
 $button_text = isset($category) ? $category->button_text : '';
 $button_icon = isset($category) ? $category->button_icon : '';
-$payment_icons = isset($category) ? array_filter(array_map('trim', explode(',', $category->payment_icons))) : array();
+$payment_icons = [];
+if (isset($category) && property_exists($category, 'payment_icons')) {
+    $payment_icons = array_filter(array_map('trim', explode(',', $category->payment_icons)));
+}
 
 // Shipping
 $shipping_cost = isset($category) ? ($category->shipping_cost ?? 0) : 0;

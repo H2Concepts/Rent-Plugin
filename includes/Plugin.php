@@ -12,7 +12,8 @@ class Plugin {
         $this->admin = new Admin();
 
         add_action('init', [$this, 'init']);
-        add_action('plugins_loaded', [$this, 'check_for_updates']);
+        // Run database update check as early as possible
+        $this->check_for_updates();
         add_action('wp_head', [$this, 'add_meta_tags']);
         add_action('wp_head', [$this, 'add_schema_markup']);
         add_action('wp_head', [$this, 'add_open_graph_tags']);

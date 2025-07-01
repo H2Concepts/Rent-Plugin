@@ -167,7 +167,10 @@
                         'union-pay' => 'Union Pay',
                         'visa' => 'Visa'
                     ];
-                    $selected_icons = array_filter(array_map('trim', explode(',', $edit_item->payment_icons)));
+                    $selected_icons = [];
+                    if (isset($edit_item->payment_icons)) {
+                        $selected_icons = array_filter(array_map('trim', explode(',', $edit_item->payment_icons)));
+                    }
                     ?>
                     <?php foreach ($payment_methods as $key => $label): ?>
                         <label>
