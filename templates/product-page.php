@@ -85,7 +85,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                             <?php if (!empty($default_image)): ?>
                                 <img src="<?php echo esc_url($default_image); ?>" alt="Federwiege" id="federwiegen-main-image" class="federwiegen-main-image">
                             <?php else: ?>
-                                <div class="federwiegen-placeholder-image" id="federwiegen-placeholder">👶</div>
+                                <div class="federwiegen-placeholder-image" id="federwiegen-placeholder">ðŸ‘¶</div>
                             <?php endif; ?>
                             
                             <!-- Extra Image Overlay -->
@@ -109,15 +109,15 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     
                     <div class="federwiegen-features">
                         <div class="federwiegen-feature">
-                            <span class="federwiegen-feature-icon">🛡️</span>
-                            <span>Sicherheitsgeprüft</span>
+                            <span class="federwiegen-feature-icon">ðŸ›¡ï¸</span>
+                            <span>SicherheitsgeprÃ¼ft</span>
                         </div>
                         <div class="federwiegen-feature">
-                            <span class="federwiegen-feature-icon">❤️</span>
+                            <span class="federwiegen-feature-icon">â¤ï¸</span>
                             <span>Baby-gerecht</span>
                         </div>
                         <div class="federwiegen-feature">
-                            <span class="federwiegen-feature-icon">📱</span>
+                            <span class="federwiegen-feature-icon">ðŸ“±</span>
                             <span>App-Steuerung</span>
                         </div>
                     </div>
@@ -129,18 +129,18 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     <p class="federwiegen-price-label">Monatlicher Mietpreis</p>
                     <div class="federwiegen-price-wrapper">
                         <span class="federwiegen-original-price" id="federwiegen-original-price" style="display: none;"></span>
-                        <span class="federwiegen-final-price" id="federwiegen-final-price">0,00€</span>
+                        <span class="federwiegen-final-price" id="federwiegen-final-price">0,00â‚¬</span>
                         <span class="federwiegen-price-period">/Monat</span>
                     </div>
                     <p class="federwiegen-savings" id="federwiegen-savings" style="display: none;"></p>
                     <div class="federwiegen-shipping-info">
                         <p class="federwiegen-shipping-text">
-                            <span class="federwiegen-shipping-icon">🚚</span>
-                            Einmalige Versandkosten: <strong><?php echo number_format($shipping_cost, 2, ',', '.'); ?>€</strong>
+                            <span class="federwiegen-shipping-icon">ðŸšš</span>
+                            Einmalige Versandkosten: <strong><?php echo number_format($shipping_cost, 2, ',', '.'); ?>â‚¬</strong>
                         </p>
                     </div>
                 </div>
-                <div class="federwiegen-price-icon">💶</div>
+                <div class="federwiegen-price-icon">ðŸ’¶</div>
             </div>
         </div>
 
@@ -149,7 +149,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 <!-- Variants Selection -->
                 <?php if (!empty($variants)): ?>
                 <div class="federwiegen-section">
-                    <h3>Wählen Sie Ihre Ausführung</h3>
+                    <h3>WÃ¤hlen Sie Ihre AusfÃ¼hrung</h3>
                     <div class="federwiegen-options variants layout-<?php echo esc_attr($layout_style); ?>">
                         <?php foreach ($variants as $variant): ?>
                         <div class="federwiegen-option <?php echo !($variant->available ?? 1) ? 'unavailable' : ''; ?>" 
@@ -170,17 +170,17 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                                     $display_price = ($variant->price_from > 0) ? $variant->price_from : $variant->base_price;
                                     $prefix = ($variant->price_from > 0) ? 'ab ' : '';
                                 ?>
-                                <p class="federwiegen-option-price"><?php echo $prefix . number_format($display_price, 2, ',', '.'); ?>€/Monat</p>
+                                <p class="federwiegen-option-price"><?php echo $prefix . number_format($display_price, 2, ',', '.'); ?>â‚¬/Monat</p>
                                 <?php if (!($variant->available ?? 1)): ?>
                                     <div class="federwiegen-availability-notice">
-                                        <span class="federwiegen-unavailable-badge">❌ Nicht verfügbar</span>
+                                        <span class="federwiegen-unavailable-badge">âŒ Nicht verfÃ¼gbar</span>
                                         <?php if (!empty($variant->availability_note)): ?>
                                             <p class="federwiegen-availability-note"><?php echo esc_html($variant->availability_note); ?></p>
                                         <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
-                            <div class="federwiegen-option-check">✓</div>
+                            <div class="federwiegen-option-check">âœ“</div>
                         </div>
                         <?php endforeach; ?>
                     </div>
@@ -190,7 +190,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 <!-- Extras Selection -->
                 <?php if (!empty($extras)): ?>
                 <div class="federwiegen-section" id="extras-section">
-                    <h3>Wählen Sie Ihre Extras</h3>
+                    <h3>WÃ¤hlen Sie Ihre Extras</h3>
                     <div class="federwiegen-options extras layout-<?php echo esc_attr($layout_style); ?>" id="extras-container">
                         <?php foreach ($extras as $extra): ?>
                         <div class="federwiegen-option" data-type="extra" data-id="<?php echo esc_attr($extra->id); ?>"
@@ -199,10 +199,10 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                             <div class="federwiegen-option-content">
                                 <span class="federwiegen-extra-name"><?php echo esc_html($extra->name); ?></span>
                                 <?php if ($extra->price > 0): ?>
-                                <div class="federwiegen-extra-price">+<?php echo number_format($extra->price, 2, ',', '.'); ?>€/Monat</div>
+                                <div class="federwiegen-extra-price">+<?php echo number_format($extra->price, 2, ',', '.'); ?>â‚¬/Monat</div>
                                 <?php endif; ?>
                             </div>
-                            <div class="federwiegen-option-check">✓</div>
+                            <div class="federwiegen-option-check">âœ“</div>
                         </div>
                         <?php endforeach; ?>
                     </div>
@@ -213,9 +213,9 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 <?php if (!empty($durations)): ?>
                 <div class="federwiegen-section">
                     <h3>
-                        Wählen Sie Ihre Mietdauer
+                        WÃ¤hlen Sie Ihre Mietdauer
                         <span class="federwiegen-tooltip">
-                            ℹ️
+                            â„¹ï¸
                             <span class="federwiegen-tooltiptext"><?php echo esc_html($duration_tooltip); ?></span>
                         </span>
                     </h3>
@@ -233,7 +233,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                                     Mindestlaufzeit: <?php echo $duration->months_minimum; ?> Monat<?php echo $duration->months_minimum > 1 ? 'e' : ''; ?>
                                 </p>
                             </div>
-                            <div class="federwiegen-option-check">✓</div>
+                            <div class="federwiegen-option-check">âœ“</div>
                         </div>
                         <?php endforeach; ?>
                     </div>
@@ -245,7 +245,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     <h3>
                         Zustand
                         <span class="federwiegen-tooltip">
-                            ℹ️
+                            â„¹ï¸
                             <span class="federwiegen-tooltiptext"><?php echo esc_html($condition_tooltip); ?></span>
                         </span>
                     </h3>
@@ -263,7 +263,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                                 </div>
                                 <p class="federwiegen-condition-info"><?php echo esc_html($condition->description); ?></p>
                             </div>
-                            <div class="federwiegen-option-check">✓</div>
+                            <div class="federwiegen-option-check">âœ“</div>
                         </div>
                         <?php endforeach; ?>
                     </div>
@@ -318,7 +318,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                         <?php if (!empty($button_icon)): ?>
                             <img src="<?php echo esc_url($button_icon); ?>" alt="Button Icon" class="federwiegen-button-icon-img">
                         <?php else: ?>
-                            <span class="federwiegen-button-icon">🛒</span>
+                            <span class="federwiegen-button-icon">ðŸ›’</span>
                         <?php endif; ?>
                         <span><?php echo esc_html($button_text); ?></span>
                     </button>
@@ -326,7 +326,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                         Bitte treffen Sie alle Auswahlen um fortzufahren
                     </p>
                     <p class="federwiegen-unavailable-help" id="federwiegen-unavailable-help" style="display: none;">
-                        Das gewählte Produkt ist aktuell nicht verfügbar
+                        Das gewÃ¤hlte Produkt ist aktuell nicht verfÃ¼gbar
                     </p>
                     <?php if (!empty($payment_icons)): ?>
                     <div class="federwiegen-payment-icons">
@@ -337,8 +337,8 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     <?php endif; ?>
                     <?php else: ?>
                     <div style="padding: 20px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; text-align: center;">
-                        <h4>⚠️ Kategorie noch nicht vollständig konfiguriert</h4>
-                        <p>Für diese Produktkategorie sind noch nicht alle erforderlichen Daten hinterlegt.</p>
+                        <h4>âš ï¸ Kategorie noch nicht vollstÃ¤ndig konfiguriert</h4>
+                        <p>FÃ¼r diese Produktkategorie sind noch nicht alle erforderlichen Daten hinterlegt.</p>
                         <p><strong>Bitte konfigurieren Sie die fehlenden Daten im Admin-Bereich.</strong></p>
                     </div>
                     <?php endif; ?>
@@ -356,7 +356,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     <?php if (!empty($feature_1_icon)): ?>
                         <img src="<?php echo esc_url($feature_1_icon); ?>" alt="<?php echo esc_attr($feature_1_title); ?>" style="width: 100%; height: 100%; object-fit: contain;">
                     <?php else: ?>
-                        🛡️
+                        ðŸ›¡ï¸
                     <?php endif; ?>
                 </div>
                 <h4><?php echo esc_html($feature_1_title); ?></h4>
@@ -367,7 +367,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     <?php if (!empty($feature_2_icon)): ?>
                         <img src="<?php echo esc_url($feature_2_icon); ?>" alt="<?php echo esc_attr($feature_2_title); ?>" style="width: 100%; height: 100%; object-fit: contain;">
                     <?php else: ?>
-                        ❤️
+                        â¤ï¸
                     <?php endif; ?>
                 </div>
                 <h4><?php echo esc_html($feature_2_title); ?></h4>
@@ -378,7 +378,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     <?php if (!empty($feature_3_icon)): ?>
                         <img src="<?php echo esc_url($feature_3_icon); ?>" alt="<?php echo esc_attr($feature_3_title); ?>" style="width: 100%; height: 100%; object-fit: contain;">
                     <?php else: ?>
-                        📱
+                        ðŸ“±
                     <?php endif; ?>
                 </div>
                 <h4><?php echo esc_html($feature_3_title); ?></h4>
