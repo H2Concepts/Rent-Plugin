@@ -241,8 +241,6 @@ class Admin {
             self::verify_admin_action();
             $name = sanitize_text_field($_POST['name']);
             $shortcode = sanitize_text_field($_POST['shortcode']);
-            $page_title = sanitize_text_field($_POST['page_title']);
-            $page_description = sanitize_textarea_field($_POST['page_description']);
             $meta_title = sanitize_text_field($_POST['meta_title']);
             $meta_description = sanitize_textarea_field($_POST['meta_description']);
             $product_title = sanitize_text_field($_POST['product_title']);
@@ -275,8 +273,6 @@ class Admin {
                     [
                         'name' => $name,
                         'shortcode' => $shortcode,
-                        'page_title' => $page_title,
-                        'page_description' => $page_description,
                         'meta_title' => $meta_title,
                         'meta_description' => $meta_description,
                         'product_title' => $product_title,
@@ -302,8 +298,7 @@ class Admin {
                         'sort_order' => $sort_order,
                     ],
                     ['id' => intval($_POST['id'])],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d','%d'),
-                    ['%d']
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d','%d'),
                 );
 
                 if ($result !== false) {
@@ -317,8 +312,6 @@ class Admin {
                     [
                         'name' => $name,
                         'shortcode' => $shortcode,
-                        'page_title' => $page_title,
-                        'page_description' => $page_description,
                         'meta_title' => $meta_title,
                         'meta_description' => $meta_description,
                         'product_title' => $product_title,
@@ -343,7 +336,7 @@ class Admin {
                         'active' => $active,
                         'sort_order' => $sort_order,
                     ],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d','%d')
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d','%d')
                 );
 
                 if ($result !== false) {
