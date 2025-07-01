@@ -129,7 +129,6 @@ foreach ($branding_results as $result) {
             <?php foreach ($recent_categories as $category): ?>
             <div class="federwiegen-category-card">
                 <h4><?php echo esc_html($category->name); ?></h4>
-                <p><?php echo esc_html(substr($category->page_title, 0, 50)) . '...'; ?></p>
                 <code>[federwiegen_product category="<?php echo esc_html($category->shortcode); ?>"]</code>
                 <div class="federwiegen-category-actions">
                     <a href="<?php echo admin_url('admin.php?page=federwiegen-variants&category=' . $category->id); ?>" class="button button-small">Ausführungen</a>
