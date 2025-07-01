@@ -352,11 +352,10 @@ jQuery(document).ready(function($) {
                     <div class="federwiegen-option ${option.available == 0 ? 'unavailable' : ''}" data-type="${optionType}" data-id="${option.id}" data-available="${option.available == 0 ? 'false' : 'true'}">
                         <div class="federwiegen-option-content">
                             <div class="federwiegen-color-display">
+                                <span class="federwiegen-color-name">Farbe: ${option.name}</span>
                                 <div class="federwiegen-color-preview" style="background-color: ${option.color_code};"></div>
-                                <span class="federwiegen-color-name">${option.name}</span>
                             </div>
                         </div>
-                        <div class="federwiegen-option-check">✓</div>
                     </div>
                 `;
             } else if (optionType === 'extra') {
