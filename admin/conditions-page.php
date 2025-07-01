@@ -307,9 +307,6 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                                             }
                                             ?>
                                         </span>
-                                        <span class="federwiegen-status <?php echo $condition->available ? 'available' : 'unavailable'; ?>">
-                                            <?php echo $condition->available ? '✅ Verfügbar' : '❌ Nicht verfügbar'; ?>
-                                        </span>
                                     </div>
                                 </div>
                                 

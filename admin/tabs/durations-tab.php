@@ -153,9 +153,6 @@ $durations = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE 
                         <?php if ($duration->discount > 0): ?>
                             <span class="federwiegen-discount-badge">-<?php echo round($duration->discount * 100); ?>% Rabatt</span>
                         <?php endif; ?>
-                        <span class="federwiegen-status <?php echo $duration->active ? 'available' : 'unavailable'; ?>">
-                            <?php echo $duration->active ? '✅ Aktiv' : '❌ Inaktiv'; ?>
-                        </span>
                     </div>
                 </div>
                 
