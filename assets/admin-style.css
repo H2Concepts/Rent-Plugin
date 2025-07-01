@@ -340,8 +340,9 @@
 
 .federwiegen-form-section h4 {
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 50px;
     color: #3c434a;
+	font-size: 1.1rem;
 }
 
 .federwiegen-form-row {
