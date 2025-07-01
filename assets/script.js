@@ -91,8 +91,10 @@ jQuery(document).ready(function($) {
             selectedCondition = id;
         } else if (type === 'product-color') {
             selectedProductColor = id;
+            $('#selected-product-color-name').text($(this).data('color-name'));
         } else if (type === 'frame-color') {
             selectedFrameColor = id;
+            $('#selected-frame-color-name').text($(this).data('color-name'));
         }
 
         // Update price and button state
@@ -303,6 +305,8 @@ jQuery(document).ready(function($) {
                     selectedCondition = null;
                     selectedProductColor = null;
                     selectedFrameColor = null;
+                    $('#selected-product-color-name').text('');
+                    $('#selected-frame-color-name').text('');
                     selectedExtras = [];
                     selectedDuration = null;
                     $('.federwiegen-options.durations .federwiegen-option').removeClass('selected');
@@ -349,7 +353,7 @@ jQuery(document).ready(function($) {
                 `;
             } else if (optionType === 'product-color' || optionType === 'frame-color') {
                 optionHtml = `
-                    <div class="federwiegen-option ${option.available == 0 ? 'unavailable' : ''}" data-type="${optionType}" data-id="${option.id}" data-available="${option.available == 0 ? 'false' : 'true'}">
+                    <div class="federwiegen-option ${option.available == 0 ? 'unavailable' : ''}" data-type="${optionType}" data-id="${option.id}" data-available="${option.available == 0 ? 'false' : 'true'}" data-color-name="${option.name}">
                         <div class="federwiegen-option-content">
                             <div class="federwiegen-color-display">
                                 <span class="federwiegen-color-name">Farbe: ${option.name}</span>
@@ -405,8 +409,10 @@ jQuery(document).ready(function($) {
                     selectedCondition = id;
                 } else if (type === 'product-color') {
                     selectedProductColor = id;
+                    $('#selected-product-color-name').text($(this).data('color-name'));
                 } else if (type === 'frame-color') {
                     selectedFrameColor = id;
+                    $('#selected-frame-color-name').text($(this).data('color-name'));
                 }
             }
             
