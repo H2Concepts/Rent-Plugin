@@ -54,17 +54,17 @@ $condition_tooltip = isset($category) ? ($category->condition_tooltip ?? '') : '
 
 // Get initial conditions and colors (will be updated via AJAX when variant is selected)
 $initial_conditions = $wpdb->get_results($wpdb->prepare(
-    "SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE category_id = %d AND active = 1 AND available = 1 ORDER BY sort_order",
+    "SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE category_id = %d AND active = 1 ORDER BY sort_order",
     $category_id
 ));
 
 $initial_product_colors = $wpdb->get_results($wpdb->prepare(
-    "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' AND active = 1 AND available = 1 ORDER BY sort_order",
+    "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' AND active = 1 ORDER BY sort_order",
     $category_id
 ));
 
 $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
-    "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' AND active = 1 AND available = 1 ORDER BY sort_order",
+    "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' AND active = 1 ORDER BY sort_order",
     $category_id
 ));
 ?>
