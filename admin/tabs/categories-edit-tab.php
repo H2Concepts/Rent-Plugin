@@ -56,15 +56,6 @@
         <!-- Seiteninhalte -->
         <div class="federwiegen-form-section">
             <h4>📄 Seiteninhalte</h4>
-            <div class="federwiegen-form-group">
-                <label>Haupttitel der Seite *</label>
-                <input type="text" name="page_title" value="<?php echo esc_attr($edit_item->page_title); ?>" required>
-            </div>
-            
-            <div class="federwiegen-form-group">
-                <label>Hauptbeschreibung der Seite *</label>
-                <textarea name="page_description" rows="3" required><?php echo esc_textarea($edit_item->page_description); ?></textarea>
-            </div>
             
             <div class="federwiegen-form-row">
                 <div class="federwiegen-form-group">
