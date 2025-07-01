@@ -70,11 +70,6 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
 ?>
 
 <div class="federwiegen-container" data-category-id="<?php echo esc_attr($category_id); ?>" data-layout="<?php echo esc_attr($layout_style); ?>">
-    <div class="federwiegen-header">
-        <div class="federwiegen-icon">👶</div>
-        <h1><?php echo esc_html($page_title); ?></h1>
-        <p class="federwiegen-description"><?php echo esc_html($page_description); ?></p>
-    </div>
 
     <div class="federwiegen-content">
         <div class="federwiegen-left">
