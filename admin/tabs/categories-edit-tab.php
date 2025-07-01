@@ -133,7 +133,11 @@
                 </div>
                 <div class="federwiegen-form-group">
                     <label>Beschreibung</label>
-@@ -140,56 +140,56 @@
+                    <textarea name="feature_<?php echo $i; ?>_description" rows="2"><?php echo esc_textarea($edit_item->{'feature_' . $i . '_description'}); ?></textarea>
+                </div>
+            </div>
+            <?php endfor; ?>
+        </div>
         
         <!-- Button & Tooltips -->
         <div class="federwiegen-form-section">
