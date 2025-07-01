@@ -88,6 +88,21 @@
     gap: 20px;
 }
 
+/* Header layout matches categories/variants */
+.federwiegen-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.federwiegen-list-header h3 {
+    margin: 0;
+    color: #3c434a;
+}
+
 .federwiegen-extra-card {
     background: white;
     border: 1px solid #e9ecef;
@@ -195,6 +210,11 @@
 }
 
 @media (max-width: 768px) {
+    .federwiegen-list-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
     .federwiegen-extras-grid {
         grid-template-columns: repeat(2, 1fr);
     }
