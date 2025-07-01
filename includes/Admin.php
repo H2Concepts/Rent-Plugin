@@ -244,7 +244,7 @@ class Admin {
             $meta_title = sanitize_text_field($_POST['meta_title']);
             $meta_description = sanitize_textarea_field($_POST['meta_description']);
             $product_title = sanitize_text_field($_POST['product_title']);
-            $product_description = sanitize_textarea_field($_POST['product_description']);
+            $product_description = wp_kses_post($_POST['product_description']);
             $default_image = esc_url_raw($_POST['default_image']);
             $features_title = sanitize_text_field($_POST['features_title']);
             $feature_1_icon = esc_url_raw($_POST['feature_1_icon']);

@@ -75,4 +75,17 @@ jQuery(document).ready(function($) {
             return false;
         }
     });
+
+    // Update color preview swatches
+    $('input[type="color"]').each(function() {
+        var swatch = $(this).siblings('.federwiegen-color-swatch');
+        if (swatch.length) {
+            swatch.css('background-color', $(this).val());
+        }
+    }).on('input change', function() {
+        var swatch = $(this).siblings('.federwiegen-color-swatch');
+        if (swatch.length) {
+            swatch.css('background-color', $(this).val());
+        }
+    });
 });

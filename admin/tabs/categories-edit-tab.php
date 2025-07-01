@@ -70,7 +70,17 @@
             
             <div class="federwiegen-form-group">
                 <label>Produktbeschreibung *</label>
-                <textarea name="product_description" rows="4" required><?php echo esc_textarea($edit_item->product_description); ?></textarea>
+                <?php
+                wp_editor(
+                    $edit_item->product_description,
+                    'category_product_description_edit',
+                    [
+                        'textarea_name' => 'product_description',
+                        'textarea_rows' => 5,
+                        'media_buttons' => false,
+                    ]
+                );
+                ?>
             </div>
         </div>
         

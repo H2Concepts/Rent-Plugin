@@ -68,7 +68,17 @@
             
             <div class="federwiegen-form-group">
                 <label>Produktbeschreibung *</label>
-                <textarea name="product_description" rows="4" required placeholder="Beschreibungstext unter dem Produkttitel"></textarea>
+                <?php
+                wp_editor(
+                    '',
+                    'category_product_description_add',
+                    [
+                        'textarea_name' => 'product_description',
+                        'textarea_rows' => 5,
+                        'media_buttons' => false,
+                    ]
+                );
+                ?>
             </div>
         </div>
         
