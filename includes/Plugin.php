@@ -85,14 +85,14 @@ class Plugin {
         $category = null;
         if (!empty($atts['category'])) {
             $category = $wpdb->get_row($wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s OR name = %s AND active = 1",
+                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s OR name = %s",
                 $atts['category'],
                 $atts['category']
             ));
         }
 
         if (!$category) {
-            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY sort_order LIMIT 1");
+            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order LIMIT 1");
         }
 
         if (!$category) {
@@ -121,13 +121,13 @@ class Plugin {
         $category = null;
         if (!empty($category_shortcode)) {
             $category = $wpdb->get_row($wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s AND active = 1",
+                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s",
                 $category_shortcode
             ));
         }
 
         if (!$category) {
-            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY sort_order LIMIT 1");
+            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order LIMIT 1");
         }
 
         if (!$category) {
@@ -162,13 +162,13 @@ class Plugin {
         $category = null;
         if (!empty($category_shortcode)) {
             $category = $wpdb->get_row($wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s AND active = 1",
+                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s",
                 $category_shortcode
             ));
         }
 
         if (!$category) {
-            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY sort_order LIMIT 1");
+            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order LIMIT 1");
         }
 
         if (!$category) {
@@ -214,13 +214,13 @@ class Plugin {
         $category = null;
         if (!empty($category_shortcode)) {
             $category = $wpdb->get_row($wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s AND active = 1",
+                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s",
                 $category_shortcode
             ));
         }
 
         if (!$category) {
-            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY sort_order LIMIT 1");
+            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order LIMIT 1");
         }
 
         if (!$category) {
@@ -228,7 +228,7 @@ class Plugin {
         }
 
         $variants = $wpdb->get_results($wpdb->prepare(
-            "SELECT * FROM {$wpdb->prefix}federwiegen_variants WHERE category_id = %d AND active = 1 ORDER BY base_price",
+            "SELECT * FROM {$wpdb->prefix}federwiegen_variants WHERE category_id = %d ORDER BY base_price",
             $category->id
         ));
 

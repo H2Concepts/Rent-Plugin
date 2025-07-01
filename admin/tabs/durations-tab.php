@@ -14,7 +14,6 @@ if (isset($_POST['submit_duration'])) {
     $name = sanitize_text_field($_POST['name']);
     $months_minimum = intval($_POST['months_minimum']);
     $discount = floatval($_POST['discount']) / 100; // Convert percentage to decimal
-    $active = isset($_POST['active']) ? 1 : 0;
     $sort_order = intval($_POST['sort_order']);
 
     if (isset($_POST['id']) && $_POST['id']) {
@@ -26,11 +25,10 @@ if (isset($_POST['submit_duration'])) {
                 'name' => $name,
                 'months_minimum' => $months_minimum,
                 'discount' => $discount,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
             array('id' => intval($_POST['id'])),
-            array('%d', '%s', '%d', '%f', '%d', '%d'),
+            array('%d', '%s', '%d', '%f', '%d'),
             array('%d')
         );
         
@@ -46,10 +44,9 @@ if (isset($_POST['submit_duration'])) {
                 'name' => $name,
                 'months_minimum' => $months_minimum,
                 'discount' => $discount,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
-            array('%d', '%s', '%d', '%f', '%d', '%d')
+            array('%d', '%s', '%d', '%f', '%d')
         );
         
         if ($result !== false) {
@@ -113,12 +110,6 @@ $durations = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE 
                     <input type="number" name="sort_order" value="<?php echo $edit_item ? $edit_item->sort_order : '0'; ?>" min="0">
                 </div>
                 
-                <div class="federwiegen-form-group">
-                    <label>
-                        <input type="checkbox" name="active" value="1" <?php echo (!$edit_item || $edit_item->active) ? 'checked' : ''; ?>>
-                        Aktiv
-                    </label>
-                </div>
             </div>
             
             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">
