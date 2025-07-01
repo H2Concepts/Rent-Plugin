@@ -58,6 +58,23 @@ jQuery(document).ready(function($) {
         // Update selection variables
         if (type === 'variant') {
             selectedVariant = id;
+
+            // Reset selections when switching variants so the rent button
+            // becomes inactive immediately
+            selectedCondition = null;
+            selectedProductColor = null;
+            selectedFrameColor = null;
+            selectedExtras = [];
+            selectedDuration = null;
+
+            $('.federwiegen-option[data-type="condition"]').removeClass('selected');
+            $('.federwiegen-option[data-type="product-color"]').removeClass('selected');
+            $('.federwiegen-option[data-type="frame-color"]').removeClass('selected');
+            $('.federwiegen-option[data-type="extra"]').removeClass('selected');
+            $('.federwiegen-option[data-type="duration"]').removeClass('selected');
+
+            updateExtraImage(null);
+            
             updateVariantImages($(this));
             updateVariantOptions(id);
         } else if (type === 'extra') {
