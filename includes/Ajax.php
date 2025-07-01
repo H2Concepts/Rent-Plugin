@@ -206,7 +206,7 @@ class Ajax {
         
         // Get variant-specific options
         $variant_options = $wpdb->get_results($wpdb->prepare(
-            "SELECT option_type, option_id FROM {$wpdb->prefix}federwiegen_variant_options WHERE variant_id = %d",
+            "SELECT option_type, option_id, available FROM {$wpdb->prefix}federwiegen_variant_options WHERE variant_id = %d",
             $variant_id
         ));
         
@@ -225,6 +225,7 @@ class Ajax {
                             $option->option_id
                         ));
                         if ($condition) {
+                            $condition->available = intval($option->available);
                             $conditions[] = $condition;
                         }
                         break;
@@ -234,6 +235,7 @@ class Ajax {
                             $option->option_id
                         ));
                         if ($color) {
+                            $color->available = intval($option->available);
                             $product_colors[] = $color;
                         }
                         break;
@@ -243,6 +245,7 @@ class Ajax {
                             $option->option_id
                         ));
                         if ($color) {
+                            $color->available = intval($option->available);
                             $frame_colors[] = $color;
                         }
                         break;
@@ -252,6 +255,7 @@ class Ajax {
                             $option->option_id
                         ));
                         if ($extra) {
+                            $extra->available = intval($option->available);
                             $extras[] = $extra;
                         }
                         break;
@@ -269,21 +273,25 @@ class Ajax {
                     "SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE category_id = %d ORDER BY sort_order",
                     $variant->category_id
                 ));
+                foreach ($conditions as $c) { $c->available = 1; }
                 
                 $product_colors = $wpdb->get_results($wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' ORDER BY sort_order",
                     $variant->category_id
                 ));
+                foreach ($product_colors as $c) { $c->available = 1; }
                 
                 $frame_colors = $wpdb->get_results($wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' ORDER BY sort_order",
                     $variant->category_id
                 ));
+                foreach ($frame_colors as $c) { $c->available = 1; }
 
                 $extras = $wpdb->get_results($wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE category_id = %d ORDER BY sort_order",
                     $variant->category_id
                 ));
+                foreach ($extras as $e) { $e->available = 1; }
             }
         }
 
