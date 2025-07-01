@@ -374,7 +374,7 @@
 .federwiegen-options.layout-default.product-colors,
 .federwiegen-options.layout-default.frame-colors {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
     gap: 0.5rem;
 }
 
@@ -421,7 +421,7 @@
     
     .federwiegen-options.layout-default.product-colors,
     .federwiegen-options.layout-default.frame-colors {
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
     }
     
     .federwiegen-options.layout-grid {
@@ -436,7 +436,7 @@
     
     .federwiegen-options.layout-default.product-colors,
     .federwiegen-options.layout-default.frame-colors {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
     }
 }
 
@@ -613,6 +613,29 @@
     border-radius: 50%;
     border: 2px solid #ddd;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+.federwiegen-selected-color-name {
+    display: block;
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+    color: #2a372a;
+}
+
+.federwiegen-option.selected .federwiegen-color-preview {
+    border-color: #5f7f5f;
+}
+
+.federwiegen-option.unavailable .federwiegen-color-preview::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #dc3232;
+    transform: rotate(45deg);
 }
 
 .federwiegen-color-name {
@@ -631,6 +654,8 @@
     box-shadow: none;
     flex-direction: column;
     align-items: center;
+    width: 40px;
+    flex: none;
 }
 
 .federwiegen-options.product-colors .federwiegen-option:hover,
