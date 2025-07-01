@@ -380,7 +380,7 @@
 .federwiegen-options.layout-default.product-colors,
 .federwiegen-options.layout-default.frame-colors {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
     gap: 0.5rem;
 }
 
