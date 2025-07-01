@@ -364,7 +364,7 @@ $variant_options = $wpdb->get_results($wpdb->prepare("
                                         </div>
                                         <div style="display: flex; gap: 5px;">
                                             <a href="<?php echo admin_url('admin.php?page=federwiegen-variant-options&category=' . $selected_category . '&tab=edit&edit=' . $option->id); ?>" class="button button-small">✏️</a>
-                                            <a href="<?php echo admin_url('admin.php?page=federwiegen-variant-options&category=' . $selected_category . '&tab=list&delete=' . $option->id); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">🗑️</a>
+                                            <a href="<?php echo admin_url('admin.php?page=federwiegen-variant-options&category=' . $selected_category . '&tab=list&delete=' . $option->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">🗑️</a>
                                         </div>
                                     </div>
                                 </div>
