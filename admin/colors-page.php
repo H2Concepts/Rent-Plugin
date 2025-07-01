@@ -22,7 +22,6 @@ if (isset($_POST['submit'])) {
     $name = sanitize_text_field($_POST['name']);
     $color_code = sanitize_hex_color($_POST['color_code']);
     $color_type = sanitize_text_field($_POST['color_type']);
-    $available = isset($_POST['available']) ? 1 : 0;
     $active = isset($_POST['active']) ? 1 : 0;
     $sort_order = intval($_POST['sort_order']);
 
@@ -35,12 +34,11 @@ if (isset($_POST['submit'])) {
                 'name' => $name,
                 'color_code' => $color_code,
                 'color_type' => $color_type,
-                'available' => $available,
                 'active' => $active,
                 'sort_order' => $sort_order
             ),
             array('id' => intval($_POST['id'])),
-            array('%d', '%s', '%s', '%s', '%d', '%d', '%d'),
+             array('%d', '%s', '%s', '%s', '%d', '%d'),
             array('%d')
         );
         
@@ -58,11 +56,10 @@ if (isset($_POST['submit'])) {
                 'name' => $name,
                 'color_code' => $color_code,
                 'color_type' => $color_type,
-                'available' => $available,
                 'active' => $active,
                 'sort_order' => $sort_order
             ),
-            array('%d', '%s', '%s', '%s', '%d', '%d', '%d')
+            array('%d', '%s', '%s', '%s', '%d', '%d')
         );
         
         if ($result !== false) {
@@ -195,12 +192,6 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                     <input type="number" name="sort_order" value="0" min="0">
                                 </div>
                                 
-                                <div class="federwiegen-form-group">
-                                    <label>
-                                        <input type="checkbox" name="available" value="1" checked>
-                                        Verfügbar
-                                    </label>
-                                </div>
                                 
                             </div>
                             
@@ -252,12 +243,6 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                     <input type="number" name="sort_order" value="<?php echo $edit_item->sort_order; ?>" min="0">
                                 </div>
                                 
-                                <div class="federwiegen-form-group">
-                                    <label>
-                                        <input type="checkbox" name="available" value="1" <?php checked($edit_item->available); ?>>
-                                        Verfügbar
-                                    </label>
-                                </div>
                                 
                             </div>
                             
