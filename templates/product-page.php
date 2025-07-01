@@ -266,12 +266,12 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 <!-- Product Color Selection (initially populated, will be updated via AJAX) -->
                 <div class="federwiegen-section" id="product-color-section" style="<?php echo esc_attr(empty($initial_product_colors) ? 'display: none;' : ''); ?>">
                     <h3>Produktfarbe</h3>
+                    <small id="selected-product-color-name" class="federwiegen-selected-color-name"></small>
                     <div class="federwiegen-options product-colors layout-<?php echo esc_attr($layout_style); ?>">
                         <?php foreach ($initial_product_colors as $color): ?>
-                        <div class="federwiegen-option" data-type="product-color" data-id="<?php echo esc_attr($color->id); ?>" data-available="true">
+                        <div class="federwiegen-option" data-type="product-color" data-id="<?php echo esc_attr($color->id); ?>" data-available="true" data-color-name="<?php echo esc_attr($color->name); ?>">
                             <div class="federwiegen-option-content">
                                 <div class="federwiegen-color-display">
-                                    <span class="federwiegen-color-name">Farbe: <?php echo esc_html($color->name); ?></span>
                                     <div class="federwiegen-color-preview" style="background-color: <?php echo esc_attr($color->color_code); ?>;"></div>
                                 </div>
                             </div>
@@ -283,12 +283,12 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 <!-- Frame Color Selection (initially populated, will be updated via AJAX) -->
                 <div class="federwiegen-section" id="frame-color-section" style="<?php echo esc_attr(empty($initial_frame_colors) ? 'display: none;' : ''); ?>">
                     <h3>Gestellfarbe</h3>
+                    <small id="selected-frame-color-name" class="federwiegen-selected-color-name"></small>
                     <div class="federwiegen-options frame-colors layout-<?php echo esc_attr($layout_style); ?>">
                         <?php foreach ($initial_frame_colors as $color): ?>
-                        <div class="federwiegen-option" data-type="frame-color" data-id="<?php echo esc_attr($color->id); ?>" data-available="true">
+                        <div class="federwiegen-option" data-type="frame-color" data-id="<?php echo esc_attr($color->id); ?>" data-available="true" data-color-name="<?php echo esc_attr($color->name); ?>">
                             <div class="federwiegen-option-content">
                                 <div class="federwiegen-color-display">
-                                    <span class="federwiegen-color-name">Farbe: <?php echo esc_html($color->name); ?></span>
                                     <div class="federwiegen-color-preview" style="background-color: <?php echo esc_attr($color->color_code); ?>;"></div>
                                 </div>
                             </div>
