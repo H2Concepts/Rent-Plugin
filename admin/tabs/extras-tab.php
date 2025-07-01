@@ -163,9 +163,6 @@ $extras = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE cat
                     <h5><?php echo esc_html($extra->name); ?></h5>
                     <div class="federwiegen-item-meta">
                         <span class="federwiegen-price"><?php echo number_format($extra->price, 2, ',', '.'); ?>€</span>
-                        <span class="federwiegen-status <?php echo $extra->active ? 'available' : 'unavailable'; ?>">
-                            <?php echo $extra->active ? '✅ Aktiv' : '❌ Inaktiv'; ?>
-                        </span>
                     </div>
                 </div>
                 

@@ -35,11 +35,6 @@
                 <?php endif; ?>
                 
                 <!-- Status Badge -->
-                <div class="federwiegen-category-status">
-                    <span class="federwiegen-status-badge <?php echo $category->active ? 'available' : 'unavailable'; ?>">
-                        <?php echo $category->active ? '✅ Aktiv' : '❌ Inaktiv'; ?>
-                    </span>
-                </div>
             </div>
             
             <div class="federwiegen-category-content">
@@ -151,11 +146,6 @@
     opacity: 0.5;
 }
 
-.federwiegen-category-status {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-}
 
 .federwiegen-category-content {
     padding: 20px;

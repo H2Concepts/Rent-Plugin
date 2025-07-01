@@ -323,6 +323,47 @@
     margin-right: 8px;
 }
 
+/* Toggle style */
+.fw-toggle {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+}
+.fw-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.fw-toggle span {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .2s;
+    border-radius: 24px;
+}
+.fw-toggle span:before {
+    position: absolute;
+    content: '';
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .2s;
+    border-radius: 50%;
+}
+.fw-toggle input:checked + span {
+    background-color: #4a674a;
+}
+.fw-toggle input:checked + span:before {
+    transform: translateX(20px);
+}
+
 .federwiegen-form-group small {
     margin-top: 5px;
     color: #666;
@@ -461,6 +502,11 @@
 .federwiegen-status.unavailable {
     color: #dc3232;
     font-size: 12px;
+}
+
+.federwiegen-unavailable-badge {
+    color: #dc3232;
+    margin-left: 6px;
 }
 
 .federwiegen-item-actions {
