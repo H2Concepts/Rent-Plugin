@@ -42,9 +42,10 @@
             <h4>📦 Verfügbarkeit</h4>
             <div class="federwiegen-form-row">
                 <div class="federwiegen-form-group">
-                    <label class="federwiegen-checkbox-label">
+                    <label>Verfügbar</label>
+                    <label class="federwiegen-toggle">
                         <input type="checkbox" name="available" value="1" <?php echo ($edit_item->available ?? 1) ? 'checked' : ''; ?>>
-                        <span>Verfügbar</span>
+                        <span class="federwiegen-toggle-slider"></span>
                     </label>
                 </div>
                 <div class="federwiegen-form-group">

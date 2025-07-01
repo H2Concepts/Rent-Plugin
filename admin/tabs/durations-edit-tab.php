@@ -43,12 +43,7 @@
         <!-- Einstellungen -->
         <div class="federwiegen-form-section">
             <h4>⚙️ Einstellungen</h4>
-            <div class="federwiegen-form-group">
-                <label class="federwiegen-checkbox-label">
-                    <input type="checkbox" name="active" value="1" <?php echo $edit_item->active ? 'checked' : ''; ?>>
-                    <span>Aktiv</span>
-                </label>
-            </div>
+            
         </div>
         
         <!-- Actions -->

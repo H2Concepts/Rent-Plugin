@@ -115,12 +115,6 @@ $extras = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE cat
                     <input type="number" name="sort_order" value="<?php echo $edit_item ? $edit_item->sort_order : '0'; ?>" min="0">
                 </div>
                 
-                <div class="federwiegen-form-group">
-                    <label>
-                        <input type="checkbox" name="active" value="1" <?php echo (!$edit_item || $edit_item->active) ? 'checked' : ''; ?>>
-                        Aktiv
-                    </label>
-                </div>
             </div>
             
             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">
@@ -163,9 +157,6 @@ $extras = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE cat
                     <h5><?php echo esc_html($extra->name); ?></h5>
                     <div class="federwiegen-item-meta">
                         <span class="federwiegen-price"><?php echo number_format($extra->price, 2, ',', '.'); ?>€</span>
-                        <span class="federwiegen-status <?php echo $extra->active ? 'available' : 'unavailable'; ?>">
-                            <?php echo $extra->active ? '✅ Aktiv' : '❌ Inaktiv'; ?>
-                        </span>
                     </div>
                 </div>
                 

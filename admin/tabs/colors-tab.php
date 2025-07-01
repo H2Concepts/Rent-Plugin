@@ -113,19 +113,7 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                     <input type="number" name="sort_order" value="<?php echo $edit_item ? $edit_item->sort_order : '0'; ?>" min="0">
                 </div>
                 
-                <div class="federwiegen-form-group">
-                    <label>
-                        <input type="checkbox" name="available" value="1" <?php echo (!$edit_item || $edit_item->available) ? 'checked' : ''; ?>>
-                        Verfügbar
-                    </label>
-                </div>
                 
-                <div class="federwiegen-form-group">
-                    <label>
-                        <input type="checkbox" name="active" value="1" <?php echo (!$edit_item || $edit_item->active) ? 'checked' : ''; ?>>
-                        Aktiv
-                    </label>
-                </div>
             </div>
             
             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">
@@ -158,11 +146,7 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                     <div class="federwiegen-color-info">
                         <h5><?php echo esc_html($color->name); ?></h5>
                         <code><?php echo esc_html($color->color_code); ?></code>
-                        <div class="federwiegen-color-status">
-                            <span class="federwiegen-status <?php echo $color->available ? 'available' : 'unavailable'; ?>">
-                                <?php echo $color->available ? '✅ Verfügbar' : '❌ Nicht verfügbar'; ?>
-                            </span>
-                        </div>
+                        
                     </div>
                     <div class="federwiegen-color-actions">
                         <a href="<?php echo admin_url('admin.php?page=federwiegen-products&category=' . $selected_category . '&tab=colors&edit_color=' . $color->id); ?>" class="button button-small">Bearbeiten</a>
@@ -192,11 +176,7 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                     <div class="federwiegen-color-info">
                         <h5><?php echo esc_html($color->name); ?></h5>
                         <code><?php echo esc_html($color->color_code); ?></code>
-                        <div class="federwiegen-color-status">
-                            <span class="federwiegen-status <?php echo $color->available ? 'available' : 'unavailable'; ?>">
-                                <?php echo $color->available ? '✅ Verfügbar' : '❌ Nicht verfügbar'; ?>
-                            </span>
-                        </div>
+                        
                     </div>
                     <div class="federwiegen-color-actions">
                         <a href="<?php echo admin_url('admin.php?page=federwiegen-products&category=' . $selected_category . '&tab=colors&edit_color=' . $color->id); ?>" class="button button-small">Bearbeiten</a>

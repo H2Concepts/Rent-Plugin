@@ -37,12 +37,6 @@
                     </div>
                 <?php endif; ?>
                 
-                <!-- Status Badge -->
-                <div class="federwiegen-extra-status">
-                    <span class="federwiegen-status-badge <?php echo $extra->active ? 'available' : 'unavailable'; ?>">
-                        <?php echo $extra->active ? '✅ Aktiv' : '❌ Inaktiv'; ?>
-                    </span>
-                </div>
             </div>
             
             <div class="federwiegen-extra-content">
