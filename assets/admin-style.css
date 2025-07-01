@@ -329,6 +329,28 @@
     font-size: 0.9rem;
 }
 
+/* Structured form layout */
+.federwiegen-form-section {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.federwiegen-form-section h4 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #3c434a;
+}
+
+.federwiegen-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
 .federwiegen-form-actions {
     display: flex;
     gap: 10px;
