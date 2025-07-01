@@ -569,6 +569,10 @@
         grid-template-columns: 1fr;
     }
     
+    .federwiegen-form-row {
+        grid-template-columns: 1fr;
+    }
+    
     .federwiegen-items-grid {
         grid-template-columns: 1fr;
     }
