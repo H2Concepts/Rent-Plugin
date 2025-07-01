@@ -35,7 +35,7 @@
 
 .federwiegen-content {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
     gap: 2rem;
     margin-bottom: 4rem;
 }
@@ -455,7 +455,7 @@
     transition: all 0.2s ease;
     background: white;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     min-height: 80px;
     flex: 1;
