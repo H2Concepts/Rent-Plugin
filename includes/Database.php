@@ -266,12 +266,18 @@ class Database {
                 variant_id mediumint(9) NOT NULL,
                 option_type varchar(50) NOT NULL,
                 option_id mediumint(9) NOT NULL,
+                available tinyint(1) DEFAULT 1,
                 PRIMARY KEY (id),
                 UNIQUE KEY variant_option (variant_id, option_type, option_id)
             ) $charset_collate;";
-            
+
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
+        } else {
+            $column_exists = $wpdb->get_results("SHOW COLUMNS FROM $table_variant_options LIKE 'available'");
+            if (empty($column_exists)) {
+                $wpdb->query("ALTER TABLE $table_variant_options ADD COLUMN available TINYINT(1) DEFAULT 1 AFTER option_id");
+            }
         }
         
         // Create orders table if it doesn't exist
@@ -503,6 +509,7 @@ class Database {
             variant_id mediumint(9) NOT NULL,
             option_type varchar(50) NOT NULL,
             option_id mediumint(9) NOT NULL,
+            available tinyint(1) DEFAULT 1,
             PRIMARY KEY (id),
             UNIQUE KEY variant_option (variant_id, option_type, option_id)
         ) $charset_collate;";
