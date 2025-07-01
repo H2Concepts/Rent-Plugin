@@ -416,6 +416,33 @@ class Admin {
 
     public function orders_page() {
         global $wpdb;
+        $notice = '';
+
+        // Handle single deletion via GET
+        if (isset($_GET['delete_order'])) {
+            $order_id = intval($_GET['delete_order']);
+            $deleted = $wpdb->delete(
+                $wpdb->prefix . 'federwiegen_orders',
+                array('id' => $order_id),
+                array('%d')
+            );
+
+            $notice = ($deleted !== false) ? 'deleted' : 'error';
+        }
+
+        // Handle bulk deletion via POST
+        if (!empty($_POST['delete_orders']) && is_array($_POST['delete_orders'])) {
+            $ids = array_map('intval', (array) $_POST['delete_orders']);
+            if ($ids) {
+                $placeholders = implode(',', array_fill(0, count($ids), '%d'));
+                $query = $wpdb->prepare(
+                    "DELETE FROM {$wpdb->prefix}federwiegen_orders WHERE id IN ($placeholders)",
+                    ...$ids
+                );
+                $deleted = $wpdb->query($query);
+                $notice = ($deleted !== false) ? 'bulk_deleted' : 'error';
+            }
+        }
 
         $categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY sort_order, name");
         $selected_category = isset($_GET['category']) ? intval($_GET['category']) : 0;
@@ -475,7 +502,8 @@ class Admin {
             'total_orders',
             'total_revenue',
             'avg_order_value',
-            'branding'
+            'branding',
+            'notice'
         ));
     }
     
