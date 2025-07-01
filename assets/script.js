@@ -27,9 +27,9 @@ jQuery(document).ready(function($) {
         const type = $(this).data('type');
         const id = $(this).data('id');
 
-        // Check if variant is available
-        if (type === 'variant' && $(this).data('available') === 'false') {
-            return; // Don't allow selection of unavailable variants
+        const avail = $(this).data('available');
+        if (avail === 'false') {
+            return;
         }
 
         // Remove selection from same type (except extras which allow multiple)
@@ -307,12 +307,13 @@ jQuery(document).ready(function($) {
         options.forEach(function(option) {
             let optionHtml = '';
             
+            const availAttr = option.available ? 'true' : 'false';
             if (optionType === 'condition') {
                 const badgeHtml = option.price_modifier != 0 ?
                     `<span class="federwiegen-condition-badge">${option.price_modifier > 0 ? '+' : ''}${Math.round(option.price_modifier * 100)}%</span>` : '';
-                
+
                 optionHtml = `
-                    <div class="federwiegen-option" data-type="condition" data-id="${option.id}">
+                    <div class="federwiegen-option" data-type="condition" data-id="${option.id}" data-available="${availAttr}">
                         <div class="federwiegen-option-content">
                             <div class="federwiegen-condition-header">
                                 <span class="federwiegen-condition-name">${option.name}</span>
@@ -321,11 +322,12 @@ jQuery(document).ready(function($) {
                             <p class="federwiegen-condition-info">${option.description}</p>
                         </div>
                         <div class="federwiegen-option-check">✓</div>
+                        ${option.available ? '' : '<span class="federwiegen-unavailable-badge">❌</span>'}
                     </div>
                 `;
             } else if (optionType === 'product-color' || optionType === 'frame-color') {
                 optionHtml = `
-                    <div class="federwiegen-option" data-type="${optionType}" data-id="${option.id}">
+                    <div class="federwiegen-option" data-type="${optionType}" data-id="${option.id}" data-available="${availAttr}">
                         <div class="federwiegen-option-content">
                             <div class="federwiegen-color-display">
                                 <div class="federwiegen-color-preview" style="background-color: ${option.color_code};"></div>
@@ -333,17 +335,19 @@ jQuery(document).ready(function($) {
                             </div>
                         </div>
                         <div class="federwiegen-option-check">✓</div>
+                        ${option.available ? '' : '<span class="federwiegen-unavailable-badge">❌</span>'}
                     </div>
                 `;
             } else if (optionType === 'extra') {
                 const priceHtml = option.price > 0 ? `+${parseFloat(option.price).toFixed(2).replace('.', ',')}€/Monat` : '';
                 optionHtml = `
-                    <div class="federwiegen-option" data-type="extra" data-id="${option.id}" data-extra-image="${option.image_url || ''}">
+                    <div class="federwiegen-option" data-type="extra" data-id="${option.id}" data-extra-image="${option.image_url || ''}" data-available="${availAttr}">
                         <div class="federwiegen-option-content">
                             <span class="federwiegen-extra-name">${option.name}</span>
                             ${priceHtml ? `<div class="federwiegen-extra-price">${priceHtml}</div>` : ''}
                         </div>
                         <div class="federwiegen-option-check">✓</div>
+                        ${option.available ? '' : '<span class="federwiegen-unavailable-badge">❌</span>'}
                     </div>
                 `;
             }
@@ -355,6 +359,7 @@ jQuery(document).ready(function($) {
         container.find('.federwiegen-option').on('click', function() {
             const type = $(this).data('type');
             const id = $(this).data('id');
+            if ($(this).data('available') === 'false') return;
 
             if (type === 'extra') {
                 $(this).toggleClass('selected');
