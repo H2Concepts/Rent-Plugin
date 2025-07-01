@@ -271,11 +271,10 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                         <div class="federwiegen-option" data-type="product-color" data-id="<?php echo esc_attr($color->id); ?>" data-available="true">
                             <div class="federwiegen-option-content">
                                 <div class="federwiegen-color-display">
+                                    <span class="federwiegen-color-name">Farbe: <?php echo esc_html($color->name); ?></span>
                                     <div class="federwiegen-color-preview" style="background-color: <?php echo esc_attr($color->color_code); ?>;"></div>
-                                    <span class="federwiegen-color-name"><?php echo esc_html($color->name); ?></span>
                                 </div>
                             </div>
-                            <div class="federwiegen-option-check">✓</div>
                         </div>
                         <?php endforeach; ?>
                     </div>
@@ -289,11 +288,10 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                         <div class="federwiegen-option" data-type="frame-color" data-id="<?php echo esc_attr($color->id); ?>" data-available="true">
                             <div class="federwiegen-option-content">
                                 <div class="federwiegen-color-display">
+                                    <span class="federwiegen-color-name">Farbe: <?php echo esc_html($color->name); ?></span>
                                     <div class="federwiegen-color-preview" style="background-color: <?php echo esc_attr($color->color_code); ?>;"></div>
-                                    <span class="federwiegen-color-name"><?php echo esc_html($color->name); ?></span>
                                 </div>
                             </div>
-                            <div class="federwiegen-option-check">✓</div>
                         </div>
                         <?php endforeach; ?>
                     </div>
