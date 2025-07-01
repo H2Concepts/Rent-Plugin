@@ -22,8 +22,8 @@ if (isset($_POST['submit'])) {
     $name = sanitize_text_field($_POST['name']);
     $description = sanitize_textarea_field($_POST['description']);
     $price_modifier = floatval($_POST['price_modifier']) / 100; // Convert percentage to decimal
-    $available = isset($_POST['available']) ? 1 : 0;
-    $active = isset($_POST['active']) ? 1 : 0;
+    $available = 1;
+    $active = 1;
     $sort_order = intval($_POST['sort_order']);
 
     if (isset($_POST['id']) && $_POST['id']) {
@@ -35,12 +35,10 @@ if (isset($_POST['submit'])) {
                 'name' => $name,
                 'description' => $description,
                 'price_modifier' => $price_modifier,
-                'available' => $available,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
             array('id' => intval($_POST['id'])),
-            array('%d', '%s', '%s', '%f', '%d', '%d', '%d'),
+            ('%d', '%s', '%s', '%f', '%d'),
             array('%d')
         );
         
@@ -58,11 +56,9 @@ if (isset($_POST['submit'])) {
                 'name' => $name,
                 'description' => $description,
                 'price_modifier' => $price_modifier,
-                'available' => $available,
-                'active' => $active,
                 'sort_order' => $sort_order
             ),
-            array('%d', '%s', '%s', '%f', '%d', '%d', '%d')
+             array('%d', '%s', '%s', '%f', '%d')
         );
         
         if ($result !== false) {
@@ -191,7 +187,6 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                                     <label>Sortierung</label>
                                     <input type="number" name="sort_order" value="0" min="0">
                                 </div>
-                                
 
                             </div>
                             
@@ -240,7 +235,6 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                                     <label>Sortierung</label>
                                     <input type="number" name="sort_order" value="<?php echo $edit_item->sort_order; ?>" min="0">
                                 </div>
-                                
 
                             </div>
                             
@@ -294,9 +288,6 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
                                                 echo '<span style="color: #666;">±0%</span>';
                                             }
                                             ?>
-                                        </span>
-                                        <span class="federwiegen-status <?php echo $condition->available ? 'available' : 'unavailable'; ?>">
-                                            <?php echo $condition->available ? '✅ Verfügbar' : '❌ Nicht verfügbar'; ?>
                                         </span>
                                     </div>
                                 </div>
