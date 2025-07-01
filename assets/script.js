@@ -287,6 +287,8 @@ jQuery(document).ready(function($) {
                     selectedProductColor = null;
                     selectedFrameColor = null;
                     selectedExtras = [];
+                    selectedDuration = null;
+                    $('.federwiegen-options.durations .federwiegen-option').removeClass('selected');
                     updateExtraImage(null);
                     
                     updatePriceAndButton();
