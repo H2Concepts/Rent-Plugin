@@ -202,12 +202,6 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                     </label>
                                 </div>
                                 
-                                <div class="federwiegen-form-group">
-                                    <label>
-                                        <input type="checkbox" name="active" value="1" checked>
-                                        Aktiv
-                                    </label>
-                                </div>
                             </div>
                             
                             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">
@@ -265,12 +259,6 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                     </label>
                                 </div>
                                 
-                                <div class="federwiegen-form-group">
-                                    <label>
-                                        <input type="checkbox" name="active" value="1" <?php checked($edit_item->active); ?>>
-                                        Aktiv
-                                    </label>
-                                </div>
                             </div>
                             
                             <input type="hidden" name="category_id" value="<?php echo $selected_category; ?>">
