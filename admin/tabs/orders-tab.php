@@ -17,6 +17,25 @@ if (isset($_GET['delete_order'])) {
     }
 }
 
+// Handle bulk delete
+if (!empty($_POST['delete_orders']) && is_array($_POST['delete_orders'])) {
+    $ids = array_map('intval', (array) $_POST['delete_orders']);
+    if ($ids) {
+        $placeholders = implode(',', array_fill(0, count($ids), '%d'));
+        $query = $wpdb->prepare(
+            "DELETE FROM {$wpdb->prefix}federwiegen_orders WHERE id IN ($placeholders)",
+            ...$ids
+        );
+        $result = $wpdb->query($query);
+
+        if ($result !== false) {
+            echo '<div class="notice notice-success"><p>✅ Bestellungen erfolgreich gelöscht!</p></div>';
+        } else {
+            echo '<div class="notice notice-error"><p>❌ Fehler beim Löschen der Bestellungen: ' . esc_html($wpdb->last_error) . '</p></div>';
+        }
+    }
+}
+
 // Date range
 $date_from = isset($_GET['date_from']) ? sanitize_text_field($_GET['date_from']) : date('Y-m-d', strtotime('-30 days'));
 $date_to = isset($_GET['date_to']) ? sanitize_text_field($_GET['date_to']) : date('Y-m-d');
@@ -363,10 +382,13 @@ function deleteSelected() {
 }
 
 // Handle select all checkbox
-document.getElementById('select-all-orders').addEventListener('change', function() {
-    const orderCheckboxes = document.querySelectorAll('.order-checkbox');
-    orderCheckboxes.forEach(checkbox => {
-        checkbox.checked = this.checked;
+const selectAllOrders = document.getElementById('select-all-orders');
+if (selectAllOrders) {
+    selectAllOrders.addEventListener('change', function() {
+        const orderCheckboxes = document.querySelectorAll('.order-checkbox');
+        orderCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked;
+        });
     });
-});
+}
 </script>
