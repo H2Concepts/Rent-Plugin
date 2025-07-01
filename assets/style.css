@@ -940,3 +940,17 @@
     border-radius: 4px;
     padding: 5px;
 }
+
+/* Payment icons below the rent button */
+.federwiegen-payment-icons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.federwiegen-payment-icons img {
+    width: 40px;
+    height: auto;
+}

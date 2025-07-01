@@ -151,6 +151,32 @@
                     <?php endif; ?>
                 </div>
             </div>
+
+            <div class="federwiegen-form-group">
+                <label>Bezahlmethoden</label>
+                <div class="federwiegen-payment-checkboxes">
+                    <?php $payment_methods = [
+                        'american-express' => 'American Express',
+                        'apple-pay' => 'Apple Pay',
+                        'google-pay' => 'Google Pay',
+                        'klarna' => 'Klarna',
+                        'maestro' => 'Maestro',
+                        'mastercard' => 'Mastercard',
+                        'paypal' => 'Paypal',
+                        'shop' => 'Shop',
+                        'union-pay' => 'Union Pay',
+                        'visa' => 'Visa'
+                    ];
+                    $selected_icons = array_filter(array_map('trim', explode(',', $edit_item->payment_icons)));
+                    ?>
+                    <?php foreach ($payment_methods as $key => $label): ?>
+                        <label>
+                            <input type="checkbox" name="payment_icons[]" value="<?php echo esc_attr($key); ?>" <?php checked(in_array($key, $selected_icons)); ?>>
+                            <img src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/payment-icons/' . $key . '.svg'); ?>" alt="<?php echo esc_attr($label); ?>">
+                        </label>
+                    <?php endforeach; ?>
+                </div>
+            </div>
             
             <div class="federwiegen-form-group">
                 <label>Mietdauer-Tooltip</label>

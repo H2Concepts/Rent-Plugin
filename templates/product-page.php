@@ -41,6 +41,7 @@ $feature_3_description = isset($category) ? $category->feature_3_description : '
 // Button
 $button_text = isset($category) ? $category->button_text : '';
 $button_icon = isset($category) ? $category->button_icon : '';
+$payment_icons = isset($category) ? array_filter(array_map('trim', explode(',', $category->payment_icons))) : array();
 
 // Shipping
 $shipping_cost = isset($category) ? ($category->shipping_cost ?? 0) : 0;
@@ -322,6 +323,13 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     <p class="federwiegen-unavailable-help" id="federwiegen-unavailable-help" style="display: none;">
                         Das gewählte Produkt ist aktuell nicht verfügbar
                     </p>
+                    <?php if (!empty($payment_icons)): ?>
+                    <div class="federwiegen-payment-icons">
+                        <?php foreach ($payment_icons as $icon): ?>
+                            <img src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/payment-icons/' . $icon . '.svg'); ?>" alt="<?php echo esc_attr($icon); ?>">
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
                     <?php else: ?>
                     <div style="padding: 20px; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; text-align: center;">
                         <h4>⚠️ Kategorie noch nicht vollständig konfiguriert</h4>
