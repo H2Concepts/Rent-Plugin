@@ -608,3 +608,20 @@
         grid-template-columns: 1fr;
     }
 }
+
+.federwiegen-payment-checkboxes label {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+    margin-bottom: 5px;
+}
+
+.federwiegen-payment-checkboxes img {
+    width: 32px;
+    height: auto;
+    margin-right: 4px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 2px;
+    background: #fff;
+}
