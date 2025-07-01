@@ -1,6 +1,18 @@
+
 <?php
 if (!defined('ABSPATH')) {
     exit;
+}
+
+// Display notices
+if (!empty($notice)) {
+    if ($notice === 'deleted') {
+        echo '<div class="notice notice-success is-dismissible"><p>✅ Bestellung erfolgreich gelöscht!</p></div>';
+    } elseif ($notice === 'bulk_deleted') {
+        echo '<div class="notice notice-success is-dismissible"><p>✅ Ausgewählte Bestellungen gelöscht!</p></div>';
+    } elseif ($notice === 'error') {
+        echo '<div class="notice notice-error is-dismissible"><p>❌ Fehler beim Löschen der Bestellung.</p></div>';
+    }
 }
 ?>
 
@@ -111,6 +123,12 @@ if (!defined('ABSPATH')) {
     <!-- Orders Table -->
     <div style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 30px;">
         <h3>📋 Bestellübersicht</h3>
+        <?php if (!empty($orders)): ?>
+        <div style="margin:10px 0;">
+            <button type="button" class="button" onclick="toggleSelectAll()">Alle auswählen</button>
+            <button type="button" class="button" onclick="deleteSelected()" style="color:#dc3232;">Ausgewählte löschen</button>
+        </div>
+        <?php endif; ?>
         
         <?php if (empty($orders)): ?>
         <div style="text-align: center; padding: 40px;">
@@ -123,6 +141,7 @@ if (!defined('ABSPATH')) {
             <table class="wp-list-table widefat fixed striped">
                 <thead>
                     <tr>
+                        <th style="width:40px;"><input type="checkbox" id="select-all-orders"></th>
                         <th style="width: 80px;">ID</th>
                         <th style="width: 120px;">Datum</th>
                         <th>Kunde</th>
@@ -134,6 +153,7 @@ if (!defined('ABSPATH')) {
                 <tbody>
                     <?php foreach ($orders as $order): ?>
                     <tr>
+                        <td><input type="checkbox" class="order-checkbox" value="<?php echo $order->id; ?>"></td>
                         <td><strong>#<?php echo $order->id; ?></strong></td>
                         <td>
                             <?php echo date('d.m.Y', strtotime($order->created_at)); ?><br>
@@ -182,6 +202,13 @@ if (!defined('ABSPATH')) {
                             <button type="button" class="button button-small" onclick="showOrderDetails(<?php echo $order->id; ?>)" title="Details anzeigen">
                                 👁️ Details
                             </button>
+                             <br><br>
+                            <a href="<?php echo admin_url('admin.php?page=federwiegen-orders&category=' . $selected_category . '&delete_order=' . $order->id . '&date_from=' . $date_from . '&date_to=' . $date_to); ?>"
+                               class="button button-small"
+                               style="color: #dc3232;"
+                               onclick="return confirm('Sind Sie sicher, dass Sie diese Bestellung löschen möchten?\n\nBestellung #<?php echo $order->id; ?> wird unwiderruflich gelöscht!')">
+                                🗑️ Löschen
+                            </a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
@@ -359,6 +386,52 @@ function exportOrders(format) {
 
 function printOrders() {
     window.print();
+}
+
+function toggleSelectAll() {
+    const selectAllCheckbox = document.getElementById('select-all-orders');
+    const orderCheckboxes = document.querySelectorAll('.order-checkbox');
+
+    const allChecked = Array.from(orderCheckboxes).every(cb => cb.checked);
+
+    orderCheckboxes.forEach(cb => cb.checked = !allChecked);
+    selectAllCheckbox.checked = !allChecked;
+}
+
+function deleteSelected() {
+    const selectedOrders = Array.from(document.querySelectorAll('.order-checkbox:checked')).map(cb => cb.value);
+
+    if (selectedOrders.length === 0) {
+        alert('Bitte wählen Sie mindestens eine Bestellung aus.');
+        return;
+    }
+
+    if (!confirm(`Sind Sie sicher, dass Sie ${selectedOrders.length} Bestellung(en) löschen möchten?\n\nDieser Vorgang kann nicht rückgängig gemacht werden!`)) {
+        return;
+    }
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = window.location.href;
+
+    selectedOrders.forEach(id => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'delete_orders[]';
+        input.value = id;
+        form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
+const selectAllOrders = document.getElementById('select-all-orders');
+if (selectAllOrders) {
+    selectAllOrders.addEventListener('change', function() {
+        const orderCheckboxes = document.querySelectorAll('.order-checkbox');
+        orderCheckboxes.forEach(cb => cb.checked = this.checked);
+    });
 }
 
 // Close modal when clicking outside
