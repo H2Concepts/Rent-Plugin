@@ -183,6 +183,12 @@
     margin-bottom: 1.5rem;
 }
 
+.federwiegen-product-description {
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
 .federwiegen-features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
