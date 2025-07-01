@@ -28,7 +28,12 @@ jQuery(document).ready(function($) {
         const id = $(this).data('id');
 
         // Prevent selection of unavailable options
-        if ($(this).data('available') === 'false') {
+        const available = $(this).data('available');
+        if (available === false || available === 'false' || available === 0 || available === '0') {
+            $('#federwiegen-rent-button').prop('disabled', true);
+            $('.federwiegen-mobile-button').prop('disabled', true);
+            $('#federwiegen-button-help').hide();
+            $('#federwiegen-unavailable-help').show();
             return;
         }
 
@@ -356,7 +361,12 @@ jQuery(document).ready(function($) {
             const type = $(this).data('type');
             const id = $(this).data('id');
 
-            if ($(this).data('available') === 'false') {
+            const available = $(this).data('available');
+            if (available === false || available === 'false' || available === 0 || available === '0') {
+                $('#federwiegen-rent-button').prop('disabled', true);
+                $('.federwiegen-mobile-button').prop('disabled', true);
+                $('#federwiegen-button-help').hide();
+                $('#federwiegen-unavailable-help').show();
                 return;
             }
 
