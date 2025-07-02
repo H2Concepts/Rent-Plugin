@@ -33,6 +33,9 @@ jQuery(document).ready(function($) {
         // Prevent selection of unavailable options
         const available = $(this).data('available');
         if (available === false || available === 'false' || available === 0 || available === '0') {
+            if (type === 'variant') {
+                selectedVariant = id;
+            }
             $('#federwiegen-rent-button').prop('disabled', true);
             $('.federwiegen-mobile-button').prop('disabled', true);
             $('#federwiegen-button-help').hide();
@@ -40,6 +43,7 @@ jQuery(document).ready(function($) {
             $('#federwiegen-notify').show();
             $('.federwiegen-notify-form').show();
             $('#federwiegen-notify-success').hide();
+            scrollToNotify();
             return;
         }
 
@@ -519,6 +523,7 @@ jQuery(document).ready(function($) {
                             if (data.availability_note) {
                                 $('#federwiegen-unavailable-help').text(data.availability_note);
                             }
+                            scrollToNotify();
                         }
                         
                         // Update mobile sticky price
@@ -663,6 +668,13 @@ jQuery(document).ready(function($) {
         return parseFloat(price).toFixed(2).replace('.', ',');
     }
 
+    function scrollToNotify() {
+        const target = $('#federwiegen-notify');
+        if (target.length) {
+            $('html, body').animate({ scrollTop: target.offset().top - 100 }, 500);
+        }
+    }
+
     // Notify when product becomes available
     $('#federwiegen-notify-submit').on('click', function(e) {
         e.preventDefault();
@@ -675,6 +687,13 @@ jQuery(document).ready(function($) {
             data: {
                 action: 'notify_availability',
                 email: email,
+                category_id: currentCategoryId,
+                variant_id: selectedVariant,
+                extra_ids: selectedExtras.join(','),
+                duration_id: selectedDuration,
+                condition_id: selectedCondition,
+                product_color_id: selectedProductColor,
+                frame_color_id: selectedFrameColor,
                 nonce: federwiegen_ajax.nonce
             },
             success: function(response) {
