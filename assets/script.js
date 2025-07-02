@@ -37,6 +37,9 @@ jQuery(document).ready(function($) {
             $('.federwiegen-mobile-button').prop('disabled', true);
             $('#federwiegen-button-help').hide();
             $('#federwiegen-unavailable-help').show();
+            $('#federwiegen-notify').show();
+            $('.federwiegen-notify-form').show();
+            $('#federwiegen-notify-success').hide();
             return;
         }
 
@@ -394,6 +397,9 @@ jQuery(document).ready(function($) {
                 $('.federwiegen-mobile-button').prop('disabled', true);
                 $('#federwiegen-button-help').hide();
                 $('#federwiegen-unavailable-help').show();
+                $('#federwiegen-notify').show();
+                $('.federwiegen-notify-form').show();
+                $('#federwiegen-notify-success').hide();
                 return;
             }
 
@@ -501,9 +507,15 @@ jQuery(document).ready(function($) {
                         if (isAvailable) {
                             $('#federwiegen-button-help').hide();
                             $('#federwiegen-unavailable-help').hide();
+                            $('#federwiegen-notify').hide();
+                            $('.federwiegen-notify-form').show();
+                            $('#federwiegen-notify-success').hide();
                         } else {
                             $('#federwiegen-button-help').hide();
                             $('#federwiegen-unavailable-help').show();
+                            $('#federwiegen-notify').show();
+                            $('.federwiegen-notify-form').show();
+                            $('#federwiegen-notify-success').hide();
                             if (data.availability_note) {
                                 $('#federwiegen-unavailable-help').text(data.availability_note);
                             }
@@ -524,6 +536,9 @@ jQuery(document).ready(function($) {
             $('.federwiegen-mobile-button').prop('disabled', true);
             $('#federwiegen-button-help').show();
             $('#federwiegen-unavailable-help').hide();
+            $('#federwiegen-notify').hide();
+            $('#federwiegen-notify-success').hide();
+            $('.federwiegen-notify-form').show();
             currentStripeLink = '#';
             currentPrice = 0;
             
@@ -647,4 +662,27 @@ jQuery(document).ready(function($) {
     function formatPrice(price) {
         return parseFloat(price).toFixed(2).replace('.', ',');
     }
+
+    // Notify when product becomes available
+    $('#federwiegen-notify-submit').on('click', function(e) {
+        e.preventDefault();
+        const email = $('#federwiegen-notify-email').val().trim();
+        if (!email) return;
+
+        $.ajax({
+            url: federwiegen_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'notify_availability',
+                email: email,
+                nonce: federwiegen_ajax.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('.federwiegen-notify-form').hide();
+                    $('#federwiegen-notify-success').show();
+                }
+            }
+        });
+    });
 });
