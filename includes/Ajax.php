@@ -399,9 +399,39 @@ class Ajax {
             return $_SERVER['REMOTE_ADDR'];
         }
     }
+
+    private function ensure_notifications_table() {
+        global $wpdb;
+        $table = $wpdb->prefix . 'federwiegen_notifications';
+        $exists = $wpdb->get_var("SHOW TABLES LIKE '$table'");
+        if (!$exists) {
+            $charset_collate = $wpdb->get_charset_collate();
+            $sql = "CREATE TABLE $table (
+                id mediumint(9) NOT NULL AUTO_INCREMENT,
+                category_id mediumint(9) NOT NULL,
+                variant_id mediumint(9) DEFAULT NULL,
+                extra_ids text DEFAULT NULL,
+                duration_id mediumint(9) DEFAULT NULL,
+                condition_id mediumint(9) DEFAULT NULL,
+                product_color_id mediumint(9) DEFAULT NULL,
+                frame_color_id mediumint(9) DEFAULT NULL,
+                email varchar(255) NOT NULL,
+                created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (id),
+                KEY category_id (category_id),
+                KEY variant_id (variant_id),
+                KEY created_at (created_at)
+            ) $charset_collate;";
+
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+            dbDelta($sql);
+        }
+    }
     
     public function ajax_notify_availability() {
         check_ajax_referer('federwiegen_nonce', 'nonce');
+
+        $this->ensure_notifications_table();
 
         $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
         if (!$email || !is_email($email)) {

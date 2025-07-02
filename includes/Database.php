@@ -232,21 +232,6 @@ class Database {
             
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
-        } else {
-            $new_columns = array(
-                'extra_ids'        => 'text',
-                'duration_id'      => 'mediumint(9)',
-                'condition_id'     => 'mediumint(9)',
-                'product_color_id' => 'mediumint(9)',
-                'frame_color_id'   => 'mediumint(9)'
-            );
-
-            foreach ($new_columns as $column => $type) {
-                $column_exists = $wpdb->get_results("SHOW COLUMNS FROM $table_notifications LIKE '$column'");
-                if (empty($column_exists)) {
-                    $wpdb->query("ALTER TABLE $table_notifications ADD COLUMN $column $type");
-                }
-            }
         }
         
         // Create colors table if it doesn't exist
@@ -358,6 +343,21 @@ class Database {
 
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
+        } else {
+            $new_columns = array(
+                'extra_ids'        => 'text',
+                'duration_id'      => 'mediumint(9)',
+                'condition_id'     => 'mediumint(9)',
+                'product_color_id' => 'mediumint(9)',
+                'frame_color_id'   => 'mediumint(9)'
+            );
+
+            foreach ($new_columns as $column => $type) {
+                $column_exists = $wpdb->get_results("SHOW COLUMNS FROM $table_notifications LIKE '$column'");
+                if (empty($column_exists)) {
+                    $wpdb->query("ALTER TABLE $table_notifications ADD COLUMN $column $type");
+                }
+            }
         }
         
         // Update links table with new columns
