@@ -836,6 +836,10 @@
     width: 50%;
 }
 
+.federwiegen-notify-form button:hover {
+    background: #395539;
+}
+
 .federwiegen-notify-success {
     color: #4a674a;
     font-size: 0.875rem;
