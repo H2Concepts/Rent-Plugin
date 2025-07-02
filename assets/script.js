@@ -46,6 +46,7 @@ jQuery(document).ready(function($) {
             } else if (type === 'extra') {
                 selectedExtras = [id];
             }
+            $(`.federwiegen-option[data-type="${type}"]`).removeClass('selected');
             $('#federwiegen-rent-button').prop('disabled', true);
             $('.federwiegen-mobile-button').prop('disabled', true);
             $('#federwiegen-button-help').hide();
@@ -463,6 +464,7 @@ jQuery(document).ready(function($) {
                 } else if (type === 'extra') {
                     selectedExtras = [id];
                 }
+                $(`.federwiegen-option[data-type="${type}"]`).removeClass('selected');
                 $('#federwiegen-rent-button').prop('disabled', true);
                 $('.federwiegen-mobile-button').prop('disabled', true);
                 $('#federwiegen-button-help').hide();
@@ -470,6 +472,10 @@ jQuery(document).ready(function($) {
                 $('#federwiegen-notify').show();
                 $('.federwiegen-notify-form').show();
                 $('#federwiegen-notify-success').hide();
+                $('#federwiegen-availability-wrapper').show();
+                $('#federwiegen-availability-status').addClass('unavailable').removeClass('available');
+                $('#federwiegen-availability-status .status-text').text('Nicht auf Lager');
+                $('#federwiegen-delivery-box').hide();
                 scrollToNotify();
                 return;
             }

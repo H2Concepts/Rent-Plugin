@@ -39,10 +39,6 @@
             </div>
         </div>
         
-        <!-- Einstellungen -->
-        <div class="federwiegen-form-section">
-            <h4>⚙️ Einstellungen</h4>
-        </div>
         
         <!-- Actions -->
         <div class="federwiegen-form-actions">
