@@ -232,6 +232,21 @@ class Database {
             
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
+        } else {
+            $new_columns = array(
+                'extra_ids'        => 'text',
+                'duration_id'      => 'mediumint(9)',
+                'condition_id'     => 'mediumint(9)',
+                'product_color_id' => 'mediumint(9)',
+                'frame_color_id'   => 'mediumint(9)'
+            );
+
+            foreach ($new_columns as $column => $type) {
+                $column_exists = $wpdb->get_results("SHOW COLUMNS FROM $table_notifications LIKE '$column'");
+                if (empty($column_exists)) {
+                    $wpdb->query("ALTER TABLE $table_notifications ADD COLUMN $column $type");
+                }
+            }
         }
         
         // Create colors table if it doesn't exist
@@ -316,6 +331,33 @@ class Database {
                     $wpdb->query("ALTER TABLE $table_orders ADD COLUMN $column $type AFTER extra_id");
                 }
             }
+        }
+
+        // Create notifications table if it doesn't exist
+        $table_notifications = $wpdb->prefix . 'federwiegen_notifications';
+        $notifications_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_notifications'");
+
+        if (!$notifications_exists) {
+            $charset_collate = $wpdb->get_charset_collate();
+            $sql = "CREATE TABLE $table_notifications (
+                id mediumint(9) NOT NULL AUTO_INCREMENT,
+                category_id mediumint(9) NOT NULL,
+                variant_id mediumint(9) DEFAULT NULL,
+                extra_ids text DEFAULT NULL,
+                duration_id mediumint(9) DEFAULT NULL,
+                condition_id mediumint(9) DEFAULT NULL,
+                product_color_id mediumint(9) DEFAULT NULL,
+                frame_color_id mediumint(9) DEFAULT NULL,
+                email varchar(255) NOT NULL,
+                created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (id),
+                KEY category_id (category_id),
+                KEY variant_id (variant_id),
+                KEY created_at (created_at)
+            ) $charset_collate;";
+
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+            dbDelta($sql);
         }
         
         // Update links table with new columns
@@ -553,6 +595,27 @@ class Database {
         dbDelta($sql_colors);
         dbDelta($sql_variant_options);
         dbDelta($sql_orders);
+
+        // Notifications table
+        $table_notifications = $wpdb->prefix . 'federwiegen_notifications';
+        $sql_notifications = "CREATE TABLE $table_notifications (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            category_id mediumint(9) NOT NULL,
+            variant_id mediumint(9) DEFAULT NULL,
+            extra_ids text DEFAULT NULL,
+            duration_id mediumint(9) DEFAULT NULL,
+            condition_id mediumint(9) DEFAULT NULL,
+            product_color_id mediumint(9) DEFAULT NULL,
+            frame_color_id mediumint(9) DEFAULT NULL,
+            email varchar(255) NOT NULL,
+            created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (id),
+            KEY category_id (category_id),
+            KEY variant_id (variant_id),
+            KEY created_at (created_at)
+        ) $charset_collate;";
+
+        dbDelta($sql_notifications);
     }
     
     public function insert_default_data() {

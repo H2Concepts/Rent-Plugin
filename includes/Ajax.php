@@ -400,7 +400,7 @@ class Ajax {
         }
     }
     
-      public function ajax_notify_availability() {
+    public function ajax_notify_availability() {
         check_ajax_referer('federwiegen_nonce', 'nonce');
 
         $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
@@ -408,9 +408,136 @@ class Ajax {
             wp_send_json_error('Invalid email');
         }
 
+        $variant_id       = isset($_POST['variant_id']) ? intval($_POST['variant_id']) : 0;
+        $category_id      = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
+        $extra_ids_raw    = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
+        $extra_ids_array  = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        $duration_id      = isset($_POST['duration_id']) ? intval($_POST['duration_id']) : 0;
+        $condition_id     = isset($_POST['condition_id']) ? intval($_POST['condition_id']) : 0;
+        $product_color_id = isset($_POST['product_color_id']) ? intval($_POST['product_color_id']) : 0;
+        $frame_color_id   = isset($_POST['frame_color_id']) ? intval($_POST['frame_color_id']) : 0;
+
+        global $wpdb;
+
+        $variant_name        = '';
+        $category_name       = '';
+        $extras_names        = '';
+        $duration_name       = '';
+        $condition_name      = '';
+        $product_color_name  = '';
+        $frame_color_name    = '';
+
+        if ($variant_id) {
+            $variant = $wpdb->get_row(
+                $wpdb->prepare(
+                    "SELECT v.name, v.category_id, c.name AS category_name FROM {$wpdb->prefix}federwiegen_variants v LEFT JOIN {$wpdb->prefix}federwiegen_categories c ON v.category_id = c.id WHERE v.id = %d",
+                    $variant_id
+                )
+            );
+            if ($variant) {
+                $variant_name  = $variant->name;
+                $category_id   = $variant->category_id;
+                $category_name = $variant->category_name;
+            }
+        }
+
+        if ($condition_id) {
+            $condition_name = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT name FROM {$wpdb->prefix}federwiegen_conditions WHERE id = %d",
+                    $condition_id
+                )
+            );
+        }
+
+        if ($product_color_id) {
+            $product_color_name = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT name FROM {$wpdb->prefix}federwiegen_colors WHERE id = %d",
+                    $product_color_id
+                )
+            );
+        }
+
+        if ($frame_color_id) {
+            $frame_color_name = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT name FROM {$wpdb->prefix}federwiegen_colors WHERE id = %d",
+                    $frame_color_id
+                )
+            );
+        }
+
+        if (!empty($extra_ids_array)) {
+            $placeholders = implode(',', array_fill(0, count($extra_ids_array), '%d'));
+            $extras_names = $wpdb->get_col(
+                $wpdb->prepare(
+                    "SELECT name FROM {$wpdb->prefix}federwiegen_extras WHERE id IN ($placeholders)",
+                    ...$extra_ids_array
+                )
+            );
+            $extras_names = implode(', ', $extras_names);
+        }
+
+        if (!$category_name && $category_id) {
+            $category_name = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT name FROM {$wpdb->prefix}federwiegen_categories WHERE id = %d",
+                    $category_id
+                )
+            );
+        }
+
+        if ($duration_id) {
+            $duration_name = $wpdb->get_var(
+                $wpdb->prepare(
+                    "SELECT name FROM {$wpdb->prefix}federwiegen_durations WHERE id = %d",
+                    $duration_id
+                )
+            );
+        }
+
+        // Save notification request
+        $wpdb->insert(
+            $wpdb->prefix . 'federwiegen_notifications',
+            [
+                'category_id'      => $category_id,
+                'variant_id'       => $variant_id,
+                'extra_ids'        => $extra_ids_raw,
+                'duration_id'      => $duration_id,
+                'condition_id'     => $condition_id,
+                'product_color_id' => $product_color_id,
+                'frame_color_id'   => $frame_color_id,
+                'email'            => $email
+            ],
+            ['%d', '%d', '%s', '%d', '%d', '%d', '%d', '%s']
+        );
+
         $admin_email = get_option('admin_email');
-        $subject = 'Verfügbarkeitsanfrage';
-        $message = 'Ein Kunde möchte informiert werden, sobald das Produkt wieder verfügbar ist. E-Mail: ' . $email;
+        $subject     = 'Verfügbarkeitsanfrage';
+        $message     = "Ein Kunde möchte informiert werden, sobald das Produkt wieder verfügbar ist.\n";
+        $message    .= 'E-Mail: ' . $email . "\n";
+        if ($category_name) {
+            $message .= 'Kategorie: ' . $category_name . "\n";
+        }
+        if ($variant_name) {
+            $message .= 'Ausführung: ' . $variant_name . "\n";
+        }
+        if ($duration_name) {
+            $message .= 'Mietdauer: ' . $duration_name . "\n";
+        }
+        if ($condition_name) {
+            $message .= 'Zustand: ' . $condition_name . "\n";
+        }
+        if ($product_color_name) {
+            $message .= 'Produktfarbe: ' . $product_color_name . "\n";
+        }
+        if ($frame_color_name) {
+            $message .= 'Gestellfarbe: ' . $frame_color_name . "\n";
+        }
+        if ($extras_names) {
+            $message .= 'Extras: ' . $extras_names . "\n";
+        }
 
         wp_mail($admin_email, $subject, $message);
 
