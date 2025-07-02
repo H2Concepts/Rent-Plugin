@@ -801,6 +801,13 @@
     border-radius: 0.75rem;
 }
 
+.federwiegen-notify p {
+    font-weight: 500;
+    color: #2a372a;
+    font-size: 1rem;
+    font-family: "Roca", sans-serif;
+}
+
 .federwiegen-notify-form {
     display: flex;
     justify-content: center;
