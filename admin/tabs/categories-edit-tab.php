@@ -179,6 +179,27 @@
                 </div>
             </div>
 
+            <div class="federwiegen-form-row">
+                <div class="federwiegen-form-group">
+                    <label>Text Versandkosten</label>
+                    <input type="text" name="shipping_label" value="<?php echo esc_attr($edit_item->shipping_label); ?>" placeholder="Einmalige Versandkosten:">
+                </div>
+                <div class="federwiegen-form-group">
+                    <label>Preis-Label</label>
+                    <input type="text" name="price_label" value="<?php echo esc_attr($edit_item->price_label); ?>" placeholder="Monatlicher Mietpreis">
+                </div>
+                <div class="federwiegen-form-group">
+                    <label>Preiszeitraum</label>
+                    <select name="price_period">
+                        <option value="month" <?php selected($edit_item->price_period, 'month'); ?>>pro Monat</option>
+                        <option value="one-time" <?php selected($edit_item->price_period, 'one-time'); ?>>einmalig</option>
+                    </select>
+                </div>
+                <div class="federwiegen-form-group">
+                    <label><input type="checkbox" name="vat_included" value="1" <?php checked($edit_item->vat_included, 1); ?>> Mit MwSt.</label>
+                </div>
+            </div>
+
             <div class="federwiegen-form-group">
                 <label>Bezahlmethoden</label>
                 <div class="federwiegen-payment-checkboxes">

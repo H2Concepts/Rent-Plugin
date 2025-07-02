@@ -137,10 +137,29 @@ class Admin {
 
         wp_enqueue_style('federwiegen-style', FEDERWIEGEN_PLUGIN_URL . 'assets/style.css', array(), FEDERWIEGEN_VERSION);
         wp_enqueue_script('federwiegen-script', FEDERWIEGEN_PLUGIN_URL . 'assets/script.js', array('jquery'), FEDERWIEGEN_VERSION, true);
-        
+
+        global $wpdb;
+        $pattern = '/\[federwiegen_product[^\]]*category=["\']([^"\']*)["\'][^\]]*\]/';
+        preg_match($pattern, $post->post_content, $matches);
+        $category_shortcode = isset($matches[1]) ? $matches[1] : '';
+
+        $category = null;
+        if (!empty($category_shortcode)) {
+            $category = $wpdb->get_row($wpdb->prepare(
+                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s",
+                $category_shortcode
+            ));
+        }
+        if (!$category) {
+            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order LIMIT 1");
+        }
+
         wp_localize_script('federwiegen-script', 'federwiegen_ajax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('federwiegen_nonce')
+            'nonce' => wp_create_nonce('federwiegen_nonce'),
+            'price_period' => $category->price_period ?? 'month',
+            'price_label' => $category->price_label ?? 'Monatlicher Mietpreis',
+            'vat_included' => isset($category->vat_included) ? intval($category->vat_included) : 0
         ));
     }
     
@@ -262,6 +281,10 @@ class Admin {
             $payment_icons = implode(',', $payment_icons);
             $shipping_cost = floatval($_POST['shipping_cost']);
             $shipping_provider = sanitize_text_field($_POST['shipping_provider'] ?? '');
+            $shipping_label = sanitize_text_field($_POST['shipping_label']);
+            $price_label = sanitize_text_field($_POST['price_label']);
+            $price_period = sanitize_text_field($_POST['price_period']);
+            $vat_included = isset($_POST['vat_included']) ? 1 : 0;
             $layout_style = sanitize_text_field($_POST['layout_style']);
             $duration_tooltip = sanitize_textarea_field($_POST['duration_tooltip']);
             $condition_tooltip = sanitize_textarea_field($_POST['condition_tooltip']);
@@ -295,13 +318,17 @@ class Admin {
                         'payment_icons' => $payment_icons,
                         'shipping_cost' => $shipping_cost,
                         'shipping_provider' => $shipping_provider,
+                        'price_label' => $price_label,
+                        'shipping_label' => $shipping_label,
+                        'price_period' => $price_period,
+                        'vat_included' => $vat_included,
                         'layout_style' => $layout_style,
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
                         'sort_order' => $sort_order,
                     ],
                     ['id' => intval($_POST['id'])],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d'),
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d'),
                 );
 
                 if ($result !== false) {
@@ -335,12 +362,16 @@ class Admin {
                         'payment_icons' => $payment_icons,
                         'shipping_cost' => $shipping_cost,
                         'shipping_provider' => $shipping_provider,
+                        'price_label' => $price_label,
+                        'shipping_label' => $shipping_label,
+                        'price_period' => $price_period,
+                        'vat_included' => $vat_included,
                         'layout_style' => $layout_style,
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
                         'sort_order' => $sort_order,
                     ],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d')
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d')
                 );
 
                 if ($result !== false) {
