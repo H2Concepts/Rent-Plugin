@@ -8,7 +8,8 @@ jQuery(document).ready(function($) {
     let currentStripeLink = '#';
     let currentVariantImages = [];
     let currentMainImageIndex = 0;
-    let currentColorImage = null;
+    let currentProductColorImage = null;
+    let currentFrameColorImage = null;
     let currentCategoryId = null;
     let touchStartX = 0;
     let touchEndX = 0;
@@ -179,13 +180,18 @@ jQuery(document).ready(function($) {
         }
     }
 
-    function updateVariantImages(variantOption) {
+    function updateVariantImages(variantOption, activeIndex = 0) {
         const imagesData = variantOption.data('images');
         currentVariantImages = imagesData ? imagesData.filter(img => img && img.trim() !== '') : [];
-        if (currentColorImage) {
-            currentVariantImages.push(currentColorImage);
+
+        if (currentProductColorImage) {
+            currentVariantImages.push(currentProductColorImage);
         }
-        currentMainImageIndex = 0;
+        if (currentFrameColorImage) {
+            currentVariantImages.push(currentFrameColorImage);
+        }
+
+        currentMainImageIndex = Math.min(activeIndex, currentVariantImages.length - 1);
 
         rebuildImageGallery();
     }
@@ -195,13 +201,13 @@ jQuery(document).ready(function($) {
         const thumbnailsContainer = $('#federwiegen-thumbnails');
 
         if (currentVariantImages.length > 0) {
-            showMainImage(0);
+            showMainImage(currentMainImageIndex);
 
             if (currentVariantImages.length > 1) {
                 let thumbnailsHtml = '';
                 currentVariantImages.forEach((imageUrl, index) => {
                     thumbnailsHtml += `
-                        <div class="federwiegen-thumbnail ${index === 0 ? 'active' : ''}" data-index="${index}">
+                        <div class="federwiegen-thumbnail ${index === currentMainImageIndex ? 'active' : ''}" data-index="${index}">
                             <img src="${imageUrl}" alt="Bild ${index + 1}">
                         </div>
                     `;
@@ -301,18 +307,32 @@ jQuery(document).ready(function($) {
     }
 
     function updateColorImage(colorOption) {
-        let imageUrl = '';
-        if (colorOption && colorOption.hasClass('selected')) {
-            imageUrl = colorOption.data('color-image');
-        }
-        currentColorImage = null;
-        if (imageUrl && imageUrl.trim() !== '' && selectedVariant) {
-            currentColorImage = imageUrl;
+        if (!colorOption) {
+            currentProductColorImage = null;
+            currentFrameColorImage = null;
+        } else if (!selectedVariant) {
+            return;
+        } else {
+            const imageUrl = colorOption.data('color-image') || '';
+            const type = colorOption.data('type');
+            if (type === 'product-color') {
+                currentProductColorImage = imageUrl.trim() !== '' ? imageUrl : null;
+            } else if (type === 'frame-color') {
+                currentFrameColorImage = imageUrl.trim() !== '' ? imageUrl : null;
+            }
         }
 
         const variantOption = $('.federwiegen-option[data-type="variant"].selected');
         if (variantOption.length) {
-            updateVariantImages(variantOption);
+            const baseImages = variantOption.data('images');
+            const variantImages = baseImages ? baseImages.filter(img => img && img.trim() !== '') : [];
+            let index = 0;
+            if (colorOption) {
+                const type = colorOption.data('type');
+                index = variantImages.length;
+                if (type === 'frame-color' && currentProductColorImage) index += 1;
+            }
+            updateVariantImages(variantOption, index);
         }
     }
 
