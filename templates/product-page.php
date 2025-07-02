@@ -328,6 +328,14 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     <p class="federwiegen-unavailable-help" id="federwiegen-unavailable-help" style="display: none;">
                         Das gewÃ¤hlte Produkt ist aktuell nicht verfÃ¼gbar
                     </p>
+                    <div class="federwiegen-notify" id="federwiegen-notify" style="display: none;">
+                        <p>Benachrichtigen Sie mich sobald das Produkt wieder erhältlich ist.</p>
+                        <div class="federwiegen-notify-form">
+                            <input type="email" id="federwiegen-notify-email" placeholder="Ihre E-Mail" required>
+                            <button id="federwiegen-notify-submit">Senden</button>
+                        </div>
+                        <p class="federwiegen-notify-success" id="federwiegen-notify-success" style="display:none;">Vielen Dank! Wir benachrichtigen Sie umgehend.</p>
+                    </div>
                     <?php if (!empty($payment_icons)): ?>
                     <div class="federwiegen-payment-icons">
                         <?php foreach ($payment_icons as $icon): ?>
