@@ -305,23 +305,6 @@
 </div>
 
 <style>
-.federwiegen-image-preview img {
-    width: 100%;
-    max-width: 200px;
-    height: auto;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 10px;
-}
-
-.federwiegen-icon-preview img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 5px;
-}
 .federwiegen-subtab-nav {
     margin-bottom: 20px;
     border-bottom: 1px solid #ddd;

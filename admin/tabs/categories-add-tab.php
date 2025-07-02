@@ -240,35 +240,6 @@
     </form>
 </div>
 
-<style>
-.federwiegen-feature-group {
-    background: #f8f9fa;
-    border: 1px solid #e9ecef;
-    border-radius: 6px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.federwiegen-feature-group h5 {
-    margin: 0 0 10px 0;
-    color: #5f7f5f;
-    font-size: 0.9rem;
-}
-
-.federwiegen-upload-area {
-    display: flex;
-    gap: 8px;
-}
-
-.federwiegen-upload-area input {
-    flex: 1;
-}
-
-.federwiegen-upload-area button {
-    padding: 6px 10px;
-    font-size: 0.8rem;
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

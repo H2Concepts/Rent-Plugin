@@ -199,22 +199,6 @@
     color: #3c434a;
     font-size: 0.85rem;
 }
-
-.federwiegen-upload-area {
-    display: flex;
-    gap: 5px;
-}
-
-.federwiegen-upload-area input {
-    flex: 1;
-    font-size: 0.8rem;
-}
-
-.federwiegen-upload-area button {
-    padding: 6px 10px;
-    font-size: 0.8rem;
-}
-
 .federwiegen-form-actions {
     display: flex;
     gap: 15px;
