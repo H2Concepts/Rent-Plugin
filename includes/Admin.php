@@ -288,6 +288,7 @@ class Admin {
             $layout_style = sanitize_text_field($_POST['layout_style']);
             $duration_tooltip = sanitize_textarea_field($_POST['duration_tooltip']);
             $condition_tooltip = sanitize_textarea_field($_POST['condition_tooltip']);
+            $show_tooltips = isset($_POST['show_tooltips']) ? 1 : 0;
             $sort_order = intval($_POST['sort_order']);
 
             $table_name = $wpdb->prefix . 'federwiegen_categories';
@@ -325,10 +326,11 @@ class Admin {
                         'layout_style' => $layout_style,
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
+                        'show_tooltips' => $show_tooltips,
                         'sort_order' => $sort_order,
                     ],
                     ['id' => intval($_POST['id'])],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d'),
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d'),
                 );
 
                 if ($result !== false) {
@@ -369,9 +371,10 @@ class Admin {
                         'layout_style' => $layout_style,
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
+                        'show_tooltips' => $show_tooltips,
                         'sort_order' => $sort_order,
                     ],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d')
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d')
                 );
 
                 if ($result !== false) {
