@@ -15,7 +15,10 @@
         <div class="federwiegen-subtab-nav">
             <a href="#" class="federwiegen-subtab active" data-tab="general">Allgemein</a>
             <a href="#" class="federwiegen-subtab" data-tab="product">Produktseite</a>
+            <a href="#" class="federwiegen-subtab" data-tab="shipping">Versand</a>
             <a href="#" class="federwiegen-subtab" data-tab="features">Features</a>
+            <a href="#" class="federwiegen-subtab" data-tab="tooltips">Tooltips</a>
+            <a href="#" class="federwiegen-subtab" data-tab="pricing">Preis-Einstellungen</a>
         </div>
 
         <div id="tab-general" class="federwiegen-subtab-content active">
@@ -84,31 +87,6 @@
                     <label>Produkttitel *</label>
                     <input type="text" name="product_title" value="<?php echo esc_attr($edit_item->product_title); ?>" required>
                 </div>
-                <div class="federwiegen-form-group">
-                    <label>Versandkosten (€)</label>
-                    <input type="number" name="shipping_cost" value="<?php echo esc_attr($edit_item->shipping_cost); ?>" step="0.01" min="0">
-                </div>
-                <div class="federwiegen-form-group">
-                    <label>Versanddienstleister</label>
-                    <div class="federwiegen-shipping-radios">
-                        <?php $shipping_providers = [
-                            'dhl' => 'DHL',
-                            'hermes' => 'Hermes',
-                            'ups' => 'UPS',
-                            'dpd' => 'DPD'
-                        ]; ?>
-                        <?php foreach ($shipping_providers as $key => $label): ?>
-                            <label>
-                                <input type="radio" name="shipping_provider" value="<?php echo esc_attr($key); ?>" <?php checked($edit_item->shipping_provider ?? '', $key); ?>>
-                                <img src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/shipping-icons/' . $key . '.svg'); ?>" alt="<?php echo esc_attr($label); ?>">
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
-                <div class="federwiegen-form-group">
-                    <label>Text Versandkosten</label>
-                    <input type="text" name="shipping_label" value="<?php echo isset($edit_item->shipping_label) ? esc_attr($edit_item->shipping_label) : ''; ?>" placeholder="Einmalige Versandkosten:">
-                </div>
             </div>
             
             <div class="federwiegen-form-group">
@@ -146,46 +124,9 @@
             </div>
         </div>
         
-        <!-- Features -->
+        <!-- Button -->
         <div class="federwiegen-form-section">
-            <h4>🌟 Features-Sektion</h4>
-            <div class="federwiegen-form-group">
-                <label>Features-Überschrift</label>
-                <input type="text" name="features_title" value="<?php echo esc_attr($edit_item->features_title); ?>">
-            </div>
-            
-            <?php for ($i = 1; $i <= 3; $i++): ?>
-            <div class="federwiegen-feature-group">
-                <h5>Feature <?php echo $i; ?></h5>
-                <div class="federwiegen-form-row">
-                    <div class="federwiegen-form-group">
-                        <label>Titel</label>
-                        <input type="text" name="feature_<?php echo $i; ?>_title" value="<?php echo esc_attr($edit_item->{'feature_' . $i . '_title'}); ?>">
-                    </div>
-                    <div class="federwiegen-form-group">
-                        <label>Icon-Bild</label>
-                        <div class="federwiegen-upload-area">
-                            <input type="url" name="feature_<?php echo $i; ?>_icon" id="feature_<?php echo $i; ?>_icon" value="<?php echo esc_attr($edit_item->{'feature_' . $i . '_icon'}); ?>">
-                            <button type="button" class="button federwiegen-media-button" data-target="feature_<?php echo $i; ?>_icon">📁</button>
-                        </div>
-                        <?php if (!empty($edit_item->{'feature_' . $i . '_icon'})): ?>
-                        <div class="federwiegen-icon-preview">
-                            <img src="<?php echo esc_url($edit_item->{'feature_' . $i . '_icon'}); ?>" alt="Feature <?php echo $i; ?> Icon">
-                        </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-                <div class="federwiegen-form-group">
-                    <label>Beschreibung</label>
-                    <textarea name="feature_<?php echo $i; ?>_description" rows="2"><?php echo esc_textarea($edit_item->{'feature_' . $i . '_description'}); ?></textarea>
-                </div>
-            </div>
-            <?php endfor; ?>
-        </div>
-        
-        <!-- Button & Tooltips -->
-        <div class="federwiegen-form-section">
-            <h4>🔘 Button & Tooltips</h4>
+            <h4>🔘 Button</h4>
             <div class="federwiegen-form-row">
                 <div class="federwiegen-form-group">
                     <label>Button-Text</label>
@@ -202,23 +143,6 @@
                         <img src="<?php echo esc_url($edit_item->button_icon); ?>" alt="Button Icon">
                     </div>
                     <?php endif; ?>
-                </div>
-            </div>
-
-            <div class="federwiegen-form-row">
-                <div class="federwiegen-form-group">
-                    <label>Preis-Label</label>
-                    <input type="text" name="price_label" value="<?php echo isset($edit_item->price_label) ? esc_attr($edit_item->price_label) : ''; ?>" placeholder="Monatlicher Mietpreis">
-                </div>
-                <div class="federwiegen-form-group">
-                    <label>Preiszeitraum</label>
-                    <select name="price_period">
-                        <option value="month" <?php isset($edit_item->price_period) ? selected($edit_item->price_period, 'month') : ''; ?>>pro Monat</option>
-                        <option value="one-time" <?php isset($edit_item->price_period) ? selected($edit_item->price_period, 'one-time') : ''; ?>>einmalig</option>
-                    </select>
-                </div>
-                <div class="federwiegen-form-group">
-                    <label><input type="checkbox" name="vat_included" value="1" <?php isset($edit_item->vat_included) ? checked($edit_item->vat_included, 1) : ''; ?>> Mit MwSt.</label>
                 </div>
             </div>
 
@@ -250,18 +174,41 @@
                     <?php endforeach; ?>
                 </div>
             </div>
-            
-            <div class="federwiegen-form-group">
-                <label>Mietdauer-Tooltip</label>
-                <textarea name="duration_tooltip" rows="3"><?php echo esc_textarea($edit_item->duration_tooltip); ?></textarea>
-            </div>
-            
-            <div class="federwiegen-form-group">
-                <label>Zustand-Tooltip</label>
-                <textarea name="condition_tooltip" rows="4"><?php echo esc_textarea($edit_item->condition_tooltip); ?></textarea>
-            </div>
         </div>
         </div><!-- end tab-product -->
+
+        <div id="tab-shipping" class="federwiegen-subtab-content">
+            <div class="federwiegen-form-section">
+                <h4>🚚 Versand</h4>
+                <div class="federwiegen-form-row">
+                    <div class="federwiegen-form-group">
+                        <label>Versandkosten (€)</label>
+                        <input type="number" name="shipping_cost" value="<?php echo esc_attr($edit_item->shipping_cost); ?>" step="0.01" min="0">
+                    </div>
+                    <div class="federwiegen-form-group">
+                        <label>Versanddienstleister</label>
+                        <div class="federwiegen-shipping-radios">
+                            <?php $shipping_providers = [
+                                'dhl' => 'DHL',
+                                'hermes' => 'Hermes',
+                                'ups' => 'UPS',
+                                'dpd' => 'DPD'
+                            ]; ?>
+                            <?php foreach ($shipping_providers as $key => $label): ?>
+                                <label>
+                                    <input type="radio" name="shipping_provider" value="<?php echo esc_attr($key); ?>" <?php checked($edit_item->shipping_provider ?? '', $key); ?>>
+                                    <img src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/shipping-icons/' . $key . '.svg'); ?>" alt="<?php echo esc_attr($label); ?>">
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                    <div class="federwiegen-form-group">
+                        <label>Text Versandkosten</label>
+                        <input type="text" name="shipping_label" value="<?php echo isset($edit_item->shipping_label) ? esc_attr($edit_item->shipping_label) : ''; ?>" placeholder="Einmalige Versandkosten:">
+                    </div>
+                </div>
+            </div>
+        </div><!-- end tab-shipping -->
 
         <div id="tab-features" class="federwiegen-subtab-content">
         <!-- Features -->
@@ -300,7 +247,44 @@
             </div>
             <?php endfor; ?>
         </div>
+
         </div><!-- end tab-features -->
+
+        <div id="tab-tooltips" class="federwiegen-subtab-content">
+            <div class="federwiegen-form-section">
+                <h4>💬 Tooltips</h4>
+                <div class="federwiegen-form-group">
+                    <label>Mietdauer-Tooltip</label>
+                    <textarea name="duration_tooltip" rows="3"><?php echo esc_textarea($edit_item->duration_tooltip); ?></textarea>
+                </div>
+                <div class="federwiegen-form-group">
+                    <label>Zustand-Tooltip</label>
+                    <textarea name="condition_tooltip" rows="4"><?php echo esc_textarea($edit_item->condition_tooltip); ?></textarea>
+                </div>
+            </div>
+        </div><!-- end tab-tooltips -->
+
+        <div id="tab-pricing" class="federwiegen-subtab-content">
+            <div class="federwiegen-form-section">
+                <h4>💲 Preiseinstellungen</h4>
+                <div class="federwiegen-form-row">
+                    <div class="federwiegen-form-group">
+                        <label>Preis-Label</label>
+                        <input type="text" name="price_label" value="<?php echo isset($edit_item->price_label) ? esc_attr($edit_item->price_label) : ''; ?>" placeholder="Monatlicher Mietpreis">
+                    </div>
+                    <div class="federwiegen-form-group">
+                        <label>Preiszeitraum</label>
+                        <select name="price_period">
+                            <option value="month" <?php isset($edit_item->price_period) ? selected($edit_item->price_period, 'month') : ''; ?>>pro Monat</option>
+                            <option value="one-time" <?php isset($edit_item->price_period) ? selected($edit_item->price_period, 'one-time') : ''; ?>>einmalig</option>
+                        </select>
+                    </div>
+                    <div class="federwiegen-form-group">
+                        <label><input type="checkbox" name="vat_included" value="1" <?php isset($edit_item->vat_included) ? checked($edit_item->vat_included, 1) : ''; ?>> Mit MwSt.</label>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end tab-pricing -->
 
         <!-- Actions -->
         <div class="federwiegen-form-actions">
