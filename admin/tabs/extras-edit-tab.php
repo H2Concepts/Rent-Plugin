@@ -76,16 +76,6 @@
     </form>
 </div>
 
-<style>
-.federwiegen-image-preview img {
-    width: 100%;
-    max-width: 150px;
-    height: auto;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-top: 10px;
-}
-</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
