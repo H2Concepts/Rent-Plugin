@@ -400,4 +400,21 @@ class Ajax {
         }
     }
     
+      public function ajax_notify_availability() {
+        check_ajax_referer('federwiegen_nonce', 'nonce');
+
+        $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+        if (!$email || !is_email($email)) {
+            wp_send_json_error('Invalid email');
+        }
+
+        $admin_email = get_option('admin_email');
+        $subject = 'Verf\xc3\xbcgbarkeitsanfrage';
+        $message = 'Ein Kunde m\xc3\xb6chte informiert werden, sobald das Produkt wieder verf\xc3\xbcgbar ist. E-Mail: ' . $email;
+
+        wp_mail($admin_email, $subject, $message);
+
+        wp_send_json_success();
+    }
+    
 }
