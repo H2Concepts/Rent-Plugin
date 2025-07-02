@@ -821,6 +821,8 @@
     border-radius: 4px;
     font-size: 0.875rem;
     width: 50%;
+    border-radius: 999px;
+    text-indent: 10px;
 }
 
 .federwiegen-notify-form button {
