@@ -51,6 +51,10 @@
                     <label>Verfügbarkeits-Hinweis</label>
                     <input type="text" name="availability_note" placeholder="z.B. 'Wieder verfügbar ab 15.03.2024'">
                 </div>
+                <div class="federwiegen-form-group">
+                    <label>Lieferzeit-Text</label>
+                    <input type="text" name="delivery_time" placeholder="z.B. 3-5 Werktagen" value="3-5 Werktagen">
+                </div>
             </div>
         </div>
         

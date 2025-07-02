@@ -53,6 +53,10 @@ jQuery(document).ready(function($) {
             $('#federwiegen-notify').show();
             $('.federwiegen-notify-form').show();
             $('#federwiegen-notify-success').hide();
+            $('#federwiegen-availability-wrapper').show();
+            $('#federwiegen-availability-status').addClass('unavailable').removeClass('available');
+            $('#federwiegen-availability-status .status-text').text('Nicht auf Lager');
+            $('#federwiegen-delivery-box').hide();
             scrollToNotify();
             return;
         }
@@ -570,10 +574,22 @@ jQuery(document).ready(function($) {
                         // Update button based on availability
                         currentStripeLink = data.stripe_link;
                         const isAvailable = data.available !== false;
-                        
+
                         $('#federwiegen-rent-button').prop('disabled', !isAvailable);
                         $('.federwiegen-mobile-button').prop('disabled', !isAvailable);
-                        
+
+                        $('#federwiegen-availability-wrapper').show();
+                        if (isAvailable) {
+                            $('#federwiegen-availability-status').removeClass('unavailable').addClass('available');
+                            $('#federwiegen-availability-status .status-text').text('Sofort verfügbar');
+                            $('#federwiegen-delivery-time').text(data.delivery_time || '');
+                            $('#federwiegen-delivery-box').show();
+                        } else {
+                            $('#federwiegen-availability-status').addClass('unavailable').removeClass('available');
+                            $('#federwiegen-availability-status .status-text').text('Nicht auf Lager');
+                            $('#federwiegen-delivery-box').hide();
+                        }
+
                         if (isAvailable) {
                             $('#federwiegen-button-help').hide();
                             $('#federwiegen-unavailable-help').hide();
@@ -612,6 +628,8 @@ jQuery(document).ready(function($) {
             $('.federwiegen-notify-form').show();
             currentStripeLink = '#';
             currentPrice = 0;
+
+            $('#federwiegen-availability-wrapper').hide();
             
             // Hide mobile sticky price
             hideMobileStickyPrice();
