@@ -8,6 +8,8 @@ jQuery(document).ready(function($) {
     let currentStripeLink = '#';
     let currentVariantImages = [];
     let currentMainImageIndex = 0;
+    let currentProductColorImage = null;
+    let currentFrameColorImage = null;
     let currentCategoryId = null;
     let touchStartX = 0;
     let touchEndX = 0;
@@ -92,7 +94,8 @@ jQuery(document).ready(function($) {
             $('.federwiegen-option[data-type="duration"]').removeClass('selected');
 
             updateExtraImage(null);
-            
+            updateColorImage(null);
+
             updateVariantImages($(this));
             updateVariantOptions(id);
         } else if (type === 'extra') {
@@ -110,9 +113,11 @@ jQuery(document).ready(function($) {
         } else if (type === 'product-color') {
             selectedProductColor = id;
             $('#selected-product-color-name').text($(this).data('color-name'));
+            updateColorImage($(this));
         } else if (type === 'frame-color') {
             selectedFrameColor = id;
             $('#selected-frame-color-name').text($(this).data('color-name'));
+            updateColorImage($(this));
         }
 
         // Update price and button state
@@ -175,31 +180,40 @@ jQuery(document).ready(function($) {
         }
     }
 
-    function updateVariantImages(variantOption) {
+    function updateVariantImages(variantOption, activeIndex = 0) {
         const imagesData = variantOption.data('images');
         currentVariantImages = imagesData ? imagesData.filter(img => img && img.trim() !== '') : [];
-        currentMainImageIndex = 0;
-        
+
+        if (currentProductColorImage) {
+            currentVariantImages.push(currentProductColorImage);
+        }
+        if (currentFrameColorImage) {
+            currentVariantImages.push(currentFrameColorImage);
+        }
+
+        currentMainImageIndex = Math.min(activeIndex, currentVariantImages.length - 1);
+
+        rebuildImageGallery();
+    }
+
+    function rebuildImageGallery() {
         const mainImageContainer = $('#federwiegen-main-image-container');
         const thumbnailsContainer = $('#federwiegen-thumbnails');
-        
+
         if (currentVariantImages.length > 0) {
-            // Show first image as main image
-            showMainImage(0);
-            
-            // Create thumbnails if more than one image
+            showMainImage(currentMainImageIndex);
+
             if (currentVariantImages.length > 1) {
                 let thumbnailsHtml = '';
                 currentVariantImages.forEach((imageUrl, index) => {
                     thumbnailsHtml += `
-                        <div class="federwiegen-thumbnail ${index === 0 ? 'active' : ''}" data-index="${index}">
+                        <div class="federwiegen-thumbnail ${index === currentMainImageIndex ? 'active' : ''}" data-index="${index}">
                             <img src="${imageUrl}" alt="Bild ${index + 1}">
                         </div>
                     `;
                 });
                 thumbnailsContainer.html(thumbnailsHtml).show();
-                
-                // Show swipe indicator only if multiple images and on mobile
+
                 if (window.innerWidth <= 768) {
                     showSwipeIndicator();
                 }
@@ -208,7 +222,6 @@ jQuery(document).ready(function($) {
                 hideSwipeIndicator();
             }
         } else {
-            // Show default image or placeholder
             showDefaultImage();
             thumbnailsContainer.hide();
             hideSwipeIndicator();
@@ -293,6 +306,36 @@ jQuery(document).ready(function($) {
         }
     }
 
+    function updateColorImage(colorOption) {
+        if (!colorOption) {
+            currentProductColorImage = null;
+            currentFrameColorImage = null;
+        } else if (!selectedVariant) {
+            return;
+        } else {
+            const imageUrl = colorOption.data('color-image') || '';
+            const type = colorOption.data('type');
+            if (type === 'product-color') {
+                currentProductColorImage = imageUrl.trim() !== '' ? imageUrl : null;
+            } else if (type === 'frame-color') {
+                currentFrameColorImage = imageUrl.trim() !== '' ? imageUrl : null;
+            }
+        }
+
+        const variantOption = $('.federwiegen-option[data-type="variant"].selected');
+        if (variantOption.length) {
+            const baseImages = variantOption.data('images');
+            const variantImages = baseImages ? baseImages.filter(img => img && img.trim() !== '') : [];
+            let index = 0;
+            if (colorOption) {
+                const type = colorOption.data('type');
+                index = variantImages.length;
+                if (type === 'frame-color' && currentProductColorImage) index += 1;
+            }
+            updateVariantImages(variantOption, index);
+        }
+    }
+
     function updateVariantOptions(variantId) {
         // Get variant-specific options via AJAX
         $.ajax({
@@ -329,7 +372,8 @@ jQuery(document).ready(function($) {
                     selectedDuration = null;
                     $('.federwiegen-options.durations .federwiegen-option').removeClass('selected');
                     updateExtraImage(null);
-                    
+                    updateColorImage(null);
+
                     updatePriceAndButton();
                 }
             }
@@ -371,7 +415,7 @@ jQuery(document).ready(function($) {
                 `;
             } else if (optionType === 'product-color' || optionType === 'frame-color') {
                 optionHtml = `
-                    <div class="federwiegen-option ${option.available == 0 ? 'unavailable' : ''}" data-type="${optionType}" data-id="${option.id}" data-available="${option.available == 0 ? 'false' : 'true'}" data-color-name="${option.name}">
+                    <div class="federwiegen-option ${option.available == 0 ? 'unavailable' : ''}" data-type="${optionType}" data-id="${option.id}" data-available="${option.available == 0 ? 'false' : 'true'}" data-color-name="${option.name}" data-color-image="${option.image_url || ''}">
                         <div class="federwiegen-option-content">
                             <div class="federwiegen-color-display">
                                 <div class="federwiegen-color-preview" style="background-color: ${option.color_code};"></div>
@@ -444,9 +488,11 @@ jQuery(document).ready(function($) {
                 } else if (type === 'product-color') {
                     selectedProductColor = id;
                     $('#selected-product-color-name').text($(this).data('color-name'));
+                    updateColorImage($(this));
                 } else if (type === 'frame-color') {
                     selectedFrameColor = id;
                     $('#selected-frame-color-name').text($(this).data('color-name'));
+                    updateColorImage($(this));
                 }
             }
             
