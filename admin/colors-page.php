@@ -6,6 +6,12 @@ if (!defined('ABSPATH')) {
 global $wpdb;
 $table_name = $wpdb->prefix . 'federwiegen_colors';
 
+// Ensure image_url column exists
+$column_exists = $wpdb->get_results("SHOW COLUMNS FROM $table_name LIKE 'image_url'");
+if (empty($column_exists)) {
+    $wpdb->query("ALTER TABLE $table_name ADD COLUMN image_url TEXT AFTER color_type");
+}
+
 // Get all categories for dropdown
 $categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order, name");
 
@@ -24,6 +30,7 @@ if (isset($_POST['submit'])) {
     $color_type = sanitize_text_field($_POST['color_type']);
     $active = isset($_POST['active']) ? 1 : 0;
     $sort_order = intval($_POST['sort_order']);
+    $image_url = esc_url_raw($_POST['image_url'] ?? '');
 
     if (isset($_POST['id']) && $_POST['id']) {
         // Update
@@ -34,11 +41,12 @@ if (isset($_POST['submit'])) {
                 'name' => $name,
                 'color_code' => $color_code,
                 'color_type' => $color_type,
+                'image_url' => $image_url,
                 'active' => $active,
                 'sort_order' => $sort_order
             ),
             array('id' => intval($_POST['id'])),
-             array('%d', '%s', '%s', '%s', '%d', '%d'),
+             array('%d', '%s', '%s', '%s', '%s', '%d', '%d'),
             array('%d')
         );
         
@@ -56,10 +64,11 @@ if (isset($_POST['submit'])) {
                 'name' => $name,
                 'color_code' => $color_code,
                 'color_type' => $color_type,
+                'image_url' => $image_url,
                 'active' => $active,
                 'sort_order' => $sort_order
             ),
-            array('%d', '%s', '%s', '%s', '%d', '%d')
+            array('%d', '%s', '%s', '%s', '%s', '%d', '%d')
         );
         
         if ($result !== false) {
@@ -189,6 +198,14 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                         <span class="federwiegen-color-swatch" style="background-color:#FFFFFF;"></span>
                                     </div>
                                 </div>
+
+                                <div class="federwiegen-form-group">
+                                    <label>Farb-Bild</label>
+                                    <div class="federwiegen-upload-area">
+                                        <input type="url" name="image_url" id="image_url" placeholder="https://example.com/farbe.jpg">
+                                        <button type="button" class="button federwiegen-media-button" data-target="image_url">📁 Aus Mediathek wählen</button>
+                                    </div>
+                                </div>
                                 
                                 <div class="federwiegen-form-group">
                                     <label>Sortierung</label>
@@ -243,6 +260,19 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                         <span class="federwiegen-color-swatch" style="background-color: <?php echo esc_attr($edit_item->color_code); ?>;"></span>
                                     </div>
                                 </div>
+
+                                <div class="federwiegen-form-group">
+                                    <label>Farb-Bild</label>
+                                    <div class="federwiegen-upload-area">
+                                        <input type="url" name="image_url" id="image_url" value="<?php echo esc_attr($edit_item->image_url ?? ''); ?>">
+                                        <button type="button" class="button federwiegen-media-button" data-target="image_url">📁 Aus Mediathek wählen</button>
+                                    </div>
+                                    <?php if (!empty($edit_item->image_url)): ?>
+                                    <div class="federwiegen-image-preview" style="margin-top:10px;">
+                                        <img src="<?php echo esc_url($edit_item->image_url); ?>" alt="Farb-Bild" style="max-width:150px; height:auto;">
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
                                 
                                 <div class="federwiegen-form-group">
                                     <label>Sortierung</label>
@@ -294,6 +324,9 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                             <h5 style="margin: 0;"><?php echo esc_html($color->name); ?></h5>
                                             <code style="font-size: 12px;"><?php echo esc_html($color->color_code); ?></code>
                                         </div>
+                                        <?php if (!empty($color->image_url)): ?>
+                                            <img src="<?php echo esc_url($color->image_url); ?>" alt="<?php echo esc_attr($color->name); ?>" style="width:40px;height:40px;border-radius:4px;object-fit:cover;">
+                                        <?php endif; ?>
                                     </div>
                                     <div class="federwiegen-item-meta">
                                     </div>
@@ -330,6 +363,9 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                             <h5 style="margin: 0;"><?php echo esc_html($color->name); ?></h5>
                                             <code style="font-size: 12px;"><?php echo esc_html($color->color_code); ?></code>
                                         </div>
+                                        <?php if (!empty($color->image_url)): ?>
+                                            <img src="<?php echo esc_url($color->image_url); ?>" alt="<?php echo esc_attr($color->name); ?>" style="width:40px;height:40px;border-radius:4px;object-fit:cover;">
+                                        <?php endif; ?>
                                     </div>
                                     <div class="federwiegen-item-meta"></div>
                                 </div>
@@ -350,3 +386,29 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
         ?>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.federwiegen-media-button').forEach(function(button) {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('data-target');
+            const targetInput = document.getElementById(targetId);
+            if (!targetInput) return;
+
+            const mediaUploader = wp.media({
+                title: 'Bild auswählen',
+                button: { text: 'Bild verwenden' },
+                multiple: false
+            });
+
+            mediaUploader.on('select', function() {
+                const attachment = mediaUploader.state().get('selection').first().toJSON();
+                targetInput.value = attachment.url;
+            });
+
+            mediaUploader.open();
+        });
+    });
+});
+</script>

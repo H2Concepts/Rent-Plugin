@@ -256,14 +256,20 @@ class Database {
                 name varchar(255) NOT NULL,
                 color_code varchar(7) NOT NULL,
                 color_type varchar(20) NOT NULL,
+                image_url text,
                 available tinyint(1) DEFAULT 1,
                 active tinyint(1) DEFAULT 1,
                 sort_order int(11) DEFAULT 0,
                 PRIMARY KEY (id)
             ) $charset_collate;";
-            
+
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
+        } else {
+            $column_exists = $wpdb->get_results("SHOW COLUMNS FROM $table_colors LIKE 'image_url'");
+            if (empty($column_exists)) {
+                $wpdb->query("ALTER TABLE $table_colors ADD COLUMN image_url TEXT AFTER color_type");
+            }
         }
         
         // Create variant options table if it doesn't exist
@@ -556,6 +562,7 @@ class Database {
             name varchar(255) NOT NULL,
             color_code varchar(7) NOT NULL,
             color_type varchar(20) NOT NULL,
+            image_url text,
             available tinyint(1) DEFAULT 1,
             active tinyint(1) DEFAULT 1,
             sort_order int(11) DEFAULT 0,
