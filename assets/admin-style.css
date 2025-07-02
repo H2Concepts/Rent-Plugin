@@ -525,6 +525,46 @@
     gap: 10px;
 }
 
+/* Unified upload area styling */
+.federwiegen-upload-area {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.federwiegen-upload-area input {
+    flex: 1;
+}
+
+.federwiegen-upload-area button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+}
+
+.federwiegen-icon-preview img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.federwiegen-feature-group {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.federwiegen-feature-group h5 {
+    margin: 0 0 10px 0;
+    color: #5f7f5f;
+    font-size: 0.9rem;
+}
+
 /* Form styling improvements */
 .form-table th {
     width: 200px;
