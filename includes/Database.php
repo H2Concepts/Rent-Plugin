@@ -247,7 +247,7 @@ class Database {
         // Create colors table if it doesn't exist
         $table_colors = $wpdb->prefix . 'federwiegen_colors';
         $colors_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_colors'");
-        
+
         if (!$colors_exists) {
             $charset_collate = $wpdb->get_charset_collate();
             $sql = "CREATE TABLE $table_colors (
@@ -270,6 +270,25 @@ class Database {
             if (empty($column_exists)) {
                 $wpdb->query("ALTER TABLE $table_colors ADD COLUMN image_url TEXT AFTER color_type");
             }
+        }
+
+        // Create color variant images table if it doesn't exist
+        $table_color_variant_images = $wpdb->prefix . 'federwiegen_color_variant_images';
+        $color_variant_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_color_variant_images'");
+
+        if (!$color_variant_exists) {
+            $charset_collate = $wpdb->get_charset_collate();
+            $sql = "CREATE TABLE $table_color_variant_images (
+                id mediumint(9) NOT NULL AUTO_INCREMENT,
+                color_id mediumint(9) NOT NULL,
+                variant_id mediumint(9) NOT NULL,
+                image_url text DEFAULT '',
+                PRIMARY KEY (id),
+                UNIQUE KEY color_variant (color_id, variant_id)
+            ) $charset_collate;";
+
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+            dbDelta($sql);
         }
         
         // Create variant options table if it doesn't exist
@@ -568,6 +587,17 @@ class Database {
             sort_order int(11) DEFAULT 0,
             PRIMARY KEY (id)
         ) $charset_collate;";
+
+        // Color variant images table
+        $table_color_variant_images = $wpdb->prefix . 'federwiegen_color_variant_images';
+        $sql_color_variant_images = "CREATE TABLE $table_color_variant_images (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            color_id mediumint(9) NOT NULL,
+            variant_id mediumint(9) NOT NULL,
+            image_url text DEFAULT '',
+            PRIMARY KEY (id),
+            UNIQUE KEY color_variant (color_id, variant_id)
+        ) $charset_collate;";
         
         // Variant options table
         $table_variant_options = $wpdb->prefix . 'federwiegen_variant_options';
@@ -615,6 +645,7 @@ class Database {
         dbDelta($sql_branding);
         dbDelta($sql_conditions);
         dbDelta($sql_colors);
+        dbDelta($sql_color_variant_images);
         dbDelta($sql_variant_options);
         dbDelta($sql_orders);
 

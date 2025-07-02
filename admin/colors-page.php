@@ -18,6 +18,13 @@ $categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categ
 // Get selected category from URL parameter
 $selected_category = isset($_GET['category']) ? intval($_GET['category']) : (isset($categories[0]) ? $categories[0]->id : 1);
 
+// Get variants for the selected category
+$variants = $wpdb->get_results($wpdb->prepare(
+    "SELECT id, name FROM {$wpdb->prefix}federwiegen_variants WHERE category_id = %d ORDER BY sort_order, name",
+    $selected_category
+));
+$variant_images_db = array();
+
 // Get active tab
 $active_tab = isset($_GET['tab']) ? sanitize_text_field($_GET['tab']) : 'list';
 
@@ -49,10 +56,12 @@ if (isset($_POST['submit'])) {
              array('%d', '%s', '%s', '%s', '%s', '%d', '%d'),
             array('%d')
         );
-        
+
         if ($result !== false) {
+            $color_id = intval($_POST['id']);
             echo '<div class="notice notice-success"><p>✅ Farbe erfolgreich aktualisiert!</p></div>';
         } else {
+            $color_id = intval($_POST['id']);
             echo '<div class="notice notice-error"><p>❌ Fehler beim Aktualisieren: ' . esc_html($wpdb->last_error) . '</p></div>';
         }
     } else {
@@ -72,9 +81,30 @@ if (isset($_POST['submit'])) {
         );
         
         if ($result !== false) {
+            $color_id = $wpdb->insert_id;
             echo '<div class="notice notice-success"><p>✅ Farbe erfolgreich hinzugefügt!</p></div>';
         } else {
+            $color_id = $wpdb->insert_id;
             echo '<div class="notice notice-error"><p>❌ Fehler beim Hinzufügen: ' . esc_html($wpdb->last_error) . '</p></div>';
+        }
+    }
+
+    if (isset($color_id)) {
+        $variant_images = $_POST['variant_images'] ?? array();
+        $table_variant_img = $wpdb->prefix . 'federwiegen_color_variant_images';
+        foreach ($variant_images as $variant_id => $img) {
+            $variant_id = intval($variant_id);
+            $img = esc_url_raw($img);
+            $exists = $wpdb->get_var($wpdb->prepare("SELECT id FROM $table_variant_img WHERE color_id = %d AND variant_id = %d", $color_id, $variant_id));
+            if ($img === '') {
+                if ($exists) {
+                    $wpdb->delete($table_variant_img, array('id' => $exists));
+                }
+            } else if ($exists) {
+                $wpdb->update($table_variant_img, array('image_url' => $img), array('id' => $exists));
+            } else {
+                $wpdb->insert($table_variant_img, array('color_id' => $color_id, 'variant_id' => $variant_id, 'image_url' => $img));
+            }
         }
     }
 }
@@ -95,6 +125,14 @@ if (isset($_GET['edit'])) {
     $edit_item = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table_name WHERE id = %d", intval($_GET['edit'])));
     if ($edit_item) {
         $selected_category = $edit_item->category_id;
+        $variants = $wpdb->get_results($wpdb->prepare(
+            "SELECT id, name FROM {$wpdb->prefix}federwiegen_variants WHERE category_id = %d ORDER BY sort_order, name",
+            $selected_category
+        ));
+        $variant_images_db = $wpdb->get_results($wpdb->prepare(
+            "SELECT variant_id, image_url FROM {$wpdb->prefix}federwiegen_color_variant_images WHERE color_id = %d",
+            $edit_item->id
+        ), OBJECT_K);
     }
 }
 
@@ -211,6 +249,16 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                     <label>Sortierung</label>
                                     <input type="number" name="sort_order" value="0" min="0">
                                 </div>
+
+                                <?php foreach ($variants as $variant): ?>
+                                <div class="federwiegen-form-group">
+                                    <label>Bild für <?php echo esc_html($variant->name); ?></label>
+                                    <div class="federwiegen-upload-area">
+                                        <input type="url" name="variant_images[<?php echo $variant->id; ?>]" id="variant_image_<?php echo $variant->id; ?>" value="">
+                                        <button type="button" class="button federwiegen-media-button" data-target="variant_image_<?php echo $variant->id; ?>">📁 Aus Mediathek wählen</button>
+                                    </div>
+                                </div>
+                                <?php endforeach; ?>
                                 
                                 
                             </div>
@@ -278,6 +326,22 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                                     <label>Sortierung</label>
                                     <input type="number" name="sort_order" value="<?php echo $edit_item->sort_order; ?>" min="0">
                                 </div>
+
+                                <?php foreach ($variants as $variant): ?>
+                                <div class="federwiegen-form-group">
+                                    <label>Bild für <?php echo esc_html($variant->name); ?></label>
+                                    <div class="federwiegen-upload-area">
+                                        <?php $img_val = isset($variant_images_db[$variant->id]) ? $variant_images_db[$variant->id]->image_url : ''; ?>
+                                        <input type="url" name="variant_images[<?php echo $variant->id; ?>]" id="variant_image_<?php echo $variant->id; ?>" value="<?php echo esc_attr($img_val); ?>">
+                                        <button type="button" class="button federwiegen-media-button" data-target="variant_image_<?php echo $variant->id; ?>">📁 Aus Mediathek wählen</button>
+                                    </div>
+                                    <?php if (!empty($img_val)): ?>
+                                    <div class="federwiegen-image-preview" style="margin-top:10px;">
+                                        <img src="<?php echo esc_url($img_val); ?>" alt="Variant Image" style="max-width:150px;height:auto;">
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+                                <?php endforeach; ?>
                                 
                                 
                             </div>
