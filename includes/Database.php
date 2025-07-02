@@ -232,6 +232,21 @@ class Database {
             
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
+        } else {
+            $new_columns = array(
+                'extra_ids'        => 'text',
+                'duration_id'      => 'mediumint(9)',
+                'condition_id'     => 'mediumint(9)',
+                'product_color_id' => 'mediumint(9)',
+                'frame_color_id'   => 'mediumint(9)'
+            );
+
+            foreach ($new_columns as $column => $type) {
+                $column_exists = $wpdb->get_results("SHOW COLUMNS FROM $table_notifications LIKE '$column'");
+                if (empty($column_exists)) {
+                    $wpdb->query("ALTER TABLE $table_notifications ADD COLUMN $column $type");
+                }
+            }
         }
         
         // Create colors table if it doesn't exist
@@ -328,6 +343,11 @@ class Database {
                 id mediumint(9) NOT NULL AUTO_INCREMENT,
                 category_id mediumint(9) NOT NULL,
                 variant_id mediumint(9) DEFAULT NULL,
+                extra_ids text DEFAULT NULL,
+                duration_id mediumint(9) DEFAULT NULL,
+                condition_id mediumint(9) DEFAULT NULL,
+                product_color_id mediumint(9) DEFAULT NULL,
+                frame_color_id mediumint(9) DEFAULT NULL,
                 email varchar(255) NOT NULL,
                 created_at timestamp DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (id),
@@ -582,6 +602,11 @@ class Database {
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             category_id mediumint(9) NOT NULL,
             variant_id mediumint(9) DEFAULT NULL,
+            extra_ids text DEFAULT NULL,
+            duration_id mediumint(9) DEFAULT NULL,
+            condition_id mediumint(9) DEFAULT NULL,
+            product_color_id mediumint(9) DEFAULT NULL,
+            frame_color_id mediumint(9) DEFAULT NULL,
             email varchar(255) NOT NULL,
             created_at timestamp DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (id),

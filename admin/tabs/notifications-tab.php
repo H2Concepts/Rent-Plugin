@@ -37,8 +37,20 @@ if (!empty($_POST['delete_notifications']) && is_array($_POST['delete_notificati
 
 $where_clause = $selected_category > 0 ? $wpdb->prepare('WHERE n.category_id = %d', $selected_category) : '';
 $notifications = $wpdb->get_results(
-    "SELECT n.*, v.name AS variant_name FROM {$wpdb->prefix}federwiegen_notifications n
+    "SELECT n.*, v.name AS variant_name,
+        d.name AS duration_name,
+        c.name AS condition_name,
+        pc.name AS product_color_name,
+        fc.name AS frame_color_name,
+        (SELECT GROUP_CONCAT(e.name SEPARATOR ', ')
+            FROM {$wpdb->prefix}federwiegen_extras e
+            WHERE FIND_IN_SET(e.id, n.extra_ids)) AS extras_names
+     FROM {$wpdb->prefix}federwiegen_notifications n
      LEFT JOIN {$wpdb->prefix}federwiegen_variants v ON n.variant_id = v.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_durations d ON n.duration_id = d.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_conditions c ON n.condition_id = c.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_colors pc ON n.product_color_id = pc.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_colors fc ON n.frame_color_id = fc.id
      $where_clause ORDER BY n.created_at DESC"
 );
 ?>
@@ -67,7 +79,7 @@ $notifications = $wpdb->get_results(
                         <th style="width:80px;">ID</th>
                         <th style="width:140px;">Datum</th>
                         <th>E-Mail</th>
-                        <th>Produkt</th>
+                        <th>Details</th>
                         <th style="width:120px;">Aktionen</th>
                     </tr>
                 </thead>
@@ -78,7 +90,30 @@ $notifications = $wpdb->get_results(
                         <td><strong>#<?php echo $note->id; ?></strong></td>
                         <td><?php echo date('d.m.Y H:i', strtotime($note->created_at)); ?></td>
                         <td><?php echo esc_html($note->email); ?></td>
-                        <td><?php echo esc_html($note->variant_name ?: ''); ?></td>
+                        <td>
+                            <?php
+                                $parts = array();
+                                if ($note->variant_name) {
+                                    $parts[] = $note->variant_name;
+                                }
+                                if ($note->duration_name) {
+                                    $parts[] = 'Mietdauer: ' . $note->duration_name;
+                                }
+                                if ($note->condition_name) {
+                                    $parts[] = 'Zustand: ' . $note->condition_name;
+                                }
+                                if ($note->product_color_name) {
+                                    $parts[] = 'Produktfarbe: ' . $note->product_color_name;
+                                }
+                                if ($note->frame_color_name) {
+                                    $parts[] = 'Gestellfarbe: ' . $note->frame_color_name;
+                                }
+                                if ($note->extras_names) {
+                                    $parts[] = 'Extras: ' . $note->extras_names;
+                                }
+                                echo esc_html(implode(', ', $parts));
+                            ?>
+                        </td>
                         <td>
                             <a href="<?php echo admin_url('admin.php?page=federwiegen-analytics&tab=notifications&category=' . $selected_category . '&delete_notification=' . $note->id); ?>" class="button button-small" style="color:#dc3232;" onclick="return confirm('Eintrag wirklich löschen?');">🗑️ Löschen</a>
                         </td>
