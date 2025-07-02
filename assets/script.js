@@ -380,7 +380,8 @@ jQuery(document).ready(function($) {
                     </div>
                 `;
             } else if (optionType === 'extra') {
-                const priceHtml = option.price > 0 ? `+${parseFloat(option.price).toFixed(2).replace('.', ',')}€/Monat` : '';
+                const priceSuffix = federwiegen_ajax.price_period === 'month' ? '/Monat' : '';
+                const priceHtml = option.price > 0 ? `+${parseFloat(option.price).toFixed(2).replace('.', ',')}€${priceSuffix}` : '';
                 optionHtml = `
                     <div class="federwiegen-option ${option.available == 0 ? 'unavailable' : ''}" data-type="extra" data-id="${option.id}" data-extra-image="${option.image_url || ''}" data-available="${option.available == 0 ? 'false' : 'true'}">
                         <div class="federwiegen-option-content">
@@ -513,7 +514,8 @@ jQuery(document).ready(function($) {
                         if (data.discount > 0) {
                             $('#federwiegen-original-price').text(formatPrice(data.base_price) + '€').show();
                             const savings = data.base_price - data.final_price;
-                            $('#federwiegen-savings').text(`Sie sparen ${formatPrice(savings)}€ pro Monat!`).show();
+                            const saveSuffix = federwiegen_ajax.price_period === 'month' ? ' pro Monat!' : '!';
+                            $('#federwiegen-savings').text(`Sie sparen ${formatPrice(savings)}€${saveSuffix}`).show();
                         } else {
                             $('#federwiegen-original-price').hide();
                             $('#federwiegen-savings').hide();
@@ -580,7 +582,7 @@ jQuery(document).ready(function($) {
                 <div class="federwiegen-mobile-sticky-price" id="mobile-sticky-price">
                     <div class="federwiegen-mobile-sticky-content">
                         <div class="federwiegen-mobile-price-info">
-                            <div class="federwiegen-mobile-price-label">Monatlicher Mietpreis</div>
+                            <div class="federwiegen-mobile-price-label">${federwiegen_ajax.price_label}</div>
                             <div class="federwiegen-mobile-price-value" id="mobile-price-value">0,00€</div>
                         </div>
                         <button class="federwiegen-mobile-button" disabled>
@@ -618,7 +620,8 @@ jQuery(document).ready(function($) {
 
     function updateMobileStickyPrice(price, isAvailable) {
         if (window.innerWidth <= 768) {
-            $('#mobile-price-value').text(formatPrice(price) + '€');
+            const suffix = federwiegen_ajax.price_period === 'month' ? '/Monat' : '';
+            $('#mobile-price-value').text(formatPrice(price) + '€' + suffix);
             $('.federwiegen-mobile-button').prop('disabled', !isAvailable);
         }
     }

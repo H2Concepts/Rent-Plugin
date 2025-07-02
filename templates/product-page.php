@@ -49,6 +49,10 @@ if (isset($category) && property_exists($category, 'payment_icons')) {
 // Shipping
 $shipping_cost = isset($category) ? ($category->shipping_cost ?? 0) : 0;
 $shipping_provider = isset($category) ? ($category->shipping_provider ?? '') : '';
+$price_label = isset($category) ? ($category->price_label ?? 'Monatlicher Mietpreis') : 'Monatlicher Mietpreis';
+$shipping_label = isset($category) ? ($category->shipping_label ?? 'Einmalige Versandkosten:') : 'Einmalige Versandkosten:';
+$price_period = isset($category) ? ($category->price_period ?? 'month') : 'month';
+$vat_included = isset($category) ? ($category->vat_included ?? 0) : 0;
 
 // Layout
 $layout_style = isset($category) ? ($category->layout_style ?? 'default') : 'default';
@@ -127,21 +131,24 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
 
             <div class="federwiegen-price-display" id="federwiegen-price-display" style="display: none;">
                 <div class="federwiegen-price-content">
-                    <p class="federwiegen-price-label">Monatlicher Mietpreis</p>
+                    <p class="federwiegen-price-label"><?php echo esc_html($price_label); ?></p>
                     <div class="federwiegen-price-wrapper">
                         <span class="federwiegen-original-price" id="federwiegen-original-price" style="display: none;"></span>
                         <span class="federwiegen-final-price" id="federwiegen-final-price">0,00€</span>
+                        <?php if ($price_period === 'month'): ?>
                         <span class="federwiegen-price-period">/Monat</span>
+                        <?php endif; ?>
                     </div>
                     <p class="federwiegen-savings" id="federwiegen-savings" style="display: none;"></p>
                     <div class="federwiegen-shipping-info">
                         <p class="federwiegen-shipping-text">
                             <span class="federwiegen-shipping-icon">🚚</span>
-                            Einmalige Versandkosten: <strong><?php echo number_format($shipping_cost, 2, ',', '.'); ?>€</strong>
+                            <?php echo esc_html($shipping_label); ?> <strong><?php echo number_format($shipping_cost, 2, ',', '.'); ?>€</strong>
                             <?php if (!empty($shipping_provider)): ?>
                                 <img class="federwiegen-shipping-provider-icon" src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/shipping-icons/' . $shipping_provider . '.svg'); ?>" alt="<?php echo esc_attr(strtoupper($shipping_provider)); ?>">
                             <?php endif; ?>
                         </p>
+                        <p class="federwiegen-vat-note"><?php echo $vat_included ? 'inkl. MwSt.' : 'Kein Ausweis der Umsatzsteuer gemäß § 19 UStG.'; ?></p>
                     </div>
                 </div>
                 <div class="federwiegen-price-icon">💶</div>
@@ -174,7 +181,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                                     $display_price = ($variant->price_from > 0) ? $variant->price_from : $variant->base_price;
                                     $prefix = ($variant->price_from > 0) ? 'ab ' : '';
                                 ?>
-                                <p class="federwiegen-option-price"><?php echo $prefix . number_format($display_price, 2, ',', '.'); ?>€/Monat</p>
+                                <p class="federwiegen-option-price"><?php echo $prefix . number_format($display_price, 2, ',', '.'); ?>€<?php echo $price_period === 'month' ? '/Monat' : ''; ?></p>
                                 <?php if (!($variant->available ?? 1)): ?>
                                     <div class="federwiegen-availability-notice">
                                         <span class="federwiegen-unavailable-badge">❌ Nicht verfügbar</span>
@@ -203,7 +210,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                             <div class="federwiegen-option-content">
                                 <span class="federwiegen-extra-name"><?php echo esc_html($extra->name); ?></span>
                                 <?php if ($extra->price > 0): ?>
-                                <div class="federwiegen-extra-price">+<?php echo number_format($extra->price, 2, ',', '.'); ?>€/Monat</div>
+                                <div class="federwiegen-extra-price">+<?php echo number_format($extra->price, 2, ',', '.'); ?>€<?php echo $price_period === 'month' ? '/Monat' : ''; ?></div>
                                 <?php endif; ?>
                             </div>
                             <div class="federwiegen-option-check">✓</div>
