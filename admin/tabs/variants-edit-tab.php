@@ -52,6 +52,10 @@
                     <label>Verfügbarkeits-Hinweis</label>
                     <input type="text" name="availability_note" value="<?php echo esc_attr($edit_item->availability_note ?? ''); ?>">
                 </div>
+                <div class="federwiegen-form-group">
+                    <label>Lieferzeit-Text</label>
+                    <input type="text" name="delivery_time" value="<?php echo esc_attr($edit_item->delivery_time ?? '3-5 Werktagen'); ?>">
+                </div>
             </div>
         </div>
         

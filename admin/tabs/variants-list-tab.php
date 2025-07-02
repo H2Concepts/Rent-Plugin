@@ -74,6 +74,8 @@
                         <small>Sortierung: <?php echo $variant->sort_order; ?></small>
                         <?php if (!($variant->available ?? 1) && !empty($variant->availability_note)): ?>
                             <small class="federwiegen-availability-note"><?php echo esc_html($variant->availability_note); ?></small>
+                        <?php elseif (($variant->available ?? 1) && !empty($variant->delivery_time)): ?>
+                            <small class="federwiegen-availability-note">Lieferzeit: <?php echo esc_html($variant->delivery_time); ?></small>
                         <?php endif; ?>
                     </div>
                 </div>

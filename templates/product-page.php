@@ -174,6 +174,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                              data-type="variant" 
                              data-id="<?php echo esc_attr($variant->id); ?>"
                              data-available="<?php echo esc_attr(($variant->available ?? 1) ? 'true' : 'false'); ?>"
+                             data-delivery="<?php echo esc_attr($variant->delivery_time ?? ''); ?>"
                              data-images="<?php echo esc_attr(json_encode(array(
                                  $variant->image_url_1 ?? '',
                                  $variant->image_url_2 ?? '',
@@ -327,7 +328,16 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
 
                 <!-- Rent Button -->
                 <div class="federwiegen-button-section">
-                    <?php 
+                    <div class="federwiegen-availability-wrapper" id="federwiegen-availability-wrapper" style="display:none;">
+                        <div id="federwiegen-availability-status" class="federwiegen-availability-status available">
+                            <span class="status-dot"></span>
+                            <span class="status-text">Sofort verfügbar</span>
+                        </div>
+                        <div id="federwiegen-delivery-box" class="federwiegen-delivery-box" style="display:none;">
+                            Lieferung in <span id="federwiegen-delivery-time">3-5 Werktagen</span>
+                        </div>
+                    </div>
+                    <?php
                     $required_selections = array();
                     if (!empty($variants)) $required_selections[] = 'variant';
                     if (!empty($extras)) $required_selections[] = 'extra';

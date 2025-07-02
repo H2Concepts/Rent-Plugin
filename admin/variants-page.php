@@ -53,6 +53,7 @@ if (isset($_POST['submit'])) {
     $price_from = isset($_POST['price_from']) ? floatval($_POST['price_from']) : 0;
     $available = isset($_POST['available']) ? 1 : 0;
     $availability_note = sanitize_text_field($_POST['availability_note']);
+    $delivery_time = sanitize_text_field($_POST['delivery_time']);
     $active = isset($_POST['active']) ? 1 : 0;
     $sort_order = intval($_POST['sort_order']);
     
@@ -72,6 +73,7 @@ if (isset($_POST['submit'])) {
             'price_from' => $price_from,
             'available' => $available,
             'availability_note' => $availability_note,
+            'delivery_time' => $delivery_time,
             'active' => $active,
             'sort_order' => $sort_order
         ), $image_data);
@@ -80,7 +82,7 @@ if (isset($_POST['submit'])) {
             $table_name,
             $update_data,
             array('id' => intval($_POST['id'])),
-            array_merge(array('%d', '%s', '%s', '%f', '%f', '%d', '%s', '%d', '%d'), array_fill(0, 5, '%s')),
+            array_merge(array('%d', '%s', '%s', '%f', '%f', '%d', '%s', '%s', '%d', '%d'), array_fill(0, 5, '%s')),
             array('%d')
         );
         
@@ -99,6 +101,7 @@ if (isset($_POST['submit'])) {
             'price_from' => $price_from,
             'available' => $available,
             'availability_note' => $availability_note,
+            'delivery_time' => $delivery_time,
             'active' => $active,
             'sort_order' => $sort_order
         ), $image_data);
@@ -106,7 +109,7 @@ if (isset($_POST['submit'])) {
         $result = $wpdb->insert(
             $table_name,
             $insert_data,
-            array_merge(array('%d', '%s', '%s', '%f', '%f', '%d', '%s', '%d', '%d'), array_fill(0, 5, '%s'))
+            array_merge(array('%d', '%s', '%s', '%f', '%f', '%d', '%s', '%s', '%d', '%d'), array_fill(0, 5, '%s'))
         );
         
         if ($result !== false) {

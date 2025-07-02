@@ -76,7 +76,8 @@ class Ajax {
                 'shipping_cost' => $shipping_cost,
                 'stripe_link' => $link ?: '#',
                 'available' => $variant->available ? true : false,
-                'availability_note' => $variant->availability_note ?: ''
+                'availability_note' => $variant->availability_note ?: '',
+                'delivery_time' => $variant->delivery_time ?: ''
             ));
         } else {
             wp_send_json_error('Invalid selection');

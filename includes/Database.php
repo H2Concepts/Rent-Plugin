@@ -31,7 +31,8 @@ class Database {
             'image_url_4' => 'TEXT',
             'image_url_5' => 'TEXT',
             'available' => 'TINYINT(1) DEFAULT 1',
-            'availability_note' => 'VARCHAR(255) DEFAULT ""'
+            'availability_note' => 'VARCHAR(255) DEFAULT ""',
+            'delivery_time' => 'VARCHAR(255) DEFAULT ""'
         );
         
         foreach ($columns_to_add as $column => $type) {
@@ -482,6 +483,7 @@ class Database {
             image_url_5 text,
             available tinyint(1) DEFAULT 1,
             availability_note varchar(255) DEFAULT '',
+            delivery_time varchar(255) DEFAULT '',
             active tinyint(1) DEFAULT 1,
             sort_order int(11) DEFAULT 0,
             PRIMARY KEY (id)
@@ -766,6 +768,7 @@ class Database {
                         'image_url_5' => '',
                         'available' => 1,
                         'availability_note' => '',
+                        'delivery_time' => '3-5 Werktagen',
                         'sort_order' => $index
                     )
                 );
