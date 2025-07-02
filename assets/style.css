@@ -113,10 +113,8 @@
 }
 
 .federwiegen-thumbnails {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
 }
 
 .federwiegen-thumbnail {
