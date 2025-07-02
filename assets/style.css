@@ -775,7 +775,7 @@
 .federwiegen-notify {
     text-align: center;
     font-size: 0.875rem;
-    margin-top: 0.5rem;
+    margin: 0rem 0rem 3rem 0rem;
 }
 
 .federwiegen-notify-form {
@@ -790,16 +790,18 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 0.875rem;
+    width: 50%;
 }
 
 .federwiegen-notify-form button {
     background: #5f7f5f;
     color: #fff;
     border: none;
-    padding: 4px 12px;
-    border-radius: 4px;
+    padding: 10px 30px;
+    border-radius: 999px;
     font-size: 0.875rem;
     cursor: pointer;
+    width: 50%;
 }
 
 .federwiegen-notify-success {
