@@ -129,29 +129,35 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 </div>
             </div>
 
-            <div class="federwiegen-price-display" id="federwiegen-price-display" style="display: none;">
-                <div class="federwiegen-price-content">
-                    <p class="federwiegen-price-label"><?php echo esc_html($price_label); ?></p>
-                    <div class="federwiegen-price-wrapper">
-                        <span class="federwiegen-original-price" id="federwiegen-original-price" style="display: none;"></span>
-                        <span class="federwiegen-final-price" id="federwiegen-final-price">0,00€</span>
-                        <?php if ($price_period === 'month'): ?>
-                        <span class="federwiegen-price-period">/Monat</span>
-                        <?php endif; ?>
-                    </div>
-                    <p class="federwiegen-savings" id="federwiegen-savings" style="display: none;"></p>
-                    <div class="federwiegen-shipping-info">
-                        <p class="federwiegen-shipping-text">
-                            <span class="federwiegen-shipping-icon">🚚</span>
-                            <?php echo esc_html($shipping_label); ?> <strong><?php echo number_format($shipping_cost, 2, ',', '.'); ?>€</strong>
-                            <?php if (!empty($shipping_provider)): ?>
-                                <img class="federwiegen-shipping-provider-icon" src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/shipping-icons/' . $shipping_provider . '.svg'); ?>" alt="<?php echo esc_attr(strtoupper($shipping_provider)); ?>">
+             <div class="federwiegen-price-display" id="federwiegen-price-display" style="display: none;">
+                <div class="federwiegen-price-box federwiegen-monthly-box">
+                    <div class="federwiegen-price-content">
+                        <p class="federwiegen-price-label"><?php echo esc_html($price_label); ?></p>
+                        <div class="federwiegen-price-wrapper">
+                            <span class="federwiegen-original-price" id="federwiegen-original-price" style="display: none;"></span>
+                            <span class="federwiegen-final-price" id="federwiegen-final-price">0,00€</span>
+                            <?php if ($price_period === 'month'): ?>
+                            <span class="federwiegen-price-period">/Monat</span>
                             <?php endif; ?>
-                        </p>
+                        </div>
+                        <p class="federwiegen-savings" id="federwiegen-savings" style="display: none;"></p>
                         <p class="federwiegen-vat-note"><?php echo $vat_included ? 'inkl. MwSt.' : 'Kein Ausweis der Umsatzsteuer gemäß § 19 UStG.'; ?></p>
                     </div>
+                    <div class="federwiegen-price-icon">💶</div>
                 </div>
-                <div class="federwiegen-price-icon">💶</div>
+
+                <div class="federwiegen-price-box federwiegen-shipping-box">
+                    <p class="federwiegen-price-label">
+                        <span class="federwiegen-shipping-icon">🚚</span>
+                        <?php echo esc_html($shipping_label); ?>
+                    </p>
+                    <div class="federwiegen-price-wrapper">
+                        <span class="federwiegen-final-price"><?php echo number_format($shipping_cost, 2, ',', '.'); ?>€</span>
+                    </div>
+                    <?php if (!empty($shipping_provider)): ?>
+                        <img class="federwiegen-shipping-provider-icon" src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/shipping-icons/' . $shipping_provider . '.svg'); ?>" alt="<?php echo esc_attr(strtoupper($shipping_provider)); ?>">
+                    <?php endif; ?>
+                </div>
             </div>
         </div>
 
