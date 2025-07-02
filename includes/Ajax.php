@@ -409,8 +409,8 @@ class Ajax {
         }
 
         $admin_email = get_option('admin_email');
-        $subject = 'Verf\xc3\xbcgbarkeitsanfrage';
-        $message = 'Ein Kunde m\xc3\xb6chte informiert werden, sobald das Produkt wieder verf\xc3\xbcgbar ist. E-Mail: ' . $email;
+        $subject = 'Verfügbarkeitsanfrage';
+        $message = 'Ein Kunde möchte informiert werden, sobald das Produkt wieder verfügbar ist. E-Mail: ' . $email;
 
         wp_mail($admin_email, $subject, $message);
 
