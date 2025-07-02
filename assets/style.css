@@ -772,6 +772,42 @@
     color: #dc3232;
 }
 
+.federwiegen-notify {
+    text-align: center;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
+.federwiegen-notify-form {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+}
+
+.federwiegen-notify-form input[type="email"] {
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.federwiegen-notify-form button {
+    background: #5f7f5f;
+    color: #fff;
+    border: none;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+
+.federwiegen-notify-success {
+    color: #4a674a;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+}
+
 .federwiegen-features-section {
     background: white;
     border-radius: 1rem;
