@@ -378,12 +378,13 @@
 
 /* Items Grid */
 .federwiegen-items-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
 }
 
 .federwiegen-item-card {
+    flex: 1 1 300px;
     border: 1px solid #e9ecef;
     border-radius: 8px;
     overflow: hidden;
@@ -606,7 +607,7 @@
     }
     
     .federwiegen-items-grid {
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
     
     .form-table th,

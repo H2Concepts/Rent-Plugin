@@ -78,8 +78,8 @@
 }
 
 .federwiegen-extras-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
 }
 
@@ -106,6 +106,7 @@
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     position: relative;
+    flex: 1 1 280px;
 }
 
 .federwiegen-extra-card:hover {
@@ -220,7 +221,7 @@
         gap: 15px;
     }
     .federwiegen-extras-grid {
-        grid-template-columns: repeat(2, 1fr);
+        flex-direction: column;
     }
     
     .federwiegen-extra-actions {
@@ -230,7 +231,7 @@
 
 @media (max-width: 480px) {
     .federwiegen-extras-grid {
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
 }
 </style>

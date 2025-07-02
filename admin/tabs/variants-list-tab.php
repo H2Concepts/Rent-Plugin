@@ -141,8 +141,8 @@
 }
 
 .federwiegen-variants-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
 }
 
@@ -154,6 +154,7 @@
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     position: relative;
+    flex: 1 1 320px;
 }
 
 .federwiegen-variant-card:hover {
@@ -329,7 +330,7 @@
     }
     
     .federwiegen-variants-grid {
-        grid-template-columns: 1fr;
+        flex-direction: column;
     }
     
     .federwiegen-variant-actions {

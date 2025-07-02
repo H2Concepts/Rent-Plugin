@@ -91,6 +91,7 @@ jQuery(document).ready(function($) {
 
     // Drag & Drop Sortierung
     $('.federwiegen-sortable').sortable({
+        items: '> div',
         handle: '.federwiegen-sort-handle',
         update: function() {
             var container = $(this);
