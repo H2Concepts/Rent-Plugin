@@ -236,6 +236,14 @@ class Ajax {
                         ));
                         if ($color) {
                             $color->available = intval($option->available);
+                            $image = $wpdb->get_var($wpdb->prepare(
+                                "SELECT image_url FROM {$wpdb->prefix}federwiegen_color_variant_images WHERE color_id = %d AND variant_id = %d",
+                                $color->id,
+                                $variant_id
+                            ));
+                            if ($image !== null) {
+                                $color->image_url = $image;
+                            }
                             $product_colors[] = $color;
                         }
                         break;
@@ -246,6 +254,14 @@ class Ajax {
                         ));
                         if ($color) {
                             $color->available = intval($option->available);
+                            $image = $wpdb->get_var($wpdb->prepare(
+                                "SELECT image_url FROM {$wpdb->prefix}federwiegen_color_variant_images WHERE color_id = %d AND variant_id = %d",
+                                $color->id,
+                                $variant_id
+                            ));
+                            if ($image !== null) {
+                                $color->image_url = $image;
+                            }
                             $frame_colors[] = $color;
                         }
                         break;
@@ -279,13 +295,33 @@ class Ajax {
                     "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' ORDER BY sort_order",
                     $variant->category_id
                 ));
-                foreach ($product_colors as $c) { $c->available = 1; }
-                
+                foreach ($product_colors as $c) {
+                    $c->available = 1;
+                    $image = $wpdb->get_var($wpdb->prepare(
+                        "SELECT image_url FROM {$wpdb->prefix}federwiegen_color_variant_images WHERE color_id = %d AND variant_id = %d",
+                        $c->id,
+                        $variant_id
+                    ));
+                    if ($image !== null) {
+                        $c->image_url = $image;
+                    }
+                }
+
                 $frame_colors = $wpdb->get_results($wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' ORDER BY sort_order",
                     $variant->category_id
                 ));
-                foreach ($frame_colors as $c) { $c->available = 1; }
+                foreach ($frame_colors as $c) {
+                    $c->available = 1;
+                    $image = $wpdb->get_var($wpdb->prepare(
+                        "SELECT image_url FROM {$wpdb->prefix}federwiegen_color_variant_images WHERE color_id = %d AND variant_id = %d",
+                        $c->id,
+                        $variant_id
+                    ));
+                    if ($image !== null) {
+                        $c->image_url = $image;
+                    }
+                }
 
                 $extras = $wpdb->get_results($wpdb->prepare(
                     "SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE category_id = %d ORDER BY sort_order",
