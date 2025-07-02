@@ -261,6 +261,7 @@ class Admin {
             $payment_icons = isset($_POST['payment_icons']) ? array_map('sanitize_text_field', (array) $_POST['payment_icons']) : array();
             $payment_icons = implode(',', $payment_icons);
             $shipping_cost = floatval($_POST['shipping_cost']);
+            $shipping_provider = sanitize_text_field($_POST['shipping_provider'] ?? '');
             $layout_style = sanitize_text_field($_POST['layout_style']);
             $duration_tooltip = sanitize_textarea_field($_POST['duration_tooltip']);
             $condition_tooltip = sanitize_textarea_field($_POST['condition_tooltip']);
@@ -293,13 +294,14 @@ class Admin {
                         'button_icon' => $button_icon,
                         'payment_icons' => $payment_icons,
                         'shipping_cost' => $shipping_cost,
+                        'shipping_provider' => $shipping_provider,
                         'layout_style' => $layout_style,
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
                         'sort_order' => $sort_order,
                     ],
                     ['id' => intval($_POST['id'])],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d'),
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d'),
                 );
 
                 if ($result !== false) {
@@ -332,12 +334,13 @@ class Admin {
                         'button_icon' => $button_icon,
                         'payment_icons' => $payment_icons,
                         'shipping_cost' => $shipping_cost,
+                        'shipping_provider' => $shipping_provider,
                         'layout_style' => $layout_style,
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
                         'sort_order' => $sort_order,
                     ],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%d')
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d')
                 );
 
                 if ($result !== false) {

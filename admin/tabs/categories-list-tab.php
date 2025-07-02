@@ -56,6 +56,9 @@
                     <div class="federwiegen-category-shipping">
                         <strong><?php echo number_format($category->shipping_cost ?? 0, 2, ',', '.'); ?>€</strong>
                         <small>Versand</small>
+                        <?php if (!empty($category->shipping_provider)): ?>
+                            <img src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/shipping-icons/' . $category->shipping_provider . '.svg'); ?>" alt="<?php echo esc_attr($category->shipping_provider); ?>">
+                        <?php endif; ?>
                     </div>
                 </div>
                 
@@ -224,6 +227,12 @@
 .federwiegen-category-shipping small {
     color: #6c757d;
     font-size: 0.8rem;
+}
+
+.federwiegen-category-shipping img {
+    width: 32px;
+    height: auto;
+    margin-top: 4px;
 }
 
 .federwiegen-category-actions {

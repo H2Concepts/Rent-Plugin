@@ -64,6 +64,23 @@
                     <label>Versandkosten (€)</label>
                     <input type="number" name="shipping_cost" step="0.01" min="0">
                 </div>
+                <div class="federwiegen-form-group">
+                    <label>Versanddienstleister</label>
+                    <div class="federwiegen-shipping-radios">
+                        <?php $shipping_providers = [
+                            'dhl' => 'DHL',
+                            'hermes' => 'Hermes',
+                            'ups' => 'UPS',
+                            'dpd' => 'DPD'
+                        ]; ?>
+                        <?php foreach ($shipping_providers as $key => $label): ?>
+                            <label>
+                                <input type="radio" name="shipping_provider" value="<?php echo esc_attr($key); ?>" <?php checked($key, 'dhl'); ?>>
+                                <img src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/shipping-icons/' . $key . '.svg'); ?>" alt="<?php echo esc_attr($label); ?>">
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
             </div>
             
             <div class="federwiegen-form-group">
