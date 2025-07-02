@@ -40,7 +40,6 @@
             </div>
         </div>
         
-        <!-- Einstellungen -->
         
         <!-- Actions -->
         <div class="federwiegen-form-actions">
