@@ -48,6 +48,7 @@ if (isset($category) && property_exists($category, 'payment_icons')) {
 
 // Shipping
 $shipping_cost = isset($category) ? ($category->shipping_cost ?? 0) : 0;
+$shipping_provider = isset($category) ? ($category->shipping_provider ?? '') : '';
 
 // Layout
 $layout_style = isset($category) ? ($category->layout_style ?? 'default') : 'default';
@@ -137,6 +138,9 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                         <p class="federwiegen-shipping-text">
                             <span class="federwiegen-shipping-icon">🚚</span>
                             Einmalige Versandkosten: <strong><?php echo number_format($shipping_cost, 2, ',', '.'); ?>€</strong>
+                            <?php if (!empty($shipping_provider)): ?>
+                                <img class="federwiegen-shipping-provider-icon" src="<?php echo esc_url(FEDERWIEGEN_PLUGIN_URL . 'assets/shipping-icons/' . $shipping_provider . '.svg'); ?>" alt="<?php echo esc_attr(strtoupper($shipping_provider)); ?>">
+                            <?php endif; ?>
                         </p>
                     </div>
                 </div>
