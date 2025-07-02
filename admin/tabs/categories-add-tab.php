@@ -215,6 +215,9 @@
                 <label>Zustand-Tooltip</label>
                 <textarea name="condition_tooltip" rows="4" placeholder="Text der bei 'Zustand' angezeigt wird"></textarea>
             </div>
+            <div class="federwiegen-form-group">
+                <label><input type="checkbox" name="show_tooltips" value="1" checked> Tooltips auf Produktseite anzeigen</label>
+            </div>
         </div>
         
         <!-- Einstellungen -->

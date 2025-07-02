@@ -261,6 +261,9 @@
                     <label>Zustand-Tooltip</label>
                     <textarea name="condition_tooltip" rows="4"><?php echo esc_textarea($edit_item->condition_tooltip); ?></textarea>
                 </div>
+                <div class="federwiegen-form-group">
+                    <label><input type="checkbox" name="show_tooltips" value="1" <?php checked($edit_item->show_tooltips ?? 1, 1); ?>> Tooltips auf Produktseite anzeigen</label>
+                </div>
             </div>
         </div><!-- end tab-tooltips -->
 

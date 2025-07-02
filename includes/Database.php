@@ -94,6 +94,7 @@ class Database {
                 layout_style varchar(50) DEFAULT 'default',
                 duration_tooltip text DEFAULT '',
                 condition_tooltip text DEFAULT '',
+                show_tooltips tinyint(1) DEFAULT 1,
                 active tinyint(1) DEFAULT 1,
                 sort_order int(11) DEFAULT 0,
                 PRIMARY KEY (id)
@@ -127,7 +128,8 @@ class Database {
                 'vat_included' => 'TINYINT(1) DEFAULT 0',
                 'layout_style' => 'VARCHAR(50) DEFAULT "default"',
                 'duration_tooltip' => 'TEXT',
-                'condition_tooltip' => 'TEXT'
+                'condition_tooltip' => 'TEXT',
+                'show_tooltips' => 'TINYINT(1) DEFAULT 1'
             );
             
             foreach ($new_columns as $column => $type) {
@@ -458,6 +460,7 @@ class Database {
             layout_style varchar(50) DEFAULT 'default',
             duration_tooltip text DEFAULT '',
             condition_tooltip text DEFAULT '',
+            show_tooltips tinyint(1) DEFAULT 1,
             active tinyint(1) DEFAULT 1,
             sort_order int(11) DEFAULT 0,
             PRIMARY KEY (id)
@@ -707,6 +710,7 @@ class Database {
                     'layout_style' => 'default',
                     'duration_tooltip' => '',
                     'condition_tooltip' => '',
+                    'show_tooltips' => 1,
                     'sort_order' => 0
                 )
             );

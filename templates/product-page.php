@@ -60,6 +60,7 @@ $layout_style = isset($category) ? ($category->layout_style ?? 'default') : 'def
 // Tooltips
 $duration_tooltip = isset($category) ? ($category->duration_tooltip ?? '') : '';
 $condition_tooltip = isset($category) ? ($category->condition_tooltip ?? '') : '';
+$show_tooltips = isset($category) ? ($category->show_tooltips ?? 1) : 1;
 
 // Get initial conditions and colors (will be updated via AJAX when variant is selected)
 $initial_conditions = $wpdb->get_results($wpdb->prepare(
@@ -231,10 +232,12 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 <div class="federwiegen-section">
                     <h3>
                         Wählen Sie Ihre Mietdauer
+                        <?php if ($show_tooltips): ?>
                         <span class="federwiegen-tooltip">
                             ℹ️
                             <span class="federwiegen-tooltiptext"><?php echo esc_html($duration_tooltip); ?></span>
                         </span>
+                        <?php endif; ?>
                     </h3>
                     <div class="federwiegen-options durations layout-<?php echo esc_attr($layout_style); ?>">
                         <?php foreach ($durations as $duration): ?>
@@ -261,10 +264,12 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 <div class="federwiegen-section" id="condition-section" style="<?php echo esc_attr(empty($initial_conditions) ? 'display: none;' : ''); ?>">
                     <h3>
                         Zustand
+                        <?php if ($show_tooltips): ?>
                         <span class="federwiegen-tooltip">
                             ℹ️
                             <span class="federwiegen-tooltiptext"><?php echo esc_html($condition_tooltip); ?></span>
                         </span>
+                        <?php endif; ?>
                     </h3>
                     <div class="federwiegen-options conditions layout-<?php echo esc_attr($layout_style); ?>">
                         <?php foreach ($initial_conditions as $condition): ?>
