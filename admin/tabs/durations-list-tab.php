@@ -21,9 +21,10 @@
     </div>
     <?php else: ?>
     
-    <div class="federwiegen-durations-grid">
+    <div class="federwiegen-durations-grid federwiegen-sortable" data-table="durations">
         <?php foreach ($durations as $duration): ?>
-        <div class="federwiegen-duration-card">
+        <div class="federwiegen-duration-card" data-id="<?php echo $duration->id; ?>">
+            <span class="federwiegen-sort-handle">↕️</span>
             <div class="federwiegen-duration-header">
                 <h4><?php echo esc_html($duration->name); ?></h4>
                 <?php if ($duration->discount > 0): ?>
@@ -105,12 +106,21 @@
     overflow: hidden;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    position: relative;
 }
 
 .federwiegen-duration-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     border-color: #5f7f5f;
+}
+
+.federwiegen-sort-handle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: move;
+    font-size: 18px;
 }
 
 .federwiegen-duration-header {

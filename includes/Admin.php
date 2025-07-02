@@ -147,7 +147,12 @@ class Admin {
     public function enqueue_admin_assets($hook) {
         if (strpos($hook, 'federwiegen') !== false) {
             wp_enqueue_style('federwiegen-admin-style', FEDERWIEGEN_PLUGIN_URL . 'assets/admin-style.css', array(), FEDERWIEGEN_VERSION);
-            wp_enqueue_script('federwiegen-admin-script', FEDERWIEGEN_PLUGIN_URL . 'assets/admin-script.js', array('jquery'), FEDERWIEGEN_VERSION, true);
+            wp_enqueue_script('jquery-ui-sortable');
+            wp_enqueue_script('federwiegen-admin-script', FEDERWIEGEN_PLUGIN_URL . 'assets/admin-script.js', array('jquery', 'jquery-ui-sortable'), FEDERWIEGEN_VERSION, true);
+            wp_localize_script('federwiegen-admin-script', 'federwiegen_ajax', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce'    => wp_create_nonce('federwiegen_nonce')
+            ));
             
             // Enqueue WordPress media scripts for image upload
             wp_enqueue_media();

@@ -129,9 +129,10 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
         </div>
         <?php else: ?>
         
-        <div class="federwiegen-simple-list">
+        <div class="federwiegen-simple-list federwiegen-sortable" data-table="conditions">
             <?php foreach ($conditions as $condition): ?>
-            <div class="federwiegen-simple-item">
+            <div class="federwiegen-simple-item" data-id="<?php echo $condition->id; ?>">
+                <span class="federwiegen-sort-handle">↕️</span>
                 <div class="federwiegen-simple-content">
                     <h5><?php echo esc_html($condition->name); ?></h5>
                     <p><?php echo esc_html($condition->description); ?></p>
@@ -178,6 +179,7 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
     border: 1px solid #e9ecef;
     border-radius: 8px;
     background: #f8f9fa;
+    position: relative;
 }
 
 .federwiegen-simple-content h5 {
@@ -205,6 +207,14 @@ $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHERE
 .federwiegen-simple-actions {
     display: flex;
     gap: 10px;
+}
+
+.federwiegen-sort-handle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: move;
+    font-size: 18px;
 }
 
 @media (max-width: 768px) {

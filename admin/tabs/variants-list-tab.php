@@ -21,9 +21,10 @@
     </div>
     <?php else: ?>
     
-    <div class="federwiegen-variants-grid">
+    <div class="federwiegen-variants-grid federwiegen-sortable" data-table="variants">
         <?php foreach ($variants as $variant): ?>
-        <div class="federwiegen-variant-card">
+        <div class="federwiegen-variant-card" data-id="<?php echo $variant->id; ?>">
+            <span class="federwiegen-sort-handle">↕️</span>
             <div class="federwiegen-variant-images">
                 <?php 
                 $image_count = 0;
@@ -152,6 +153,7 @@
     overflow: hidden;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    position: relative;
 }
 
 .federwiegen-variant-card:hover {
@@ -309,6 +311,14 @@
 .federwiegen-delete-button:hover {
     background: #dc3545 !important;
     color: white !important;
+}
+
+.federwiegen-sort-handle {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    cursor: move;
+    font-size: 18px;
 }
 
 @media (max-width: 768px) {

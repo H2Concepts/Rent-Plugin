@@ -573,5 +573,38 @@ class Ajax {
 
         wp_send_json_success();
     }
-    
+
+    public function ajax_update_sort_order() {
+        check_ajax_referer('federwiegen_nonce', 'nonce');
+
+        global $wpdb;
+
+        $table_key = sanitize_text_field($_POST['table'] ?? '');
+        $ids       = isset($_POST['ids']) ? array_map('intval', (array) $_POST['ids']) : [];
+
+        if (!$table_key || empty($ids)) {
+            wp_send_json_error('Invalid data');
+        }
+
+        $tables = [
+            'variants'   => $wpdb->prefix . 'federwiegen_variants',
+            'extras'     => $wpdb->prefix . 'federwiegen_extras',
+            'durations'  => $wpdb->prefix . 'federwiegen_durations',
+            'conditions' => $wpdb->prefix . 'federwiegen_conditions',
+            'colors'     => $wpdb->prefix . 'federwiegen_colors',
+        ];
+
+        if (!isset($tables[$table_key])) {
+            wp_send_json_error('Invalid table');
+        }
+
+        $table_name = $tables[$table_key];
+
+        foreach ($ids as $index => $id) {
+            $wpdb->update($table_name, ['sort_order' => $index], ['id' => $id], ['%d'], ['%d']);
+        }
+
+        wp_send_json_success();
+    }
+
 }

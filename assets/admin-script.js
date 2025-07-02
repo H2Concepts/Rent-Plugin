@@ -88,4 +88,21 @@ jQuery(document).ready(function($) {
             swatch.css('background-color', $(this).val());
         }
     });
+
+    // Drag & Drop Sortierung
+    $('.federwiegen-sortable').sortable({
+        handle: '.federwiegen-sort-handle',
+        update: function() {
+            var container = $(this);
+            var ids = container.children().map(function(){
+                return $(this).data('id');
+            }).get();
+            $.post(federwiegen_ajax.ajax_url, {
+                action: 'update_sort_order',
+                nonce: federwiegen_ajax.nonce,
+                table: container.data('table'),
+                ids: ids
+            });
+        }
+    }).disableSelection();
 });

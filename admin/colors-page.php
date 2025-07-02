@@ -284,9 +284,10 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                         </div>
                         <?php else: ?>
                         
-                        <div class="federwiegen-items-grid">
+                        <div class="federwiegen-items-grid federwiegen-sortable" data-table="colors">
                             <?php foreach ($product_colors as $color): ?>
-                            <div class="federwiegen-item-card">
+                            <div class="federwiegen-item-card" data-id="<?php echo $color->id; ?>">
+                                <span class="federwiegen-sort-handle">↕️</span>
                                 <div class="federwiegen-item-content">
                                     <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
                                         <div style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ddd; background-color: <?php echo esc_attr($color->color_code); ?>;"></div>
@@ -320,9 +321,10 @@ $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table_name WHE
                         </div>
                         <?php else: ?>
                         
-                        <div class="federwiegen-items-grid">
+                        <div class="federwiegen-items-grid federwiegen-sortable" data-table="colors">
                             <?php foreach ($frame_colors as $color): ?>
-                            <div class="federwiegen-item-card">
+                            <div class="federwiegen-item-card" data-id="<?php echo $color->id; ?>">
+                                <span class="federwiegen-sort-handle">↕️</span>
                                 <div class="federwiegen-item-content">
                                     <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 10px;">
                                         <div style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ddd; background-color: <?php echo esc_attr($color->color_code); ?>;"></div>
