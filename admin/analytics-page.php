@@ -59,13 +59,17 @@ foreach ($branding_results as $result) {
     
     <!-- Tab Navigation -->
     <div class="federwiegen-tab-nav">
-        <a href="<?php echo admin_url('admin.php?page=federwiegen-analytics&category=' . $selected_category . '&tab=dashboard'); ?>" 
+        <a href="<?php echo admin_url('admin.php?page=federwiegen-analytics&category=' . $selected_category . '&tab=dashboard'); ?>"
            class="federwiegen-tab <?php echo $active_tab === 'dashboard' ? 'active' : ''; ?>">
             📊 Analytics Dashboard
         </a>
-        <a href="<?php echo admin_url('admin.php?page=federwiegen-analytics&category=' . $selected_category . '&tab=orders'); ?>" 
+        <a href="<?php echo admin_url('admin.php?page=federwiegen-analytics&category=' . $selected_category . '&tab=orders'); ?>"
            class="federwiegen-tab <?php echo $active_tab === 'orders' ? 'active' : ''; ?>">
             📋 Bestellungen
+        </a>
+        <a href="<?php echo admin_url('admin.php?page=federwiegen-analytics&category=' . $selected_category . '&tab=notifications'); ?>"
+           class="federwiegen-tab <?php echo $active_tab === 'notifications' ? 'active' : ''; ?>">
+            📧 Benachrichtigungen
         </a>
     </div>
     
@@ -78,6 +82,9 @@ foreach ($branding_results as $result) {
                 break;
             case 'orders':
                 include FEDERWIEGEN_PLUGIN_PATH . 'admin/tabs/orders-tab.php';
+                break;
+            case 'notifications':
+                include FEDERWIEGEN_PLUGIN_PATH . 'admin/tabs/notifications-tab.php';
                 break;
             default:
                 include FEDERWIEGEN_PLUGIN_PATH . 'admin/tabs/analytics-dashboard-tab.php';
