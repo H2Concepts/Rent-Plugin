@@ -34,7 +34,11 @@ if (isset($_POST['submit'])) {
     \FederwiegenVerleih\Admin::verify_admin_action();
     $category_id = intval($_POST['category_id']);
     $variant_id = intval($_POST['variant_id']);
-    $extra_id = intval($_POST['extra_id']);
+    $extra_ids_raw = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
+    $extra_ids_array = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+    sort($extra_ids_array);
+    $extra_ids_raw = implode(',', $extra_ids_array);
+    $extra_id = !empty($extra_ids_array) ? $extra_ids_array[0] : 0;
     $duration_id = intval($_POST['duration_id']);
     $condition_id = !empty($_POST['condition_id']) ? intval($_POST['condition_id']) : null;
     $product_color_id = !empty($_POST['product_color_id']) ? intval($_POST['product_color_id']) : null;
@@ -49,6 +53,7 @@ if (isset($_POST['submit'])) {
                 'category_id' => $category_id,
                 'variant_id' => $variant_id,
                 'extra_id' => $extra_id,
+                'extra_ids' => $extra_ids_raw,
                 'duration_id' => $duration_id,
                 'condition_id' => $condition_id,
                 'product_color_id' => $product_color_id,
@@ -56,7 +61,7 @@ if (isset($_POST['submit'])) {
                 'stripe_link' => $stripe_link
             ),
             array('id' => intval($_POST['id'])),
-            array('%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s'),
+            array('%d', '%d', '%d', '%s', '%d', '%d', '%d', '%d', '%s'),
             array('%d')
         );
         
@@ -73,13 +78,14 @@ if (isset($_POST['submit'])) {
                 'category_id' => $category_id,
                 'variant_id' => $variant_id,
                 'extra_id' => $extra_id,
+                'extra_ids' => $extra_ids_raw,
                 'duration_id' => $duration_id,
                 'condition_id' => $condition_id,
                 'product_color_id' => $product_color_id,
                 'frame_color_id' => $frame_color_id,
                 'stripe_link' => $stripe_link
             ),
-            array('%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s')
+            array('%d', '%d', '%d', '%s', '%d', '%d', '%d', '%d', '%s')
         );
         
         if ($result === false) {
@@ -115,25 +121,54 @@ $current_category = $wpdb->get_row($wpdb->prepare("SELECT * FROM {$wpdb->prefix}
 // Get all data for dropdowns (filtered by category)
 $variants = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_variants WHERE category_id = %d ORDER BY sort_order, name", $selected_category));
 $extras = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_extras WHERE category_id = %d ORDER BY sort_order, name", $selected_category));
+
+// Build all extra combinations
+$extra_combinations = array();
+if (!empty($extras)) {
+    $ids = array_map(function($e) { return $e->id; }, $extras);
+    $names = array_column($extras, 'name', 'id');
+    $count = count($ids);
+    for ($i = 1; $i < (1 << $count); $i++) {
+        $combo_ids = array();
+        $combo_names = array();
+        for ($j = 0; $j < $count; $j++) {
+            if ($i & (1 << $j)) {
+                $combo_ids[] = $ids[$j];
+                $combo_names[] = $names[$ids[$j]];
+            }
+        }
+        sort($combo_ids);
+        $extra_combinations[] = array(
+            'ids' => implode(',', $combo_ids),
+            'name' => implode(' + ', $combo_names)
+        );
+    }
+}
 $durations = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_durations WHERE category_id = %d ORDER BY sort_order, months_minimum", $selected_category));
 $conditions = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_conditions WHERE category_id = %d ORDER BY sort_order, name", $selected_category));
 $product_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'product' ORDER BY sort_order, name", $selected_category));
 $frame_colors = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}federwiegen_colors WHERE category_id = %d AND color_type = 'frame' ORDER BY sort_order, name", $selected_category));
 
 // Get all links with names (filtered by category)
-$links = $wpdb->get_results($wpdb->prepare("
-    SELECT l.*, v.name as variant_name, e.name as extra_name, d.name as duration_name,
-           cond.name as condition_name, pc.name as product_color_name, fc.name as frame_color_name
-    FROM $links_table l
-    LEFT JOIN {$wpdb->prefix}federwiegen_variants v ON l.variant_id = v.id
-    LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON l.extra_id = e.id
-    LEFT JOIN {$wpdb->prefix}federwiegen_durations d ON l.duration_id = d.id
-    LEFT JOIN {$wpdb->prefix}federwiegen_conditions cond ON l.condition_id = cond.id
-    LEFT JOIN {$wpdb->prefix}federwiegen_colors pc ON l.product_color_id = pc.id
-    LEFT JOIN {$wpdb->prefix}federwiegen_colors fc ON l.frame_color_id = fc.id
-    WHERE l.category_id = %d
-    ORDER BY v.name, e.name, d.name
-", $selected_category));
+$links = $wpdb->get_results($wpdb->prepare(
+    "SELECT l.*, v.name as variant_name,
+            GROUP_CONCAT(e.name ORDER BY e.name SEPARATOR ' + ') AS extras_names,
+            d.name as duration_name,
+            cond.name as condition_name,
+            pc.name as product_color_name,
+            fc.name as frame_color_name
+     FROM $links_table l
+     LEFT JOIN {$wpdb->prefix}federwiegen_variants v ON l.variant_id = v.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_extras e ON FIND_IN_SET(e.id, l.extra_ids)
+     LEFT JOIN {$wpdb->prefix}federwiegen_durations d ON l.duration_id = d.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_conditions cond ON l.condition_id = cond.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_colors pc ON l.product_color_id = pc.id
+     LEFT JOIN {$wpdb->prefix}federwiegen_colors fc ON l.frame_color_id = fc.id
+     WHERE l.category_id = %d
+     GROUP BY l.id
+     ORDER BY v.name, extras_names, d.name",
+    $selected_category
+));
 ?>
 
 <div class="wrap">
@@ -234,11 +269,11 @@ $links = $wpdb->get_results($wpdb->prepare("
                                 
                                 <div class="federwiegen-form-group">
                                     <label>Extra</label>
-                                    <select name="extra_id">
+                                    <select name="extra_ids">
                                         <option value="">Kein Extra</option>
-                                        <?php foreach ($extras as $extra): ?>
-                                        <option value="<?php echo $extra->id; ?>">
-                                            <?php echo esc_html($extra->name); ?>
+                                        <?php foreach ($extra_combinations as $combo): ?>
+                                        <option value="<?php echo esc_attr($combo['ids']); ?>">
+                                            <?php echo esc_html($combo['name']); ?>
                                         </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -348,11 +383,11 @@ $links = $wpdb->get_results($wpdb->prepare("
                                 
                                 <div class="federwiegen-form-group">
                                     <label>Extra</label>
-                                    <select name="extra_id">
+                                    <select name="extra_ids">
                                         <option value="">Kein Extra</option>
-                                        <?php foreach ($extras as $extra): ?>
-                                        <option value="<?php echo $extra->id; ?>" <?php selected($edit_item->extra_id, $extra->id); ?>>
-                                            <?php echo esc_html($extra->name); ?>
+                                        <?php foreach ($extra_combinations as $combo): ?>
+                                        <option value="<?php echo esc_attr($combo['ids']); ?>" <?php selected($edit_item->extra_ids, $combo['ids']); ?>>
+                                            <?php echo esc_html($combo['name']); ?>
                                         </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -474,7 +509,7 @@ $links = $wpdb->get_results($wpdb->prepare("
                                     <?php foreach ($links as $link): ?>
                                     <tr>
                                         <td><?php echo esc_html($link->variant_name); ?></td>
-                                        <td><?php echo $link->extra_name ? esc_html($link->extra_name) : '<em>Kein Extra</em>'; ?></td>
+                                        <td><?php echo $link->extras_names ? esc_html($link->extras_names) : '<em>Kein Extra</em>'; ?></td>
                                         <td><?php echo esc_html($link->duration_name); ?></td>
                                         <td><?php echo $link->condition_name ? esc_html($link->condition_name) : '<em>Alle</em>'; ?></td>
                                         <td><?php echo $link->product_color_name ? esc_html($link->product_color_name) : '<em>Alle</em>'; ?></td>

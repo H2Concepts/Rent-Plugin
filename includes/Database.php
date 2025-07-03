@@ -407,9 +407,10 @@ class Database {
         // Update links table with new columns
         $table_links = $wpdb->prefix . 'federwiegen_links';
         $new_link_columns = array(
-            'condition_id' => 'mediumint(9)',
-            'product_color_id' => 'mediumint(9)',
-            'frame_color_id' => 'mediumint(9)'
+            'extra_ids'       => 'text',
+            'condition_id'    => 'mediumint(9)',
+            'product_color_id'=> 'mediumint(9)',
+            'frame_color_id'  => 'mediumint(9)'
         );
         
         foreach ($new_link_columns as $column => $type) {
