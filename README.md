@@ -38,6 +38,12 @@ You may also toggle this behaviour with the `federwiegen_load_default_data` filt
 
 Use the `category` attribute to select a specific product category by shortcode.
 
+To show a list of all active categories, use the shortcode:
+
+```php
+[federwiegen_categories]
+```
+
 ## Development
 
 The plugin code is organised in the `includes`, `admin`, `templates` and `assets` directories. Activation and deactivation hooks are registered in `federwiegen-verleih.php`. Core functionality lives in `includes/` where an autoloader loads the classes.

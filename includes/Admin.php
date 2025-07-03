@@ -131,37 +131,47 @@ class Admin {
     public function enqueue_frontend_assets() {
         global $post;
 
-        if (!is_singular() || !has_shortcode($post->post_content ?? '', 'federwiegen_product')) {
+        if (!is_singular()) {
+            return;
+        }
+
+        $content = $post->post_content ?? '';
+        $has_product = has_shortcode($content, 'federwiegen_product');
+        $has_categories = has_shortcode($content, 'federwiegen_categories');
+
+        if (!$has_product && !$has_categories) {
             return;
         }
 
         wp_enqueue_style('federwiegen-style', FEDERWIEGEN_PLUGIN_URL . 'assets/style.css', array(), FEDERWIEGEN_VERSION);
-        wp_enqueue_script('federwiegen-script', FEDERWIEGEN_PLUGIN_URL . 'assets/script.js', array('jquery'), FEDERWIEGEN_VERSION, true);
 
-        global $wpdb;
-        $pattern = '/\[federwiegen_product[^\]]*category=["\']([^"\']*)["\'][^\]]*\]/';
-        preg_match($pattern, $post->post_content, $matches);
-        $category_shortcode = isset($matches[1]) ? $matches[1] : '';
+        if ($has_product) {
+            wp_enqueue_script('federwiegen-script', FEDERWIEGEN_PLUGIN_URL . 'assets/script.js', array('jquery'), FEDERWIEGEN_VERSION, true);
 
-        $category = null;
-        if (!empty($category_shortcode)) {
-            $category = $wpdb->get_row($wpdb->prepare(
-                "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s",
-                $category_shortcode
+            global $wpdb;
+            $pattern = '/\[federwiegen_product[^\]]*category=["\']([^"\']*)["\'][^\]]*\]/';
+            preg_match($pattern, $post->post_content, $matches);
+            $category_shortcode = isset($matches[1]) ? $matches[1] : '';
+
+            $category = null;
+            if (!empty($category_shortcode)) {
+                $category = $wpdb->get_row($wpdb->prepare(
+                    "SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE shortcode = %s",
+                    $category_shortcode
+                ));
+            }
+            if (!$category) {
+                $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order LIMIT 1");
+            }
+
+            wp_localize_script('federwiegen-script', 'federwiegen_ajax', array(
+                'ajax_url' => admin_url('admin-ajax.php'),
+                'nonce' => wp_create_nonce('federwiegen_nonce'),
+                'price_period' => $category->price_period ?? 'month',
+                'price_label' => $category->price_label ?? 'Monatlicher Mietpreis',
+                'vat_included' => isset($category->vat_included) ? intval($category->vat_included) : 0
             ));
         }
-        if (!$category) {
-            $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order LIMIT 1");
-        }
-
-        wp_localize_script('federwiegen-script', 'federwiegen_ajax', array(
-            'ajax_url' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('federwiegen_nonce'),
-            'price_period' => $category->price_period ?? 'month',
-            'price_label' => $category->price_label ?? 'Monatlicher Mietpreis',
-            'vat_included' => isset($category->vat_included) ? intval($category->vat_included) : 0
-        ));
-    }
     
     public function enqueue_admin_assets($hook) {
         if (strpos($hook, 'federwiegen') !== false) {

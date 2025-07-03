@@ -1140,3 +1140,57 @@
     width: calc(var(--rating) / 5 * 100%);
     overflow: hidden;
 }
+
+/* Category list styles */
+.federwiegen-categories-wrapper {
+    margin: 2rem 0;
+}
+
+.federwiegen-categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.federwiegen-category-item {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.federwiegen-category-thumb {
+    width: 100%;
+    height: 180px;
+    margin-bottom: 0.75rem;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.federwiegen-category-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.federwiegen-category-placeholder {
+    font-size: 2rem;
+    opacity: 0.5;
+}
+
+.federwiegen-category-title {
+    margin: 0.5rem 0;
+    font-size: 1.25rem;
+    color: #2a372a;
+    font-weight: 600;
+}
+
+.federwiegen-category-desc {
+    font-size: 0.9rem;
+    color: #555;
+}

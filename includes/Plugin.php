@@ -22,6 +22,7 @@ class Plugin {
     public function init() {
         add_action('admin_menu', [$this->admin, 'add_admin_menu']);
         add_shortcode('federwiegen_product', [$this, 'product_shortcode']);
+        add_shortcode('federwiegen_categories', [$this, 'categories_shortcode']);
         add_action('wp_enqueue_scripts', [$this->admin, 'enqueue_frontend_assets']);
         add_action('admin_enqueue_scripts', [$this->admin, 'enqueue_admin_assets']);
 
@@ -107,6 +108,16 @@ class Plugin {
 
         ob_start();
         include FEDERWIEGEN_PLUGIN_PATH . 'templates/product-page.php';
+        return ob_get_clean();
+    }
+
+    /**
+     * Shortcode to list all active product categories.
+     * Usage: [federwiegen_categories]
+     */
+    public function categories_shortcode($atts) {
+        ob_start();
+        include FEDERWIEGEN_PLUGIN_PATH . 'templates/category-list.php';
         return ob_get_clean();
     }
 
