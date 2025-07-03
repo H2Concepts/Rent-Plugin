@@ -1120,6 +1120,8 @@
     line-height: 1;
     position: relative;
     color: #ccc;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .federwiegen-star-rating::before {
