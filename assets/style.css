@@ -1008,16 +1008,17 @@
 .federwiegen-color-toast {
     position: fixed;
     top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 10px;
+    right: 10px;
     background: #4a674a;
     color: #fff;
-    padding: 8px 16px;
-    border-radius: 999px;
+    padding: 12px;
+    border-radius: 8px;
     font-size: 0.9rem;
     z-index: 1001;
     display: none;
     cursor: pointer;
+    text-align: center;
 }
 
 @media (min-width: 769px) {
