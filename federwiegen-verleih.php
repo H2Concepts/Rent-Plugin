@@ -3,7 +3,7 @@
   * Plugin Name: Rent Plugin
   * Plugin URI: https://h2concepts.de
   * Description: Ein Plugin für den Verleih von Waren mit konfigurierbaren Produkten und Stripe-Integration
- * Version: 2.6.5
+ * Version: 2.6.6
   * Author: H2 Concepts
   * License: GPL v2 or later
   * Text Domain: h2-concepts
@@ -15,7 +15,7 @@ if (!defined('ABSPATH')) {
 
 // Plugin constants
 if (!defined('FEDERWIEGEN_PLUGIN_VERSION')) {
-    define('FEDERWIEGEN_PLUGIN_VERSION', '2.6.5');
+    define('FEDERWIEGEN_PLUGIN_VERSION', '2.6.6');
 }
 if (!defined('FEDERWIEGEN_PLUGIN_DIR')) {
     define('FEDERWIEGEN_PLUGIN_DIR', __DIR__ . '/');

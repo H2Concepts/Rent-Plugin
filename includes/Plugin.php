@@ -46,8 +46,24 @@ class Plugin {
     }
 
     public function check_for_updates() {
+        global $wpdb;
         $current_version = get_option('federwiegen_version', '1.0.0');
-        if (version_compare($current_version, FEDERWIEGEN_VERSION, '<')) {
+        $needs_update = version_compare($current_version, FEDERWIEGEN_VERSION, '<');
+
+        // Also check if new columns exist, in case another plugin loaded an older version first
+        if (!$needs_update) {
+            $table = $wpdb->prefix . 'federwiegen_categories';
+            $required_cols = ['short_description', 'payment_icons', 'rating_link'];
+            foreach ($required_cols as $col) {
+                $exists = $wpdb->get_var($wpdb->prepare("SHOW COLUMNS FROM $table LIKE %s", $col));
+                if (!$exists) {
+                    $needs_update = true;
+                    break;
+                }
+            }
+        }
+
+        if ($needs_update) {
             $this->db->update_database();
             update_option('federwiegen_version', FEDERWIEGEN_VERSION);
         }
