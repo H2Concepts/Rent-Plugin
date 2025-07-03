@@ -180,7 +180,7 @@ class Database {
                 'condition_id' => 'mediumint(9)',
                 'product_color_id' => 'mediumint(9)',
                 'frame_color_id' => 'mediumint(9)',
-                'extra_ids' => 'text'
+                'extra_ids' => 'varchar(255)'
             );
             
             foreach ($new_analytics_columns as $column => $type) {
@@ -330,7 +330,7 @@ class Database {
                 category_id mediumint(9) NOT NULL,
                 variant_id mediumint(9) NOT NULL,
                 extra_id mediumint(9) NOT NULL,
-                extra_ids text DEFAULT NULL,
+                extra_ids varchar(255) DEFAULT NULL,
                 duration_id mediumint(9) NOT NULL,
                 condition_id mediumint(9) DEFAULT NULL,
                 product_color_id mediumint(9) DEFAULT NULL,
@@ -351,7 +351,7 @@ class Database {
             dbDelta($sql);
         } else {
             $new_order_columns = array(
-                'extra_ids' => 'text'
+                'extra_ids' => 'varchar(255)'
             );
 
             foreach ($new_order_columns as $column => $type) {
@@ -372,7 +372,7 @@ class Database {
                 id mediumint(9) NOT NULL AUTO_INCREMENT,
                 category_id mediumint(9) NOT NULL,
                 variant_id mediumint(9) DEFAULT NULL,
-                extra_ids text DEFAULT NULL,
+                extra_ids varchar(255) DEFAULT NULL,
                 duration_id mediumint(9) DEFAULT NULL,
                 condition_id mediumint(9) DEFAULT NULL,
                 product_color_id mediumint(9) DEFAULT NULL,
@@ -389,7 +389,7 @@ class Database {
             dbDelta($sql);
         } else {
             $new_columns = array(
-                'extra_ids'        => 'text',
+                'extra_ids'        => 'varchar(255)',
                 'duration_id'      => 'mediumint(9)',
                 'condition_id'     => 'mediumint(9)',
                 'product_color_id' => 'mediumint(9)',
@@ -407,7 +407,7 @@ class Database {
         // Update links table with new columns
         $table_links = $wpdb->prefix . 'federwiegen_links';
         $new_link_columns = array(
-            'extra_ids'       => 'text',
+            'extra_ids'       => 'varchar(255)',
             'condition_id'    => 'mediumint(9)',
             'product_color_id'=> 'mediumint(9)',
             'frame_color_id'  => 'mediumint(9)'
@@ -418,6 +418,24 @@ class Database {
             if (empty($column_exists)) {
                 $wpdb->query("ALTER TABLE $table_links ADD COLUMN $column $type AFTER duration_id");
             }
+        }
+
+        // Migrate existing link records to populate extra_ids if empty
+        $wpdb->query("UPDATE $table_links SET extra_ids = '' WHERE extra_ids IS NULL AND extra_id = 0");
+        $wpdb->query("UPDATE $table_links SET extra_ids = CAST(extra_id AS CHAR) WHERE (extra_ids IS NULL OR extra_ids = '') AND extra_id > 0");
+
+        // Ensure unique index includes extra_ids
+        $index_info = $wpdb->get_results("SHOW INDEX FROM $table_links WHERE Key_name = 'category_variant_extra_duration'");
+        $has_extra_ids = false;
+        foreach ($index_info as $row) {
+            if ($row->Column_name === 'extra_ids') {
+                $has_extra_ids = true;
+                break;
+            }
+        }
+        if (!$has_extra_ids && !empty($index_info)) {
+            $wpdb->query("ALTER TABLE $table_links DROP INDEX category_variant_extra_duration");
+            $wpdb->query("ALTER TABLE $table_links ADD UNIQUE KEY category_variant_extra_duration (category_id, variant_id, extra_id, extra_ids(191), duration_id, condition_id, product_color_id, frame_color_id)");
         }
 
         // Add availability column to variant options table if it doesn't exist
@@ -532,14 +550,14 @@ class Database {
             category_id mediumint(9) DEFAULT 1,
             variant_id mediumint(9) NOT NULL,
             extra_id mediumint(9) NOT NULL,
-            extra_ids text DEFAULT NULL,
+            extra_ids varchar(255) DEFAULT NULL,
             duration_id mediumint(9) NOT NULL,
             condition_id mediumint(9) DEFAULT NULL,
             product_color_id mediumint(9) DEFAULT NULL,
             frame_color_id mediumint(9) DEFAULT NULL,
             stripe_link text NOT NULL,
             PRIMARY KEY (id),
-            UNIQUE KEY category_variant_extra_duration (category_id, variant_id, extra_id, duration_id, condition_id, product_color_id, frame_color_id)
+            UNIQUE KEY category_variant_extra_duration (category_id, variant_id, extra_id, extra_ids(191), duration_id, condition_id, product_color_id, frame_color_id)
         ) $charset_collate;";
         
         // Analytics table for tracking (with new option columns)
@@ -550,7 +568,7 @@ class Database {
             event_type varchar(50) NOT NULL,
             variant_id mediumint(9) DEFAULT NULL,
             extra_id mediumint(9) DEFAULT NULL,
-            extra_ids text DEFAULT NULL,
+            extra_ids varchar(255) DEFAULT NULL,
             duration_id mediumint(9) DEFAULT NULL,
             condition_id mediumint(9) DEFAULT NULL,
             product_color_id mediumint(9) DEFAULT NULL,
@@ -633,7 +651,7 @@ class Database {
             category_id mediumint(9) NOT NULL,
             variant_id mediumint(9) NOT NULL,
             extra_id mediumint(9) NOT NULL,
-            extra_ids text DEFAULT NULL,
+            extra_ids varchar(255) DEFAULT NULL,
             duration_id mediumint(9) NOT NULL,
             condition_id mediumint(9) DEFAULT NULL,
             product_color_id mediumint(9) DEFAULT NULL,
@@ -670,7 +688,7 @@ class Database {
             id mediumint(9) NOT NULL AUTO_INCREMENT,
             category_id mediumint(9) NOT NULL,
             variant_id mediumint(9) DEFAULT NULL,
-            extra_ids text DEFAULT NULL,
+            extra_ids varchar(255) DEFAULT NULL,
             duration_id mediumint(9) DEFAULT NULL,
             condition_id mediumint(9) DEFAULT NULL,
             product_color_id mediumint(9) DEFAULT NULL,
