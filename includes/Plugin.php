@@ -22,6 +22,7 @@ class Plugin {
     public function init() {
         add_action('admin_menu', [$this->admin, 'add_admin_menu']);
         add_shortcode('federwiegen_product', [$this, 'product_shortcode']);
+        add_shortcode('federwiegen_categories', [$this, 'categories_overview_shortcode']);
         add_action('wp_enqueue_scripts', [$this->admin, 'enqueue_frontend_assets']);
         add_action('admin_enqueue_scripts', [$this->admin, 'enqueue_admin_assets']);
 
@@ -107,6 +108,17 @@ class Plugin {
 
         ob_start();
         include FEDERWIEGEN_PLUGIN_PATH . 'templates/product-page.php';
+        return ob_get_clean();
+    }
+
+    public function categories_overview_shortcode() {
+        global $wpdb;
+        $categories = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}federwiegen_categories WHERE active = 1 ORDER BY sort_order, name");
+        if (empty($categories)) {
+            return '<p>Keine Kategorien gefunden.</p>';
+        }
+        ob_start();
+        include FEDERWIEGEN_PLUGIN_PATH . 'templates/categories-overview.php';
         return ob_get_clean();
     }
 

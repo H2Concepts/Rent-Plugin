@@ -71,6 +71,7 @@ class Database {
                 page_description text DEFAULT '',
                 meta_title varchar(255) DEFAULT '',
                 meta_description text DEFAULT '',
+                short_description text DEFAULT '',
                 product_title varchar(255) DEFAULT '',
                 product_description text DEFAULT '',
                 default_image text DEFAULT '',
@@ -111,6 +112,7 @@ class Database {
             $new_columns = array(
                 'meta_title' => 'VARCHAR(255)',
                 'meta_description' => 'TEXT',
+                'short_description' => 'TEXT',
                 'features_title' => 'VARCHAR(255) DEFAULT ""',
                 'feature_1_icon' => 'TEXT',
                 'feature_1_title' => 'VARCHAR(255)',
@@ -700,6 +702,7 @@ class Database {
                     'page_description' => '',
                     'meta_title' => '',
                     'meta_description' => '',
+                    'short_description' => '',
                     'product_title' => '',
                     'product_description' => '',
                     'default_image' => '',

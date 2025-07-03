@@ -139,7 +139,13 @@ foreach ($branding_results as $result) {
         </div>
     </div>
     <?php endif; ?>
-    
+
+    <div class="federwiegen-help-section">
+        <h3>🛠 Shortcode für Startseite</h3>
+        <p>Nutzen Sie folgenden Shortcode, um eine Übersicht Ihrer Kategorien einzubinden:</p>
+        <code>[federwiegen_categories]</code>
+    </div>
+
     <!-- Hilfe & Tipps -->
     <div class="federwiegen-help-section">
         <h3>💡 Erste Schritte</h3>

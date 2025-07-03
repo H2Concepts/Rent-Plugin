@@ -97,6 +97,10 @@
                 );
                 ?>
             </div>
+            <div class="federwiegen-form-group">
+                <label>Kurzbeschreibung</label>
+                <textarea name="short_description" rows="3" placeholder="Kurze Beschreibung für die Übersicht"></textarea>
+            </div>
         </div>
         
         <!-- Bilder -->

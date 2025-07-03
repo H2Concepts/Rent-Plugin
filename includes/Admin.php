@@ -131,7 +131,7 @@ class Admin {
     public function enqueue_frontend_assets() {
         global $post;
 
-        if (!is_singular() || !has_shortcode($post->post_content ?? '', 'federwiegen_product')) {
+        if (!is_singular() || !(has_shortcode($post->post_content ?? '', 'federwiegen_product') || has_shortcode($post->post_content ?? '', 'federwiegen_categories'))) {
             return;
         }
 
@@ -262,6 +262,7 @@ class Admin {
             $shortcode = sanitize_text_field($_POST['shortcode']);
             $meta_title = sanitize_text_field($_POST['meta_title']);
             $meta_description = sanitize_textarea_field($_POST['meta_description']);
+            $short_description = sanitize_textarea_field($_POST['short_description']);
             $product_title = sanitize_text_field($_POST['product_title']);
             $product_description = wp_kses_post($_POST['product_description']);
             $default_image = esc_url_raw($_POST['default_image']);
@@ -305,6 +306,7 @@ class Admin {
                         'shortcode' => $shortcode,
                         'meta_title' => $meta_title,
                         'meta_description' => $meta_description,
+                        'short_description' => $short_description,
                         'product_title' => $product_title,
                         'product_description' => $product_description,
                         'default_image' => $default_image,
@@ -337,7 +339,7 @@ class Admin {
                         'sort_order' => $sort_order,
                     ],
                     ['id' => intval($_POST['id'])],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d','%f','%s','%d'),
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d','%f','%s','%d','%d'),
                 );
 
                 if ($result !== false) {
@@ -353,6 +355,7 @@ class Admin {
                         'shortcode' => $shortcode,
                         'meta_title' => $meta_title,
                         'meta_description' => $meta_description,
+                        'short_description' => $short_description,
                         'product_title' => $product_title,
                         'product_description' => $product_description,
                         'default_image' => $default_image,
@@ -384,7 +387,7 @@ class Admin {
                         'rating_link' => $rating_link,
                         'sort_order' => $sort_order,
                     ],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d','%f','%s','%d')
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d','%f','%s','%d','%d')
                 );
 
                 if ($result !== false) {
