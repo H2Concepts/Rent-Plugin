@@ -392,7 +392,97 @@ class Ajax {
         );
         
         if ($result) {
-            wp_send_json_success(array('order_id' => $wpdb->insert_id));
+            $order_id = $wpdb->insert_id;
+
+            $category_name  = $wpdb->get_var($wpdb->prepare(
+                "SELECT name FROM {$wpdb->prefix}federwiegen_categories WHERE id = %d",
+                $category_id
+            ));
+            $variant_name   = $wpdb->get_var($wpdb->prepare(
+                "SELECT name FROM {$wpdb->prefix}federwiegen_variants WHERE id = %d",
+                $variant_id
+            ));
+            $duration_name  = $wpdb->get_var($wpdb->prepare(
+                "SELECT name FROM {$wpdb->prefix}federwiegen_durations WHERE id = %d",
+                $duration_id
+            ));
+
+            $extras_names = '';
+            if (!empty($extra_ids_array)) {
+                $placeholders = implode(',', array_fill(0, count($extra_ids_array), '%d'));
+                $extras = $wpdb->get_col(
+                    $wpdb->prepare(
+                        "SELECT name FROM {$wpdb->prefix}federwiegen_extras WHERE id IN ($placeholders)",
+                        ...$extra_ids_array
+                    )
+                );
+                $extras_names = implode(', ', $extras);
+            }
+
+            $condition_name = '';
+            if ($condition_id) {
+                $condition_name = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT name FROM {$wpdb->prefix}federwiegen_conditions WHERE id = %d",
+                        $condition_id
+                    )
+                );
+            }
+
+            $product_color_name = '';
+            if ($product_color_id) {
+                $product_color_name = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT name FROM {$wpdb->prefix}federwiegen_colors WHERE id = %d",
+                        $product_color_id
+                    )
+                );
+            }
+
+            $frame_color_name = '';
+            if ($frame_color_id) {
+                $frame_color_name = $wpdb->get_var(
+                    $wpdb->prepare(
+                        "SELECT name FROM {$wpdb->prefix}federwiegen_colors WHERE id = %d",
+                        $frame_color_id
+                    )
+                );
+            }
+
+            $admins       = get_users(['role' => 'administrator']);
+            $admin_emails = wp_list_pluck($admins, 'user_email');
+
+            $subject = 'Neue Bestellung #' . $order_id;
+            $message = "Es wurde eine neue Bestellung aufgegeben.\n";
+            if ($category_name) {
+                $message .= 'Kategorie: ' . $category_name . "\n";
+            }
+            if ($variant_name) {
+                $message .= 'Ausführung: ' . $variant_name . "\n";
+            }
+            if ($duration_name) {
+                $message .= 'Mietdauer: ' . $duration_name . "\n";
+            }
+            if ($condition_name) {
+                $message .= 'Zustand: ' . $condition_name . "\n";
+            }
+            if ($product_color_name) {
+                $message .= 'Produktfarbe: ' . $product_color_name . "\n";
+            }
+            if ($frame_color_name) {
+                $message .= 'Gestellfarbe: ' . $frame_color_name . "\n";
+            }
+            if ($extras_names) {
+                $message .= 'Extras: ' . $extras_names . "\n";
+            }
+            $message .= 'Preis: ' . number_format($final_price, 2, ',', '.') . "€/Monat\n";
+            $message .= 'Stripe Link: ' . $stripe_link . "\n";
+
+            if (!empty($admin_emails)) {
+                wp_mail($admin_emails, $subject, $message);
+            }
+
+            wp_send_json_success(array('order_id' => $order_id));
         } else {
             wp_send_json_error('Failed to save order');
         }
