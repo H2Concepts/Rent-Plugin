@@ -142,9 +142,12 @@ jQuery(document).ready(function($) {
                 product_color_id: selectedProductColor,
                 frame_color_id: selectedFrameColor
             });
-            
-            // Submit order details
-            submitOrder();
+
+            // Open popup immediately to avoid blockers
+            const stripeWindow = window.open('', '_blank');
+
+            // Submit order details and redirect when done
+            submitOrder(stripeWindow);
         }
     });
 
@@ -733,9 +736,9 @@ jQuery(document).ready(function($) {
         }, 3000);
     }
 
-    function submitOrder() {
+    function submitOrder(stripeWindow) {
         const finalPrice = currentPrice;
-        
+
         $.ajax({
             url: federwiegen_ajax.ajax_url,
             type: 'POST',
@@ -754,8 +757,14 @@ jQuery(document).ready(function($) {
             },
             success: function(response) {
                 if (response.success) {
-                    // Redirect to Stripe
-                    window.open(currentStripeLink, '_blank');
+                    // Redirect to Stripe using previously opened window
+                    if (stripeWindow) {
+                        stripeWindow.location = currentStripeLink;
+                    } else {
+                        window.open(currentStripeLink, '_blank');
+                    }
+                } else if (stripeWindow) {
+                    stripeWindow.close();
                 }
             }
         });
