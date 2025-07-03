@@ -46,7 +46,7 @@ class Ajax {
         }
         
         // Find best matching Stripe link
-        $link = $this->find_best_stripe_link($variant_id, $extra_id, $duration_id, $condition_id, $product_color_id, $frame_color_id);
+        $link = $this->find_best_stripe_link($variant_id, $extra_ids_raw, $duration_id, $condition_id, $product_color_id, $frame_color_id);
         
         // Get shipping cost from category
         $category = $wpdb->get_row($wpdb->prepare(
@@ -84,15 +84,19 @@ class Ajax {
         }
     }
     
-    private function find_best_stripe_link($variant_id, $extra_id, $duration_id, $condition_id = null, $product_color_id = null, $frame_color_id = null) {
+    private function find_best_stripe_link($variant_id, $extra_ids_raw, $duration_id, $condition_id = null, $product_color_id = null, $frame_color_id = null) {
+        $extra_ids_array = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        sort($extra_ids_array);
+        $extra_ids_sorted = implode(',', $extra_ids_array);
+        $extra_id = !empty($extra_ids_array) ? $extra_ids_array[0] : 0;
         global $wpdb;
         
         // Try to find exact match first
         $exact_link = $wpdb->get_var($wpdb->prepare(
-            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links 
-             WHERE variant_id = %d AND extra_id = %d AND duration_id = %d 
+            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links
+             WHERE variant_id = %d AND extra_id = %d AND extra_ids = %s AND duration_id = %d
              AND condition_id = %d AND product_color_id = %d AND frame_color_id = %d",
-            $variant_id, $extra_id, $duration_id, $condition_id, $product_color_id, $frame_color_id
+            $variant_id, $extra_id, $extra_ids_sorted, $duration_id, $condition_id, $product_color_id, $frame_color_id
         ));
         
         if ($exact_link) {
@@ -101,10 +105,10 @@ class Ajax {
         
         // Try without frame color
         $link = $wpdb->get_var($wpdb->prepare(
-            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links 
-             WHERE variant_id = %d AND extra_id = %d AND duration_id = %d 
+            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links
+             WHERE variant_id = %d AND extra_id = %d AND extra_ids = %s AND duration_id = %d
              AND condition_id = %d AND product_color_id = %d AND frame_color_id IS NULL",
-            $variant_id, $extra_id, $duration_id, $condition_id, $product_color_id
+            $variant_id, $extra_id, $extra_ids_sorted, $duration_id, $condition_id, $product_color_id
         ));
         
         if ($link) {
@@ -113,10 +117,10 @@ class Ajax {
         
         // Try without product color
         $link = $wpdb->get_var($wpdb->prepare(
-            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links 
-             WHERE variant_id = %d AND extra_id = %d AND duration_id = %d 
+            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links
+             WHERE variant_id = %d AND extra_id = %d AND extra_ids = %s AND duration_id = %d
              AND condition_id = %d AND product_color_id IS NULL AND frame_color_id = %d",
-            $variant_id, $extra_id, $duration_id, $condition_id, $frame_color_id
+            $variant_id, $extra_id, $extra_ids_sorted, $duration_id, $condition_id, $frame_color_id
         ));
         
         if ($link) {
@@ -125,10 +129,10 @@ class Ajax {
         
         // Try without both colors
         $link = $wpdb->get_var($wpdb->prepare(
-            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links 
-             WHERE variant_id = %d AND extra_id = %d AND duration_id = %d 
+            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links
+             WHERE variant_id = %d AND extra_id = %d AND extra_ids = %s AND duration_id = %d
              AND condition_id = %d AND product_color_id IS NULL AND frame_color_id IS NULL",
-            $variant_id, $extra_id, $duration_id, $condition_id
+            $variant_id, $extra_id, $extra_ids_sorted, $duration_id, $condition_id
         ));
         
         if ($link) {
@@ -137,10 +141,10 @@ class Ajax {
         
         // Try without condition
         $link = $wpdb->get_var($wpdb->prepare(
-            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links 
-             WHERE variant_id = %d AND extra_id = %d AND duration_id = %d 
+            "SELECT stripe_link FROM {$wpdb->prefix}federwiegen_links
+             WHERE variant_id = %d AND extra_id = %d AND extra_ids = %s AND duration_id = %d
              AND condition_id IS NULL AND product_color_id IS NULL AND frame_color_id IS NULL",
-            $variant_id, $extra_id, $duration_id
+            $variant_id, $extra_id, $extra_ids_sorted, $duration_id
         ));
         
         return $link;
@@ -180,6 +184,8 @@ class Ajax {
         
         $extra_ids_raw = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
         $extra_ids_array = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        sort($extra_ids_array);
+        $extra_ids_raw = implode(',', $extra_ids_array);
         $extra_id = !empty($extra_ids_array) ? $extra_ids_array[0] : 0;
         
         global $wpdb;
@@ -347,6 +353,8 @@ class Ajax {
         $variant_id = intval($_POST['variant_id']);
         $extra_ids_raw = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
         $extra_ids_array = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        sort($extra_ids_array);
+        $extra_ids_raw = implode(',', $extra_ids_array);
         $extra_id = !empty($extra_ids_array) ? $extra_ids_array[0] : 0;
         $duration_id = intval($_POST['duration_id']);
         $condition_id = isset($_POST['condition_id']) ? intval($_POST['condition_id']) : null;
@@ -394,6 +402,8 @@ class Ajax {
         $variant_id = isset($_POST['variant_id']) ? intval($_POST['variant_id']) : null;
         $extra_ids_raw = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
         $extra_ids_array = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        sort($extra_ids_array);
+        $extra_ids_raw = implode(',', $extra_ids_array);
         $extra_id = !empty($extra_ids_array) ? $extra_ids_array[0] : null;
         $duration_id = isset($_POST['duration_id']) ? intval($_POST['duration_id']) : null;
         $condition_id = isset($_POST['condition_id']) ? intval($_POST['condition_id']) : null;
@@ -479,6 +489,8 @@ class Ajax {
         $category_id      = isset($_POST['category_id']) ? intval($_POST['category_id']) : 0;
         $extra_ids_raw    = isset($_POST['extra_ids']) ? sanitize_text_field($_POST['extra_ids']) : '';
         $extra_ids_array  = array_filter(array_map('intval', explode(',', $extra_ids_raw)));
+        sort($extra_ids_array);
+        $extra_ids_raw    = implode(',', $extra_ids_array);
         $duration_id      = isset($_POST['duration_id']) ? intval($_POST['duration_id']) : 0;
         $condition_id     = isset($_POST['condition_id']) ? intval($_POST['condition_id']) : 0;
         $product_color_id = isset($_POST['product_color_id']) ? intval($_POST['product_color_id']) : 0;
