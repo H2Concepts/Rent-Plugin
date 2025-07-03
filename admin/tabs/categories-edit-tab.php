@@ -105,7 +105,7 @@
             </div>
             <div class="federwiegen-form-group">
                 <label>Kurzbeschreibung</label>
-                <textarea name="short_description" rows="3"><?php echo esc_textarea($edit_item->short_description); ?></textarea>
+                <textarea name="short_description" rows="3"><?php echo isset($edit_item->short_description) ? esc_textarea($edit_item->short_description) : ''; ?></textarea>
             </div>
         </div>
         
