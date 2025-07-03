@@ -106,6 +106,16 @@ if (isset($_GET['delete']) && isset($_GET['fw_nonce']) && wp_verify_nonce($_GET[
     }
 }
 
+// Handle duplicate - prefill add form with existing values
+$duplicate_item = null;
+if (isset($_GET['duplicate']) && isset($_GET['fw_nonce']) && wp_verify_nonce($_GET['fw_nonce'], 'federwiegen_admin_action')) {
+    $duplicate_item = $wpdb->get_row($wpdb->prepare("SELECT * FROM $links_table WHERE id = %d", intval($_GET['duplicate'])));
+    if ($duplicate_item) {
+        $selected_category = $duplicate_item->category_id;
+        $active_tab = 'add';
+    }
+}
+
 // Get item for editing
 $edit_item = null;
 if (isset($_GET['edit'])) {
@@ -260,7 +270,7 @@ $links = $wpdb->get_results($wpdb->prepare(
                                     <select name="variant_id" required>
                                         <option value="">Bitte wählen...</option>
                                         <?php foreach ($variants as $variant): ?>
-                                        <option value="<?php echo $variant->id; ?>">
+                                        <option value="<?php echo $variant->id; ?>" <?php echo ($duplicate_item && $duplicate_item->variant_id == $variant->id) ? 'selected' : ''; ?>>
                                             <?php echo esc_html($variant->name); ?>
                                         </option>
                                         <?php endforeach; ?>
@@ -272,7 +282,7 @@ $links = $wpdb->get_results($wpdb->prepare(
                                     <select name="extra_ids">
                                         <option value="">Kein Extra</option>
                                         <?php foreach ($extra_combinations as $combo): ?>
-                                        <option value="<?php echo esc_attr($combo['ids']); ?>">
+                                        <option value="<?php echo esc_attr($combo['ids']); ?>" <?php echo ($duplicate_item && $duplicate_item->extra_ids == $combo['ids']) ? 'selected' : ''; ?>>
                                             <?php echo esc_html($combo['name']); ?>
                                         </option>
                                         <?php endforeach; ?>
@@ -284,7 +294,7 @@ $links = $wpdb->get_results($wpdb->prepare(
                                     <select name="duration_id" required>
                                         <option value="">Bitte wählen...</option>
                                         <?php foreach ($durations as $duration): ?>
-                                        <option value="<?php echo $duration->id; ?>">
+                                        <option value="<?php echo $duration->id; ?>" <?php echo ($duplicate_item && $duplicate_item->duration_id == $duration->id) ? 'selected' : ''; ?>>
                                             <?php echo esc_html($duration->name); ?>
                                         </option>
                                         <?php endforeach; ?>
@@ -297,7 +307,7 @@ $links = $wpdb->get_results($wpdb->prepare(
                                     <select name="condition_id">
                                         <option value="">Alle Zustände</option>
                                         <?php foreach ($conditions as $condition): ?>
-                                        <option value="<?php echo $condition->id; ?>">
+                                        <option value="<?php echo $condition->id; ?>" <?php echo ($duplicate_item && $duplicate_item->condition_id == $condition->id) ? 'selected' : ''; ?> >
                                             <?php echo esc_html($condition->name); ?>
                                         </option>
                                         <?php endforeach; ?>
@@ -312,7 +322,7 @@ $links = $wpdb->get_results($wpdb->prepare(
                                     <select name="product_color_id">
                                         <option value="">Alle Produktfarben</option>
                                         <?php foreach ($product_colors as $color): ?>
-                                        <option value="<?php echo $color->id; ?>">
+                                        <option value="<?php echo $color->id; ?>" <?php echo ($duplicate_item && $duplicate_item->product_color_id == $color->id) ? 'selected' : ''; ?>>
                                             <?php echo esc_html($color->name); ?>
                                         </option>
                                         <?php endforeach; ?>
@@ -327,7 +337,7 @@ $links = $wpdb->get_results($wpdb->prepare(
                                     <select name="frame_color_id">
                                         <option value="">Alle Gestellfarben</option>
                                         <?php foreach ($frame_colors as $color): ?>
-                                        <option value="<?php echo $color->id; ?>">
+                                        <option value="<?php echo $color->id; ?>" <?php echo ($duplicate_item && $duplicate_item->frame_color_id == $color->id) ? 'selected' : ''; ?>>
                                             <?php echo esc_html($color->name); ?>
                                         </option>
                                         <?php endforeach; ?>
@@ -338,7 +348,7 @@ $links = $wpdb->get_results($wpdb->prepare(
                                 
                                 <div class="federwiegen-form-group full-width">
                                     <label>Stripe Link *</label>
-                                    <input type="url" name="stripe_link" required placeholder="https://buy.stripe.com/...">
+                                    <input type="url" name="stripe_link" value="<?php echo $duplicate_item ? esc_attr($duplicate_item->stripe_link) : ''; ?>" required placeholder="https://buy.stripe.com/...">
                                     <small>Vollständiger Stripe-Link</small>
                                 </div>
                             </div>
@@ -521,6 +531,7 @@ $links = $wpdb->get_results($wpdb->prepare(
                                         </td>
                                         <td>
                                             <a href="<?php echo admin_url('admin.php?page=federwiegen-links&category=' . $selected_category . '&tab=edit&edit=' . $link->id); ?>" class="button button-small">Bearbeiten</a>
+                                            <a href="<?php echo admin_url('admin.php?page=federwiegen-links&category=' . $selected_category . '&tab=add&duplicate=' . $link->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>" class="button button-small">Duplizieren</a>
                                             <a href="<?php echo admin_url('admin.php?page=federwiegen-links&category=' . $selected_category . '&tab=list&delete=' . $link->id . '&fw_nonce=' . wp_create_nonce('federwiegen_admin_action')); ?>" class="button button-small" onclick="return confirm('Sind Sie sicher?')">Löschen</a>
                                         </td>
                                     </tr>
