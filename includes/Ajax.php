@@ -55,18 +55,22 @@ class Ajax {
         ));
         
         if ($variant && $duration) {
-            $base_price = floatval($variant->base_price);
+            $variant_price = floatval($variant->base_price);
+            $extras_price = 0;
             foreach ($extras as $ex) {
-                $base_price += floatval($ex->price);
+                $extras_price += floatval($ex->price);
             }
-            
-            // Apply condition price modifier
+
+            // Apply condition price modifier to whole price like before
             if ($condition && $condition->price_modifier != 0) {
-                $base_price = $base_price * (1 + floatval($condition->price_modifier));
+                $modifier = 1 + floatval($condition->price_modifier);
+                $variant_price *= $modifier;
+                $extras_price  *= $modifier;
             }
-            
+
+            $base_price = $variant_price + $extras_price;
             $discount = floatval($duration->discount);
-            $final_price = $base_price * (1 - $discount);
+            $final_price = ($variant_price * (1 - $discount)) + $extras_price;
             $shipping_cost = $category ? floatval($category->shipping_cost) : 0;
             
             wp_send_json_success(array(
