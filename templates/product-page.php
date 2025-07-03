@@ -114,6 +114,7 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                     <h2><?php echo esc_html($product_title); ?></h2>
                     <?php if ($show_rating && $rating_value > 0): ?>
                     <div class="federwiegen-rating">
+                        <span class="federwiegen-rating-number"><?php echo esc_html($rating_value); ?></span>
                         <span class="federwiegen-star-rating" style="--rating: <?php echo esc_attr($rating_value); ?>;"></span>
                         <?php if (!empty($rating_link)): ?>
                             <a href="<?php echo esc_url($rating_link); ?>" target="_blank">Bewertungen ansehen</a>

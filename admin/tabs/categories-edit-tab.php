@@ -175,6 +175,11 @@
                 </div>
             </div>
 
+        </div>
+
+        <!-- Produktbewertung -->
+        <div class="federwiegen-form-section">
+            <h4>⭐ Produktbewertung</h4>
             <div class="federwiegen-form-group">
                 <label><input type="checkbox" name="show_rating" value="1" <?php checked($edit_item->show_rating ?? 0, 1); ?>> Produktbewertung anzeigen</label>
             </div>

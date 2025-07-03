@@ -206,19 +206,6 @@
                 </div>
             </div>
 
-            <div class="federwiegen-form-group">
-                <label><input type="checkbox" name="show_rating" value="1"> Produktbewertung anzeigen</label>
-            </div>
-            <div class="federwiegen-form-row">
-                <div class="federwiegen-form-group">
-                    <label>Sterne-Bewertung (1-5)</label>
-                    <input type="number" name="rating_value" step="0.1" min="1" max="5">
-                </div>
-                <div class="federwiegen-form-group">
-                    <label>Bewertungs-Link</label>
-                    <input type="url" name="rating_link" placeholder="https://example.com/bewertungen">
-                </div>
-            </div>
             
             <div class="federwiegen-form-group">
                 <label>Mietdauer-Tooltip</label>
@@ -229,10 +216,28 @@
                 <label>Zustand-Tooltip</label>
                 <textarea name="condition_tooltip" rows="4" placeholder="Text der bei 'Zustand' angezeigt wird"></textarea>
             </div>
+        <div class="federwiegen-form-group">
+            <label><input type="checkbox" name="show_tooltips" value="1" checked> Tooltips auf Produktseite anzeigen</label>
+        </div>
+    </div>
+
+    <!-- Produktbewertung -->
+    <div class="federwiegen-form-section">
+        <h4>⭐ Produktbewertung</h4>
+        <div class="federwiegen-form-group">
+            <label><input type="checkbox" name="show_rating" value="1"> Produktbewertung anzeigen</label>
+        </div>
+        <div class="federwiegen-form-row">
             <div class="federwiegen-form-group">
-                <label><input type="checkbox" name="show_tooltips" value="1" checked> Tooltips auf Produktseite anzeigen</label>
+                <label>Sterne-Bewertung (1-5)</label>
+                <input type="number" name="rating_value" step="0.1" min="1" max="5">
+            </div>
+            <div class="federwiegen-form-group">
+                <label>Bewertungs-Link</label>
+                <input type="url" name="rating_link" placeholder="https://example.com/bewertungen">
             </div>
         </div>
+    </div>
         
         <!-- Einstellungen -->
         <div class="federwiegen-form-section">

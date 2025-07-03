@@ -1109,6 +1109,10 @@
     margin: 0.5rem 0;
 }
 
+.federwiegen-rating-number {
+    font-weight: 600;
+}
+
 .federwiegen-star-rating {
     --rating: 0;
     --star-size: 20px;
