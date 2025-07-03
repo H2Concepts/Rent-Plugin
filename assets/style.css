@@ -1005,6 +1005,22 @@
     cursor: not-allowed;
 }
 
+.federwiegen-color-toast {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    background: #4a674a;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    z-index: 1001;
+    display: none;
+    cursor: pointer;
+    text-align: center;
+}
+
 @media (min-width: 769px) {
     .federwiegen-mobile-sticky-price {
         display: none !important;

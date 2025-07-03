@@ -14,6 +14,7 @@ jQuery(document).ready(function($) {
     let touchStartX = 0;
     let touchEndX = 0;
     let currentPrice = 0;
+    let colorNotificationTimeout = null;
 
     // Get category ID from container
     const container = $('.federwiegen-container');
@@ -338,6 +339,10 @@ jQuery(document).ready(function($) {
                 if (type === 'frame-color' && currentProductColorImage) index += 1;
             }
             updateVariantImages(variantOption, index);
+
+            if (colorOption && (currentProductColorImage || currentFrameColorImage)) {
+                showGalleryNotification();
+            }
         }
     }
 
@@ -704,6 +709,28 @@ jQuery(document).ready(function($) {
 
     function hideMobileStickyPrice() {
         $('#mobile-sticky-price').removeClass('show');
+    }
+
+    function showGalleryNotification() {
+        if (window.innerWidth > 768) return;
+
+        let toast = $('#federwiegen-color-toast');
+        if (!toast.length) {
+            toast = $('<div id="federwiegen-color-toast" class="federwiegen-color-toast">Ein Bild zur Farbe wurde der Produktgalerie hinzugefügt</div>');
+            $('body').append(toast);
+            toast.on('click', function() {
+                const gallery = $('#federwiegen-image-gallery');
+                if (gallery.length) {
+                    $('html, body').animate({ scrollTop: gallery.offset().top - 100 }, 500);
+                }
+            });
+        }
+
+        toast.stop(true, true).fadeIn(200);
+        clearTimeout(colorNotificationTimeout);
+        colorNotificationTimeout = setTimeout(function() {
+            toast.fadeOut(200);
+        }, 3000);
     }
 
     function submitOrder() {
