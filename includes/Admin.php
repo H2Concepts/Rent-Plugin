@@ -172,7 +172,8 @@ class Admin {
                 'vat_included' => isset($category->vat_included) ? intval($category->vat_included) : 0
             ));
         }
-    
+
+    }
     public function enqueue_admin_assets($hook) {
         if (strpos($hook, 'federwiegen') !== false) {
             wp_enqueue_style('federwiegen-admin-style', FEDERWIEGEN_PLUGIN_URL . 'assets/admin-style.css', array(), FEDERWIEGEN_VERSION);
