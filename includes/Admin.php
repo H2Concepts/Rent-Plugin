@@ -289,6 +289,9 @@ class Admin {
             $duration_tooltip = sanitize_textarea_field($_POST['duration_tooltip']);
             $condition_tooltip = sanitize_textarea_field($_POST['condition_tooltip']);
             $show_tooltips = isset($_POST['show_tooltips']) ? 1 : 0;
+            $show_rating = isset($_POST['show_rating']) ? 1 : 0;
+            $rating_value = isset($_POST['rating_value']) ? floatval($_POST['rating_value']) : 0;
+            $rating_link = esc_url_raw($_POST['rating_link']);
             $sort_order = intval($_POST['sort_order']);
 
             $table_name = $wpdb->prefix . 'federwiegen_categories';
@@ -327,10 +330,13 @@ class Admin {
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
                         'show_tooltips' => $show_tooltips,
+                        'show_rating' => $show_rating,
+                        'rating_value' => $rating_value,
+                        'rating_link' => $rating_link,
                         'sort_order' => $sort_order,
                     ],
                     ['id' => intval($_POST['id'])],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d'),
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d','%d','%f','%s'),
                 );
 
                 if ($result !== false) {
@@ -372,9 +378,12 @@ class Admin {
                         'duration_tooltip' => $duration_tooltip,
                         'condition_tooltip' => $condition_tooltip,
                         'show_tooltips' => $show_tooltips,
+                        'show_rating' => $show_rating,
+                        'rating_value' => $rating_value,
+                        'rating_link' => $rating_link,
                         'sort_order' => $sort_order,
                     ],
-                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d')
+                    array('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%f','%s','%s','%s','%s','%d','%s','%s','%s','%d','%d','%d','%f','%s')
                 );
 
                 if ($result !== false) {

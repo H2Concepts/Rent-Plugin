@@ -61,6 +61,9 @@ $layout_style = isset($category) ? ($category->layout_style ?? 'default') : 'def
 $duration_tooltip = isset($category) ? ($category->duration_tooltip ?? '') : '';
 $condition_tooltip = isset($category) ? ($category->condition_tooltip ?? '') : '';
 $show_tooltips = isset($category) ? ($category->show_tooltips ?? 1) : 1;
+$show_rating = isset($category) ? ($category->show_rating ?? 0) : 0;
+$rating_value = isset($category) ? floatval($category->rating_value ?? 0) : 0;
+$rating_link = isset($category) ? ($category->rating_link ?? '') : '';
 
 // Get initial conditions and colors (will be updated via AJAX when variant is selected)
 $initial_conditions = $wpdb->get_results($wpdb->prepare(
@@ -109,6 +112,16 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
                 
                 <div class="federwiegen-product-details">
                     <h2><?php echo esc_html($product_title); ?></h2>
+                    <?php if ($show_rating && $rating_value > 0): ?>
+                    <div class="federwiegen-rating">
+                        <span class="federwiegen-star-rating" style="--rating: <?php echo esc_attr($rating_value); ?>;"></span>
+                        <?php if (!empty($rating_link)): ?>
+                            <a href="<?php echo esc_url($rating_link); ?>" target="_blank">Bewertungen ansehen</a>
+                        <?php else: ?>
+                            <span>Bewertungen ansehen</span>
+                        <?php endif; ?>
+                    </div>
+                    <?php endif; ?>
                     <div class="federwiegen-product-description">
                         <?php echo wp_kses_post(wpautop($product_description)); ?>
                     </div>

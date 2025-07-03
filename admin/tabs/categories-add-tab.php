@@ -205,6 +205,20 @@
                     <?php endforeach; ?>
                 </div>
             </div>
+
+            <div class="federwiegen-form-group">
+                <label><input type="checkbox" name="show_rating" value="1"> Produktbewertung anzeigen</label>
+            </div>
+            <div class="federwiegen-form-row">
+                <div class="federwiegen-form-group">
+                    <label>Sterne-Bewertung (1-5)</label>
+                    <input type="number" name="rating_value" step="0.1" min="1" max="5">
+                </div>
+                <div class="federwiegen-form-group">
+                    <label>Bewertungs-Link</label>
+                    <input type="url" name="rating_link" placeholder="https://example.com/bewertungen">
+                </div>
+            </div>
             
             <div class="federwiegen-form-group">
                 <label>Mietdauer-Tooltip</label>

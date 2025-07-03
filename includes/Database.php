@@ -96,6 +96,9 @@ class Database {
                 duration_tooltip text DEFAULT '',
                 condition_tooltip text DEFAULT '',
                 show_tooltips tinyint(1) DEFAULT 1,
+                show_rating tinyint(1) DEFAULT 0,
+                rating_value decimal(3,1) DEFAULT 0,
+                rating_link text DEFAULT '',
                 active tinyint(1) DEFAULT 1,
                 sort_order int(11) DEFAULT 0,
                 PRIMARY KEY (id)
@@ -130,7 +133,10 @@ class Database {
                 'layout_style' => 'VARCHAR(50) DEFAULT "default"',
                 'duration_tooltip' => 'TEXT',
                 'condition_tooltip' => 'TEXT',
-                'show_tooltips' => 'TINYINT(1) DEFAULT 1'
+                'show_tooltips' => 'TINYINT(1) DEFAULT 1',
+                'show_rating' => 'TINYINT(1) DEFAULT 0',
+                'rating_value' => 'DECIMAL(3,1) DEFAULT 0',
+                'rating_link' => 'TEXT'
             );
             
             foreach ($new_columns as $column => $type) {
@@ -462,6 +468,9 @@ class Database {
             duration_tooltip text DEFAULT '',
             condition_tooltip text DEFAULT '',
             show_tooltips tinyint(1) DEFAULT 1,
+            show_rating tinyint(1) DEFAULT 0,
+            rating_value decimal(3,1) DEFAULT 0,
+            rating_link text DEFAULT '',
             active tinyint(1) DEFAULT 1,
             sort_order int(11) DEFAULT 0,
             PRIMARY KEY (id)
@@ -713,6 +722,9 @@ class Database {
                     'duration_tooltip' => '',
                     'condition_tooltip' => '',
                     'show_tooltips' => 1,
+                    'show_rating' => 0,
+                    'rating_value' => 0,
+                    'rating_link' => '',
                     'sort_order' => 0
                 )
             );

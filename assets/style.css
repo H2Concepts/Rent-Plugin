@@ -1100,3 +1100,36 @@
     width: 40px;
     height: auto;
 }
+
+/* Rating stars */
+.federwiegen-rating {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0.5rem 0;
+}
+
+.federwiegen-star-rating {
+    --rating: 0;
+    --star-size: 20px;
+    font-size: var(--star-size);
+    line-height: 1;
+    position: relative;
+    color: #ccc;
+}
+
+.federwiegen-star-rating::before {
+    content: '★★★★★';
+    letter-spacing: 3px;
+}
+
+.federwiegen-star-rating::after {
+    content: '★★★★★';
+    letter-spacing: 3px;
+    color: #ffc107;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: calc(var(--rating) / 5 * 100%);
+    overflow: hidden;
+}
