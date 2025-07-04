@@ -169,6 +169,8 @@ class Admin {
             $opts = array_filter(array_map('trim', explode("\n", $popup_settings['options'])));
             $options = array_values($opts);
         }
+        $popup_enabled = isset($popup_settings['enabled']) ? intval($popup_settings['enabled']) : 0;
+        $popup_days    = isset($popup_settings['days']) ? intval($popup_settings['days']) : 7;
 
         wp_localize_script('federwiegen-script', 'federwiegen_ajax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
@@ -177,7 +179,9 @@ class Admin {
             'price_label' => $category->price_label ?? 'Monatlicher Mietpreis',
             'vat_included' => isset($category->vat_included) ? intval($category->vat_included) : 0,
             'popup_settings' => array(
-                'title' => $popup_settings['title'] ?? '',
+                'enabled' => $popup_enabled,
+                'days'    => $popup_days,
+                'title'   => $popup_settings['title'] ?? '',
                 'content' => wpautop($popup_settings['content'] ?? ''),
                 'options' => $options
             )

@@ -836,7 +836,9 @@ jQuery(document).ready(function($) {
     let exitShown = false;
     const popupData = federwiegen_ajax.popup_settings || {};
     const popup = $('#federwiegen-exit-popup');
-    if (popup.length && popupData.title) {
+    const hideUntil = parseInt(localStorage.getItem('federwiegen_exit_hide_until') || '0', 10);
+
+    if (popup.length && popupData.enabled && popupData.title && Date.now() > hideUntil) {
         $('#federwiegen-exit-title').text(popupData.title);
         $('#federwiegen-exit-message').html(popupData.content);
         if (popupData.options && popupData.options.length) {
@@ -849,23 +851,34 @@ jQuery(document).ready(function($) {
 
         $(document).on('mouseleave', function(e){
             if (!exitShown && e.clientY <= 0) {
-                popup.show();
+                popup.css('display', 'flex');
                 exitShown = true;
             }
         });
 
-        $('.federwiegen-exit-popup-close').on('click', function(){
+        function hidePopup() {
             popup.hide();
-        });
+            const days = parseInt(popupData.days || '7', 10);
+            const expire = Date.now() + days * 86400000;
+            localStorage.setItem('federwiegen_exit_hide_until', expire.toString());
+        }
+
+        $('.federwiegen-exit-popup-close').on('click', hidePopup);
 
         $('#federwiegen-exit-send').on('click', function(){
             const opt = $('#federwiegen-exit-select').val() || '';
             $.post(federwiegen_ajax.ajax_url, {
                 action: 'exit_intent_feedback',
                 option: opt,
+                variant_id: selectedVariant || '',
+                extra_ids: selectedExtras.join(','),
+                duration_id: selectedDuration || '',
+                condition_id: selectedCondition || '',
+                product_color_id: selectedProductColor || '',
+                frame_color_id: selectedFrameColor || '',
                 nonce: federwiegen_ajax.nonce
             }, function(){
-                popup.hide();
+                hidePopup();
             });
         });
     }
