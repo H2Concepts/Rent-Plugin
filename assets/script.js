@@ -836,6 +836,9 @@ jQuery(document).ready(function($) {
     let exitShown = false;
     const popupData = federwiegen_ajax.popup_settings || {};
     const popup = $('#federwiegen-exit-popup');
+    if (popup.length) {
+        popup.appendTo('body');
+    }
     const hideUntil = parseInt(localStorage.getItem('federwiegen_exit_hide_until') || '0', 10);
 
     if (popup.length && popupData.enabled && popupData.title && Date.now() > hideUntil) {
