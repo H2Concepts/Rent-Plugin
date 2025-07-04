@@ -875,6 +875,7 @@ jQuery(document).ready(function($) {
 
         if (window.matchMedia('(max-width: 768px)').matches) {
             let lastScroll = window.scrollY;
+            let downEnough = lastScroll > 300;
             let inactivityTimer;
             const limit = 60000;
 
@@ -889,7 +890,9 @@ jQuery(document).ready(function($) {
 
             $(window).on('scroll', function(){
                 const current = window.scrollY;
-                if (!exitShown && lastScroll - current > 100 && current < 80) {
+                if (current > lastScroll && current > 300) {
+                    downEnough = true;
+                } else if (!exitShown && downEnough && lastScroll - current > 50 && current < 150) {
                     showPopup();
                 }
                 lastScroll = current;

@@ -1181,6 +1181,9 @@
     width: 100%;
     padding: 8px;
     margin: 10px 0;
+    min-height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 
 .federwiegen-exit-popup-content button {
@@ -1194,4 +1197,11 @@
 
 body.federwiegen-popup-open {
     overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .federwiegen-exit-popup-content select {
+        font-size: 1rem;
+        padding: 12px;
+    }
 }
