@@ -716,5 +716,21 @@ class Ajax {
 
         wp_send_json_success();
     }
-    
+
+    public function ajax_exit_intent_feedback() {
+        check_ajax_referer('federwiegen_nonce', 'nonce');
+
+        $option = isset($_POST['option']) ? sanitize_text_field($_POST['option']) : '';
+
+        $admins = get_users(['role' => 'administrator']);
+        $emails = wp_list_pluck($admins, 'user_email');
+
+        if (!empty($emails)) {
+            $subject = 'Exit-Intent Feedback';
+            $message = 'Kundenrückmeldung: ' . $option;
+            wp_mail($emails, $subject, $message);
+        }
+
+        wp_send_json_success();
+    }
 }

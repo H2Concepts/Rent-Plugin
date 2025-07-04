@@ -108,6 +108,15 @@ class Admin {
             'federwiegen-analytics',
             array($this, 'analytics_page')
         );
+
+        add_submenu_page(
+            'federwiegen-verleih',
+            'Popup',
+            'Popup',
+            'manage_options',
+            'federwiegen-popup',
+            array($this, 'popup_page')
+        );
         
         add_submenu_page(
             'federwiegen-verleih',
@@ -154,12 +163,24 @@ class Admin {
             $category = $wpdb->get_row("SELECT * FROM {$wpdb->prefix}federwiegen_categories ORDER BY sort_order LIMIT 1");
         }
 
+        $popup_settings = get_option('federwiegen_popup_settings', []);
+        $options = [];
+        if (!empty($popup_settings['options'])) {
+            $opts = array_filter(array_map('trim', explode("\n", $popup_settings['options'])));
+            $options = array_values($opts);
+        }
+
         wp_localize_script('federwiegen-script', 'federwiegen_ajax', array(
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('federwiegen_nonce'),
             'price_period' => $category->price_period ?? 'month',
             'price_label' => $category->price_label ?? 'Monatlicher Mietpreis',
-            'vat_included' => isset($category->vat_included) ? intval($category->vat_included) : 0
+            'vat_included' => isset($category->vat_included) ? intval($category->vat_included) : 0,
+            'popup_settings' => array(
+                'title' => $popup_settings['title'] ?? '',
+                'content' => wpautop($popup_settings['content'] ?? ''),
+                'options' => $options
+            )
         ));
     }
     
@@ -550,8 +571,12 @@ class Admin {
     public function branding_page() {
         include FEDERWIEGEN_PLUGIN_PATH . 'admin/branding-page.php';
     }
-    
+
     public function debug_page() {
         include FEDERWIEGEN_PLUGIN_PATH . 'admin/debug-page.php';
+    }
+
+    public function popup_page() {
+        include FEDERWIEGEN_PLUGIN_PATH . 'admin/popup-page.php';
     }
 }

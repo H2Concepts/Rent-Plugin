@@ -831,4 +831,42 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+    // Exit intent popup
+    let exitShown = false;
+    const popupData = federwiegen_ajax.popup_settings || {};
+    const popup = $('#federwiegen-exit-popup');
+    if (popup.length && popupData.title) {
+        $('#federwiegen-exit-title').text(popupData.title);
+        $('#federwiegen-exit-message').html(popupData.content);
+        if (popupData.options && popupData.options.length) {
+            popupData.options.forEach(opt => {
+                $('#federwiegen-exit-select').append(`<option value="${opt}">${opt}</option>`);
+            });
+            $('#federwiegen-exit-select-wrapper').show();
+            $('#federwiegen-exit-send').show();
+        }
+
+        $(document).on('mouseleave', function(e){
+            if (!exitShown && e.clientY <= 0) {
+                popup.show();
+                exitShown = true;
+            }
+        });
+
+        $('.federwiegen-exit-popup-close').on('click', function(){
+            popup.hide();
+        });
+
+        $('#federwiegen-exit-send').on('click', function(){
+            const opt = $('#federwiegen-exit-select').val() || '';
+            $.post(federwiegen_ajax.ajax_url, {
+                action: 'exit_intent_feedback',
+                option: opt,
+                nonce: federwiegen_ajax.nonce
+            }, function(){
+                popup.hide();
+            });
+        });
+    }
 });
