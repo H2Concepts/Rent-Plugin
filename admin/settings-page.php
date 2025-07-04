@@ -35,11 +35,15 @@ foreach ($branding_results as $result) {
     
     <!-- Tab Navigation -->
     <div class="federwiegen-tab-nav">
-        <a href="<?php echo admin_url('admin.php?page=federwiegen-settings&tab=branding'); ?>" 
+        <a href="<?php echo admin_url('admin.php?page=federwiegen-settings&tab=branding'); ?>"
            class="federwiegen-tab <?php echo $active_tab === 'branding' ? 'active' : ''; ?>">
             🎨 Branding
         </a>
-        <a href="<?php echo admin_url('admin.php?page=federwiegen-settings&tab=debug'); ?>" 
+        <a href="<?php echo admin_url('admin.php?page=federwiegen-settings&tab=popup'); ?>"
+           class="federwiegen-tab <?php echo $active_tab === 'popup' ? 'active' : ''; ?>">
+            📣 Popup
+        </a>
+        <a href="<?php echo admin_url('admin.php?page=federwiegen-settings&tab=debug'); ?>"
            class="federwiegen-tab <?php echo $active_tab === 'debug' ? 'active' : ''; ?>">
             🔧 Debug
         </a>
@@ -51,6 +55,9 @@ foreach ($branding_results as $result) {
         switch ($active_tab) {
             case 'branding':
                 include FEDERWIEGEN_PLUGIN_PATH . 'admin/tabs/branding-tab.php';
+                break;
+            case 'popup':
+                include FEDERWIEGEN_PLUGIN_PATH . 'admin/tabs/popup-tab.php';
                 break;
             case 'debug':
                 include FEDERWIEGEN_PLUGIN_PATH . 'admin/tabs/debug-tab.php';

@@ -1140,3 +1140,68 @@
     width: calc(var(--rating) / 5 * 100%);
     overflow: hidden;
 }
+
+/* Exit Intent Popup */
+.federwiegen-exit-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.federwiegen-exit-popup-content {
+    position: relative;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+.federwiegen-exit-popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.federwiegen-exit-popup-content select {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    min-height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.federwiegen-exit-popup-content button {
+    background: #5f7f5f;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+body.federwiegen-popup-open {
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .federwiegen-exit-popup-content select {
+        font-size: 1rem;
+        padding: 12px;
+    }
+}

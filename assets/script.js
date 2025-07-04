@@ -831,4 +831,95 @@ jQuery(document).ready(function($) {
             }
         });
     });
+
+    // Exit intent popup
+    let exitShown = false;
+    const popupData = federwiegen_ajax.popup_settings || {};
+    const popup = $('#federwiegen-exit-popup');
+    if (popup.length) {
+        popup.appendTo('body');
+    }
+    const hideUntil = parseInt(localStorage.getItem('federwiegen_exit_hide_until') || '0', 10);
+
+    function showPopup() {
+        if (exitShown) return;
+        popup.css('display', 'flex');
+        $('body').addClass('federwiegen-popup-open');
+        exitShown = true;
+    }
+
+    function hidePopup() {
+        popup.hide();
+        $('body').removeClass('federwiegen-popup-open');
+        const days = parseInt(popupData.days || '7', 10);
+        const expire = Date.now() + days * 86400000;
+        localStorage.setItem('federwiegen_exit_hide_until', expire.toString());
+    }
+
+    if (popup.length && popupData.enabled && popupData.title && Date.now() > hideUntil) {
+        $('#federwiegen-exit-title').text(popupData.title);
+        $('#federwiegen-exit-message').html(popupData.content);
+        if (popupData.options && popupData.options.length) {
+            popupData.options.forEach(opt => {
+                $('#federwiegen-exit-select').append(`<option value="${opt}">${opt}</option>`);
+            });
+            $('#federwiegen-exit-select-wrapper').show();
+            $('#federwiegen-exit-send').show();
+        }
+
+        $(document).on('mouseleave', function(e){
+            if (!exitShown && e.clientY <= 0) {
+                showPopup();
+            }
+        });
+
+        if (window.matchMedia('(max-width: 768px)').matches) {
+            let lastScroll = window.scrollY;
+            let downEnough = lastScroll > 300;
+            let inactivityTimer;
+            const limit = 60000;
+
+            function resetInactivity() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(function(){
+                    if (!exitShown) {
+                        showPopup();
+                    }
+                }, limit);
+            }
+
+            $(window).on('scroll', function(){
+                const current = window.scrollY;
+                if (current > lastScroll && current > 300) {
+                    downEnough = true;
+                } else if (!exitShown && downEnough && lastScroll - current > 50 && current < 150) {
+                    showPopup();
+                }
+                lastScroll = current;
+                resetInactivity();
+            });
+
+            $(document).on('touchstart keydown click', resetInactivity);
+            resetInactivity();
+        }
+
+        $('.federwiegen-exit-popup-close').on('click', hidePopup);
+
+        $('#federwiegen-exit-send').on('click', function(){
+            const opt = $('#federwiegen-exit-select').val() || '';
+            $.post(federwiegen_ajax.ajax_url, {
+                action: 'exit_intent_feedback',
+                option: opt,
+                variant_id: selectedVariant || '',
+                extra_ids: selectedExtras.join(','),
+                duration_id: selectedDuration || '',
+                condition_id: selectedCondition || '',
+                product_color_id: selectedProductColor || '',
+                frame_color_id: selectedFrameColor || '',
+                nonce: federwiegen_ajax.nonce
+            }, function(){
+                hidePopup();
+            });
+        });
+    }
 });

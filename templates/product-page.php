@@ -442,3 +442,15 @@ $initial_frame_colors = $wpdb->get_results($wpdb->prepare(
         </div>
     </div>
 </div>
+
+<div id="federwiegen-exit-popup" class="federwiegen-exit-popup" style="display:none;">
+    <div class="federwiegen-exit-popup-content">
+        <button type="button" class="federwiegen-exit-popup-close">&times;</button>
+        <h3 id="federwiegen-exit-title"></h3>
+        <div id="federwiegen-exit-message"></div>
+        <div id="federwiegen-exit-select-wrapper" style="display:none;">
+            <select id="federwiegen-exit-select"></select>
+        </div>
+        <button id="federwiegen-exit-send" style="display:none;">Senden</button>
+    </div>
+</div>
