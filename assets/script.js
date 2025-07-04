@@ -841,6 +841,21 @@ jQuery(document).ready(function($) {
     }
     const hideUntil = parseInt(localStorage.getItem('federwiegen_exit_hide_until') || '0', 10);
 
+    function showPopup() {
+        if (exitShown) return;
+        popup.css('display', 'flex');
+        $('body').addClass('federwiegen-popup-open');
+        exitShown = true;
+    }
+
+    function hidePopup() {
+        popup.hide();
+        $('body').removeClass('federwiegen-popup-open');
+        const days = parseInt(popupData.days || '7', 10);
+        const expire = Date.now() + days * 86400000;
+        localStorage.setItem('federwiegen_exit_hide_until', expire.toString());
+    }
+
     if (popup.length && popupData.enabled && popupData.title && Date.now() > hideUntil) {
         $('#federwiegen-exit-title').text(popupData.title);
         $('#federwiegen-exit-message').html(popupData.content);
@@ -854,18 +869,35 @@ jQuery(document).ready(function($) {
 
         $(document).on('mouseleave', function(e){
             if (!exitShown && e.clientY <= 0) {
-                popup.css('display', 'flex');
-                $('body').addClass('federwiegen-popup-open');
-                exitShown = true;
+                showPopup();
             }
         });
 
-        function hidePopup() {
-            popup.hide();
-            $('body').removeClass('federwiegen-popup-open');
-            const days = parseInt(popupData.days || '7', 10);
-            const expire = Date.now() + days * 86400000;
-            localStorage.setItem('federwiegen_exit_hide_until', expire.toString());
+        if (window.matchMedia('(max-width: 768px)').matches) {
+            let lastScroll = window.scrollY;
+            let inactivityTimer;
+            const limit = 60000;
+
+            function resetInactivity() {
+                clearTimeout(inactivityTimer);
+                inactivityTimer = setTimeout(function(){
+                    if (!exitShown) {
+                        showPopup();
+                    }
+                }, limit);
+            }
+
+            $(window).on('scroll', function(){
+                const current = window.scrollY;
+                if (!exitShown && lastScroll - current > 100 && current < 80) {
+                    showPopup();
+                }
+                lastScroll = current;
+                resetInactivity();
+            });
+
+            $(document).on('touchstart keydown click', resetInactivity);
+            resetInactivity();
         }
 
         $('.federwiegen-exit-popup-close').on('click', hidePopup);
