@@ -1168,8 +1168,8 @@
 }
 
 .federwiegen-exit-send {
-    padding: 10px 40px;
-    border-radius: 999px;
+    padding: 10px 40px !important;
+    border-radius: 999px !important;
 }
 
 .federwiegen-exit-popup-close {
@@ -1206,7 +1206,7 @@ body.federwiegen-popup-open {
     overflow: hidden;
 }
 
-federwiegen-exit-message {
+#federwiegen-exit-message {
     font-size: 16px;
     line-height: 1.4;
 }
