@@ -852,12 +852,14 @@ jQuery(document).ready(function($) {
         $(document).on('mouseleave', function(e){
             if (!exitShown && e.clientY <= 0) {
                 popup.css('display', 'flex');
+                $('body').addClass('federwiegen-popup-open');
                 exitShown = true;
             }
         });
 
         function hidePopup() {
             popup.hide();
+            $('body').removeClass('federwiegen-popup-open');
             const days = parseInt(popupData.days || '7', 10);
             const expire = Date.now() + days * 86400000;
             localStorage.setItem('federwiegen_exit_hide_until', expire.toString());
